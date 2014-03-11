@@ -36,9 +36,11 @@ namespace Gwen
 namespace Controls
 {
 
-GWEN_CONTROL_CONSTRUCTOR(VerticalSlider, Slider)
+GWEN_CONTROL_CONSTRUCTOR(VerticalSlider, ControlsInternal::Slider)
 {
     _bar->SetHorizontal(false);
+
+    SetBounds(Rectangle(0, 0, 16, 128));
 }
 
 float VerticalSlider::CalculateValue()

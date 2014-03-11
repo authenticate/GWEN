@@ -37,7 +37,7 @@ namespace Controls
 {
 
 /// \brief This class represents a horizontal slider.
-class HorizontalSlider : public Slider
+class HorizontalSlider : public ControlsInternal::Slider
 {
     /// \brief Constructor.
     GWEN_CONTROL(HorizontalSlider, Slider);

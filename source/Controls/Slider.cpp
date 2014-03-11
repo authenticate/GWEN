@@ -35,12 +35,13 @@
 
 namespace Gwen
 {
-namespace Controls
+namespace ControlsInternal
 {
 
 GWEN_CONTROL_CONSTRUCTOR(Slider, Base)
 {
     _bar = new ControlsInternal::SliderBar(this);
+    _bar->SetHorizontal(true);
     _bar->_on_dragged.Add(this, &Slider::OnMoved);
 
     _minimum = 0.0f;
@@ -51,7 +52,7 @@ GWEN_CONTROL_CONSTRUCTOR(Slider, Base)
 
     _value = 0.0f;
 
-    SetBounds(Gwen::Rectangle(0, 0, 32, 128));
+    SetBounds(Rectangle(0, 0, 128, 16));
     SetTabable(true);
 }
 
@@ -193,6 +194,6 @@ void Slider::Layout(Skin::Base* skin)
     Base::Layout(skin);
 }
 
-}; // namespace Controls
+}; // namespace ControlsInternal
 
 }; // namespace Gwen

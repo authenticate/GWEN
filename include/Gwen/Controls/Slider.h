@@ -34,14 +34,14 @@
 
 namespace Gwen
 {
-namespace Controls
+namespace ControlsInternal
 {
 
 /// \brief This class represents a slider.
-class Slider : public Base
+class Slider : public Controls::Base
 {
     /// \brief Constructor.
-    GWEN_CONTROL(Slider, Base);
+    GWEN_CONTROL(Slider, Controls::Base);
 
     /// \brief Clamps the value to the notches.
     virtual void SetClampToNotches(bool clamp);
@@ -108,7 +108,7 @@ protected:
     virtual void Layout(Skin::Base* skin);
 
     /// \brief The slider bar control.
-    ControlsInternal::SliderBar* _bar;
+    SliderBar* _bar;
 
     /// \brief Clamps the value to the notches.
     bool _clamp_to_notches;
@@ -126,6 +126,6 @@ protected:
     float _maximum;
 };
 
-}; // namespace Controls
+}; // namespace ControlsInternal
 
 }; // namespace Gwen
