@@ -93,7 +93,7 @@ class Slider : public Controls::Base
 
 protected:
     /// \brief Sets the value.
-    virtual void SetValueInternal(float value);
+    virtual void _SetValueInternal(float value);
 
     /// \brief Updates the position of the slider from the value.
     virtual void UpdateBarFromValue() = 0;

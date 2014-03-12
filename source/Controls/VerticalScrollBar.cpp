@@ -53,7 +53,7 @@ void VerticalScrollBar::NudgeUp(Base*)
 {
     if (!IsDisabled())
     {
-        SetScrolledAmount(GetScrolledAmount() - GetNudgePercent(), true);
+        SetScrolledAmount(GetScrolledAmount() - GetNudgePercent());
     }
 }
 
@@ -61,7 +61,7 @@ void VerticalScrollBar::NudgeDown(Base*)
 {
     if (!IsDisabled())
     {
-        SetScrolledAmount(GetScrolledAmount() + GetNudgePercent(), true);
+        SetScrolledAmount(GetScrolledAmount() + GetNudgePercent());
     }
 }
 
@@ -87,22 +87,31 @@ int VerticalScrollBar::GetButtonSize() const
 
 void VerticalScrollBar::ScrollToTop()
 {
-    SetScrolledAmount(0.0f, true);
+    SetScrolledAmount(0.0f);
 }
 
 void VerticalScrollBar::ScrollToBottom()
 {
-    SetScrolledAmount(1.0f, true);
+    SetScrolledAmount(1.0f);
 }
 
 float VerticalScrollBar::CalculateScrolledAmount()
 {
-    return static_cast<float>(_bar->Y() - GetButtonSize()) / static_cast<float>(Height() - _bar->Height() - (GetButtonSize() * 2));
+    float numerator = static_cast<float>(_bar->Y() - GetButtonSize());
+    float denominator = static_cast<float>(Height() - _bar->Height() - (GetButtonSize() * 2.0f));
+    float result = numerator / denominator;
+
+    // Clamp to the nudge amount.
+    if (_clamp_to_nudge_amount)
+    {
+        result = _ClampToNudgeAmount(result);
+    }
+
+    return result;
 }
 
 bool VerticalScrollBar::SetScrolledAmount(float amount, bool do_events)
 {
-    amount = Utility::Clamp(amount, 0.0f, 1.0f);
     if (!ControlsInternal::ScrollBar::SetScrolledAmount(amount, do_events))
     {
         return false;
@@ -184,13 +193,13 @@ void VerticalScrollBar::Layout(Skin::Base* skin)
 
     if (Hidden())
     {
-        SetScrolledAmount(0, true);
+        SetScrolledAmount(0);
     }
 
     // Based on our last scroll amount, produce a position for the bar.
     if (!_bar->GetDepressed())
     {
-        SetScrolledAmount(GetScrolledAmount(), true);
+        SetScrolledAmount(GetScrolledAmount());
     }
 }
 

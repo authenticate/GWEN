@@ -46,7 +46,7 @@ GWEN_CONTROL_CONSTRUCTOR(Menu, ScrollControl)
     SetDeleteOnClose(false);
     SetIconMarginDisabled(false);
     SetPadding(Padding(0, 0, 0, 0));
-    SetScrollBarHidden(true);
+    _SetScrollBarHidden(true);
 }
 
 MenuItem* Menu::AddItem(const std::string& name, const std::string& icon_name, const std::string& accelerator)

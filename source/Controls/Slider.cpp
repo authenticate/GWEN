@@ -97,7 +97,7 @@ void Slider::SetValue(float value, bool)
 
     // Normalize the value.
     value = (value - _minimum) / (_maximum - _minimum);
-    SetValueInternal(value);
+    _SetValueInternal(value);
     Redraw();
 }
 
@@ -113,7 +113,7 @@ float Slider::CalculateValue()
 
 void Slider::OnMoved(Controls::Base*)
 {
-    SetValueInternal(CalculateValue());
+    _SetValueInternal(CalculateValue());
 }
 
 bool Slider::OnKeyLeft(bool is_down)
@@ -156,7 +156,7 @@ bool Slider::OnKeyDown(bool is_down)
     return true;
 }
 
-void Slider::SetValueInternal(float value)
+void Slider::_SetValueInternal(float value)
 {
     if (_clamp_to_notches)
     {

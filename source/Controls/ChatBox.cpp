@@ -77,7 +77,7 @@ void ChatBox::Clear()
     _table->Clear();
 }
 
-void ChatBox::UpdateScrollBar()
+void ChatBox::_UpdateScrollBar()
 {
     if (!_inner_panel)
     {
@@ -99,7 +99,7 @@ void ChatBox::UpdateScrollBar()
     }
 
     // Manually calculate the children's height.
-    int children_height = _table->GetRowCount() * _table->GetDefaultRowHeight() + padding._top + padding._bottom;
+    int children_height = _table->GetRowCount() * _table->GetDefaultRowHeight();
 
     // Update the size of the inner panel.
     _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
@@ -107,7 +107,7 @@ void ChatBox::UpdateScrollBar()
     // Determine whether to enable the scroll bar.
     float height_percent = static_cast<float>(children_height) / static_cast<float>(height);
     bool can_scroll = height_percent >= 1;
-    SetScroll(can_scroll);
+    _SetScroll(can_scroll);
 
     // Update the scroll bar's content and viewable size.
     _scroll_bar->SetContentSize(static_cast<float>(children_height - height));
@@ -117,7 +117,21 @@ void ChatBox::UpdateScrollBar()
     int position_y = 0;
     if (!_scroll_bar->Hidden())
     {
-        position_y = static_cast<int>(_scroll_bar->GetScrolledAmount() * -_scroll_bar->GetContentSize());
+        // If clamp to nudge amount...
+        float scrolled_amount = _scroll_bar->GetScrolledAmount();
+        float content_size = _scroll_bar->GetContentSize();
+        float viewable_content_size = _scroll_bar->GetViewableContentSize();
+        float nudge_amount = _scroll_bar->GetNudgeAmount();
+        if (GetClampToNudgeAmount())
+        {
+            // Add an offset equal to the amount of label overflow since chat boxes are docked at the bottom.
+            if (scrolled_amount > 0.0f && scrolled_amount < 1.0f)
+            {
+                scrolled_amount += fmodf(viewable_content_size, nudge_amount) / content_size;
+                scrolled_amount = Utility::Clamp(scrolled_amount, 0.0f, 1.0f);
+            }
+        }
+        position_y = static_cast<int>(scrolled_amount * -content_size);
     }
 
     _inner_panel->SetPosition(0, position_y);

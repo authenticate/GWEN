@@ -54,7 +54,18 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollBar, Controls::Base)
     _viewable_content_size = 0.0f;
 
     SetBounds(0, 0, 15, 15);
+    SetClampToNudgeAmount(false);
     SetNudgeAmount(20.0f);
+}
+
+void ScrollBar::SetClampToNudgeAmount(bool clamp_to_nudge_amount)
+{
+    _clamp_to_nudge_amount = clamp_to_nudge_amount;
+}
+
+bool ScrollBar::GetClampToNudgeAmount() const
+{
+    return _clamp_to_nudge_amount;
 }
 
 int ScrollBar::GetButtonSize() const
@@ -125,6 +136,12 @@ bool ScrollBar::SetScrolledAmount(float amount, bool do_events)
 
     _scrolled_amount = amount;
 
+    // Clamp to the nudge amount.
+    if (_clamp_to_nudge_amount)
+    {
+        _scrolled_amount = _ClampToNudgeAmount(_scrolled_amount);
+    }
+
     Invalidate();
 
     OnBarMoved(this);
@@ -180,6 +197,24 @@ bool ScrollBar::GetHorizontal() const
 bool ScrollBar::GetVertical() const
 {
     return !GetHorizontal();
+}
+
+float ScrollBar::_ClampToNudgeAmount(float value) const
+{
+    float result = value;
+
+    if (_nudge_amount > 0.0f)
+    {
+        float number_of_nudges = _content_size / _nudge_amount;
+        if (number_of_nudges > 0.0f)
+        {
+            result = floorf(result * number_of_nudges + 0.5f);
+            result /= number_of_nudges;
+            result = Utility::Clamp(result, 0.0f, 1.0f);
+        }
+    }
+
+    return result;
 }
 
 void ScrollBar::OnBarMoved(Controls::Base*)

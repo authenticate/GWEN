@@ -70,7 +70,7 @@ class VerticalScrollBar : public ControlsInternal::ScrollBar
     virtual float CalculateScrolledAmount() override;
 
     /// \brief Sets the amount scrolled.
-    virtual bool SetScrolledAmount(float amount, bool do_events) override;
+    virtual bool SetScrolledAmount(float amount, bool do_events = true) override;
 
     /// \brief Called when the bar is moved.
     virtual void OnBarMoved(Controls::Base* control) override;

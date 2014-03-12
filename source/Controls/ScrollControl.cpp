@@ -42,7 +42,7 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollControl, Base)
 {
     _scroll_bar = new VerticalScrollBar(this);
     _scroll_bar->SetDock(Position::RIGHT);
-    _scroll_bar->_on_bar_moved.Add(this, &ScrollControl::OnScrollBarMoved);
+    _scroll_bar->_on_bar_moved.Add(this, &ScrollControl::_OnScrollBarMoved);
     _scroll_bar->SetNudgeAmount(30);
 
     _inner_panel = new Base(this);
@@ -51,23 +51,73 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollControl, Base)
     _inner_panel->SendToBack();
     _inner_panel->SetMouseInputEnabled(true);
 
+    SetClampToNudgeAmount(false);
     SetMouseInputEnabled(false);
-    SetScrollBarHidden(false);
+    _SetScrollBarHidden(false);
 }
 
-void ScrollControl::Render(Skin::Base*)
+void ScrollControl::SetClampToNudgeAmount(bool clamp_to_nudge_amount)
 {
+    _scroll_bar->SetClampToNudgeAmount(clamp_to_nudge_amount);
 }
 
-void ScrollControl::Layout(Skin::Base* skin)
+bool ScrollControl::GetClampToNudgeAmount() const
 {
-    // Call the base class function.
-    Base::Layout(skin);
-
-    UpdateScrollBar();
+    return _scroll_bar->GetClampToNudgeAmount();
 }
 
-void ScrollControl::UpdateScrollBar()
+void ScrollControl::ScrollToTop()
+{
+    _UpdateScrollBar();
+    _scroll_bar->ScrollToTop();
+}
+
+void ScrollControl::ScrollToBottom()
+{
+    _UpdateScrollBar();
+    _scroll_bar->ScrollToBottom();
+}
+
+void ScrollControl::Clear()
+{
+    _inner_panel->RemoveChildren();
+}
+
+bool ScrollControl::_GetContentsDocked()
+{
+    if (!_inner_panel)
+    {
+        return false;
+    }
+
+    for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
+    {
+        Base* child = *i;
+        if (child->GetDock() == Position::NONE)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void ScrollControl::_SetScroll(bool can_scroll)
+{
+    _scroll_bar->SetDisabled(!can_scroll);
+}
+
+void ScrollControl::_SetScrollBarHidden(bool is_hidden)
+{
+    _scroll_bar->SetHidden(is_hidden);
+}
+
+bool ScrollControl::_GetScrollBarHidden() const
+{
+    return _scroll_bar->Hidden();
+}
+
+void ScrollControl::_UpdateScrollBar()
 {
     if (!_inner_panel)
     {
@@ -105,7 +155,7 @@ void ScrollControl::UpdateScrollBar()
     // Determine whether to display the scroll bars.
     float height_percent = static_cast<float>(children_height) / static_cast<float>(height);
     bool can_scroll = height_percent >= 1;
-    SetScroll(can_scroll);
+    _SetScroll(can_scroll);
 
     // Update the scroll bar's content and viewable size.
     _scroll_bar->SetContentSize(static_cast<float>(children_height - height));
@@ -121,70 +171,14 @@ void ScrollControl::UpdateScrollBar()
     _inner_panel->SetPosition(0, position_y);
 }
 
-void ScrollControl::ScrollToTop()
-{
-    UpdateScrollBar();
-    _scroll_bar->ScrollToTop();
-}
-
-void ScrollControl::ScrollToBottom()
-{
-    UpdateScrollBar();
-    _scroll_bar->ScrollToBottom();
-}
-
-void ScrollControl::SetInnerSize(int width, int height)
-{
-    _inner_panel->SetSize(width, height);
-}
-
-void ScrollControl::Clear()
-{
-    _inner_panel->RemoveChildren();
-}
-
-bool ScrollControl::ContentsAreDocked()
-{
-    if (!_inner_panel)
-    {
-        return false;
-    }
-
-    for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
-    {
-        Base* child = *i;
-        if (child->GetDock() == Position::NONE)
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-void ScrollControl::SetScroll(bool can_scroll)
-{
-    _scroll_bar->SetDisabled(!can_scroll);
-}
-
-void ScrollControl::SetScrollBarHidden(bool is_hidden)
-{
-    _scroll_bar->SetHidden(is_hidden);
-}
-
-bool ScrollControl::GetScrollBarHidden() const
-{
-    return _scroll_bar->Hidden();
-}
-
-void ScrollControl::OnScrollBarMoved(Controls::Base*)
+void ScrollControl::_OnScrollBarMoved(Controls::Base*)
 {
     Invalidate();
 }
 
 void ScrollControl::_OnChildBoundsChanged(const Gwen::Rectangle&, Controls::Base*)
 {
-    UpdateScrollBar();
+    _UpdateScrollBar();
     Invalidate();
 }
 
@@ -193,13 +187,25 @@ bool ScrollControl::OnMouseWheeled(int delta)
     if (_scroll_bar->Visible())
     {
         float nudge_percent = _scroll_bar->GetNudgeAmount() * static_cast<float>(delta) / _scroll_bar->GetContentSize();
-        if (_scroll_bar->SetScrolledAmount(_scroll_bar->GetScrolledAmount() - nudge_percent, true))
+        if (_scroll_bar->SetScrolledAmount(_scroll_bar->GetScrolledAmount() - nudge_percent))
         {
             return true;
         }
     }
 
     return false;
+}
+
+void ScrollControl::Render(Skin::Base*)
+{
+}
+
+void ScrollControl::Layout(Skin::Base* skin)
+{
+    // Call the base class function.
+    Base::Layout(skin);
+
+    _UpdateScrollBar();
 }
 
 }; // namespace Controls

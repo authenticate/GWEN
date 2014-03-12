@@ -52,10 +52,10 @@ public:
     /// \brief Clears the chat box.
     virtual void Clear() override;
 
-    /// \brief Updates the scroll bar.
-    virtual void UpdateScrollBar() override;
-
 protected:
+    /// \brief Updates the scroll bar.
+    virtual void _UpdateScrollBar() override;
+
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
 

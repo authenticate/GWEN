@@ -49,6 +49,12 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ScrollBar, Controls::Base);
 
+    /// \brief Sets the clamp to nudge amount.
+    virtual void SetClampToNudgeAmount(bool clamp_to_nudge_amount);
+
+    /// \brief Gets the clamp to nudge amount.
+    virtual bool GetClampToNudgeAmount() const;
+
     /// \brief Sets the size of the bar.
     virtual void SetBarSize(int size) = 0;
 
@@ -92,7 +98,7 @@ public:
     virtual int CalculateBarSize();
 
     /// \brief Sets the amount scrolled.
-    virtual bool SetScrolledAmount(float amount, bool do_events);
+    virtual bool SetScrolledAmount(float amount, bool do_events = true);
 
     /// \brief Gets the amount scrolled.
     virtual float GetScrolledAmount() const;
@@ -115,16 +121,19 @@ public:
     /// \brief Is the bar vertical?
     virtual bool GetVertical() const;
 
+    /// \brief A event for when the bar is moved.
+    Gwen::Event::Caller _on_bar_moved;
+
+protected:
+    /// \brief Clamps a value to a multiple of the nudge amount.
+    virtual float _ClampToNudgeAmount(float value) const;
+
     /// \brief Called when the bar is moved.
     virtual void OnBarMoved(Controls::Base* control);
 
     /// \brief Called when the left mouse button is pressed.
     virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
 
-    /// \brief A event for when the bar is moved.
-    Gwen::Event::Caller _on_bar_moved;
-
-protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
 
@@ -136,6 +145,9 @@ protected:
 
     /// \brief Is the bar depressed?
     bool _depressed;
+
+    /// \brief Clamps the scroll bar to the nudge amount.
+    bool _clamp_to_nudge_amount;
 
     /// \brief The amount scrolled.
     float _scrolled_amount;
