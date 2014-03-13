@@ -40,11 +40,13 @@ namespace Controls
 
 GWEN_CONTROL_CONSTRUCTOR(ScrollControl, Base)
 {
+    _scroll_bar = nullptr;
     _scroll_bar = new VerticalScrollBar(this);
     _scroll_bar->SetDock(Position::RIGHT);
     _scroll_bar->_on_bar_moved.Add(this, &ScrollControl::_OnScrollBarMoved);
     _scroll_bar->SetNudgeAmount(30);
 
+    _inner_panel = nullptr;
     _inner_panel = new Base(this);
     _inner_panel->SetPosition(0, 0);
     _inner_panel->SetMargin(Margin(5, 5, 5, 5));
@@ -128,8 +130,8 @@ void ScrollControl::_UpdateScrollBar()
     const Gwen::Padding& padding = GetPadding();
 
     // Calculate the control's visible width.
-    int width = Width() - padding._left - padding._right;
-    int height = Height() - padding._top - padding._bottom;
+    unsigned width = Width() - padding._left - padding._right;
+    unsigned height = Height() - padding._top - padding._bottom;
 
     // Calculate the scroll bar's width.
     int scroll_bar_width = 0;
@@ -138,34 +140,30 @@ void ScrollControl::_UpdateScrollBar()
         scroll_bar_width = _scroll_bar->Width() - 1;
     }
 
-    int children_width = 0;
-    int children_height = 0;
-
     // Get the maximum size of all the children.
+    unsigned children_height = 0;
     for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
     {
         Base* child = *i;
-        children_width = Utility::Max(children_width, child->Right());
-        children_height = Utility::Max(children_height, child->Bottom());
+        children_height = Utility::Max<int>(children_height, child->Bottom());
     }
+    children_height += padding._top + padding._bottom;
 
     // Update the size of the inner panel.
     _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
 
     // Determine whether to display the scroll bars.
-    float height_percent = static_cast<float>(children_height) / static_cast<float>(height);
-    bool can_scroll = height_percent >= 1;
-    _SetScroll(can_scroll);
+    _SetScroll(height <= children_height);
 
     // Update the scroll bar's content and viewable size.
-    _scroll_bar->SetContentSize(static_cast<float>(children_height - height));
-    _scroll_bar->SetViewableContentSize(static_cast<float>(height));
+    _scroll_bar->SetContentSize(children_height);
+    _scroll_bar->SetViewableContentSize(height);
 
     // Set the position of the inner panel.
     int position_y = 0;
     if (!_scroll_bar->Hidden())
     {
-        position_y = static_cast<int>(_scroll_bar->GetScrolledAmount() * -_scroll_bar->GetContentSize());
+        position_y = -static_cast<int>(_scroll_bar->GetScrolledAmount());
     }
 
     _inner_panel->SetPosition(0, position_y);
@@ -184,10 +182,11 @@ void ScrollControl::_OnChildBoundsChanged(const Gwen::Rectangle&, Controls::Base
 
 bool ScrollControl::OnMouseWheeled(int delta)
 {
-    if (_scroll_bar->Visible())
+    if (!_scroll_bar->IsDisabled())
     {
-        float nudge_percent = _scroll_bar->GetNudgeAmount() * static_cast<float>(delta) / _scroll_bar->GetContentSize();
-        if (_scroll_bar->SetScrolledAmount(_scroll_bar->GetScrolledAmount() - nudge_percent))
+        int scrolled_amount = _scroll_bar->GetScrolledAmount() + (_scroll_bar->GetNudgeAmount() * -delta);
+        scrolled_amount = Utility::Clamp<int>(scrolled_amount, 0, _scroll_bar->GetContentSize() - _scroll_bar->GetViewableContentSize());
+        if (_scroll_bar->SetScrolledAmount(scrolled_amount))
         {
             return true;
         }

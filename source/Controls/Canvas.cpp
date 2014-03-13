@@ -157,7 +157,7 @@ void Canvas::ProcessDelayedDeletes()
         std::list<Base*> delete_list = _delete_list;
         _delete_list.clear();
         _delete_set.clear();
-        for (auto i = _delete_list.begin(); i != _delete_list.end(); ++i)
+        for (auto i = delete_list.begin(); i != delete_list.end(); ++i)
         {
             Base* control = *i;
             control->PreDelete(GetSkin());

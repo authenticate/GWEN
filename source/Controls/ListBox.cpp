@@ -180,6 +180,51 @@ void ListBox::SetColumnWidth(int count, int size)
     _table->SetColumnWidth(count, size);
 }
 
+void ListBox::_UpdateScrollBar()
+{
+    if (!_inner_panel)
+    {
+        return;
+    }
+
+    // Get the control's padding.
+    const Gwen::Padding& padding = GetPadding();
+
+    // Calculate the control's visible width.
+    unsigned width = Width() - padding._left - padding._right;
+    unsigned height = Height() - padding._top - padding._bottom;
+
+    // Calculate the scroll bar's width.
+    int scroll_bar_width = 0;
+    if (!_scroll_bar->Hidden())
+    {
+        scroll_bar_width = _scroll_bar->Width() - 1;
+    }
+
+    // Calculate the children's height.
+    unsigned children_height = _table->GetRowCount() * _table->GetDefaultRowHeight();
+    children_height += padding._top + padding._bottom;
+
+    // Update the size of the inner panel.
+    _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
+
+    // Determine whether to display the scroll bars.
+    _SetScroll(height <= children_height);
+
+    // Update the scroll bar's content and viewable size.
+    _scroll_bar->SetContentSize(children_height);
+    _scroll_bar->SetViewableContentSize(height);
+
+    // Set the position of the inner panel.
+    int position_y = 0;
+    if (!_scroll_bar->Hidden())
+    {
+        position_y = -static_cast<int>(_scroll_bar->GetScrolledAmount());
+    }
+
+    _inner_panel->SetPosition(0, position_y);
+}
+
 void ListBox::Render(Skin::Base* skin)
 {
     // Draw the list box.
@@ -213,7 +258,7 @@ void ListBox::Layout(Skin::Base* skin)
 
     // Update the scroll bars.
     unsigned row_height = _table->GetDefaultRowHeight();
-    _scroll_bar->SetNudgeAmount(static_cast<float>(row_height));
+    _scroll_bar->SetNudgeAmount(row_height);
 }
 
 void ListBox::OnRowSelected(Base* control)

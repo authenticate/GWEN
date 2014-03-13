@@ -49,13 +49,17 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollBar, Controls::Base)
     }
 
     _depressed = false;
-    _scrolled_amount = 0.0f;
-    _content_size = 0.0f;
-    _viewable_content_size = 0.0f;
+    _clamp_to_nudge_amount = false;
+    _alignment = Position::TOP;
+    _scrolled_amount = 0;
+    _content_size = 0;
+    _viewable_content_size = 0;
+    _nudge_amount = 0;
 
+    SetAlignment(Position::TOP);
     SetBounds(0, 0, 15, 15);
     SetClampToNudgeAmount(false);
-    SetNudgeAmount(20.0f);
+    SetNudgeAmount(20);
 }
 
 void ScrollBar::SetClampToNudgeAmount(bool clamp_to_nudge_amount)
@@ -68,7 +72,12 @@ bool ScrollBar::GetClampToNudgeAmount() const
     return _clamp_to_nudge_amount;
 }
 
-int ScrollBar::GetButtonSize() const
+void ScrollBar::SetAlignment(int alignment)
+{
+    _alignment = alignment;
+}
+
+unsigned ScrollBar::GetButtonSize() const
 {
     return 0;
 }
@@ -89,46 +98,29 @@ void ScrollBar::ScrollToBottom()
 {
 }
 
-void ScrollBar::SetNudgeAmount(float nudge_amount)
+void ScrollBar::SetNudgeAmount(unsigned nudge_amount)
 {
-    if (nudge_amount < 0.0f)
-    {
-        nudge_amount = 0.0f;
-    }
     _nudge_amount = nudge_amount;
 }
 
-float ScrollBar::GetNudgeAmount() const
+unsigned ScrollBar::GetNudgeAmount() const
 {
     return _nudge_amount;
 }
 
-void ScrollBar::SetNudgePercent(float nudge_percent)
-{
-    nudge_percent = Utility::Clamp(nudge_percent, 0.0f, 1.0f);
-    SetNudgeAmount(nudge_percent * _content_size);
-}
-
-float ScrollBar::GetNudgePercent() const
-{
-    float nudge_percent = GetNudgeAmount() / _content_size;
-    nudge_percent = Utility::Clamp(nudge_percent, 0.0f, 1.0f);
-    return nudge_percent;
-}
-
-float ScrollBar::CalculateScrolledAmount()
+unsigned ScrollBar::CalculateScrolledAmount()
 {
     return 0;
 }
 
-int ScrollBar::CalculateBarSize()
+unsigned ScrollBar::CalculateBarSize()
 {
     return 0;
 }
 
-bool ScrollBar::SetScrolledAmount(float amount, bool do_events)
+bool ScrollBar::SetScrolledAmount(unsigned amount, bool do_events)
 {
-    amount = Utility::Clamp(amount, 0.0f, 1.0f);
+    amount = Utility::Clamp<unsigned>(amount, 0, _content_size - _viewable_content_size);
     if (_scrolled_amount == amount && !do_events)
     {
         return false;
@@ -148,43 +140,37 @@ bool ScrollBar::SetScrolledAmount(float amount, bool do_events)
     return true;
 }
 
-float ScrollBar::GetScrolledAmount() const
+unsigned ScrollBar::GetScrolledAmount() const
 {
     return _scrolled_amount;
 }
 
-void ScrollBar::SetContentSize(float size)
+void ScrollBar::SetContentSize(unsigned size)
 {
-    if (size >= 0.0f)
+    if (_content_size != size)
     {
-        if (_content_size != size)
-        {
-            Invalidate();
-        }
-
-        _content_size = size;
+        Invalidate();
     }
+
+    _content_size = size;
 }
 
-float ScrollBar::GetContentSize() const
+unsigned ScrollBar::GetContentSize() const
 {
     return _content_size;
 }
 
-void ScrollBar::SetViewableContentSize(float size)
+void ScrollBar::SetViewableContentSize(unsigned size)
 {
-    if (size >= 0.0f)
+    if (_viewable_content_size != size)
     {
-        if (_viewable_content_size != size)
-        {
-            Invalidate();
-        }
-
-        _viewable_content_size = size;
+        Invalidate();
     }
+
+    _viewable_content_size = size;
 }
 
-float ScrollBar::GetViewableContentSize() const
+unsigned ScrollBar::GetViewableContentSize() const
 {
     return _viewable_content_size;
 }
@@ -199,18 +185,29 @@ bool ScrollBar::GetVertical() const
     return !GetHorizontal();
 }
 
-float ScrollBar::_ClampToNudgeAmount(float value) const
+unsigned ScrollBar::_ClampToNudgeAmount(unsigned value) const
 {
-    float result = value;
+    unsigned result = value;
 
-    if (_nudge_amount > 0.0f)
+    unsigned minimum = 0;
+    unsigned maximum = _content_size - _viewable_content_size;
+
+    // Make sure the nudge amount is position and the value is not already at the minimum or maximum.
+    if (_nudge_amount > 0 && value != minimum && value != maximum)
     {
-        float number_of_nudges = _content_size / _nudge_amount;
-        if (number_of_nudges > 0.0f)
+        if (_alignment & Position::BOTTOM)
         {
-            result = floorf(result * number_of_nudges + 0.5f);
-            result /= number_of_nudges;
-            result = Utility::Clamp(result, 0.0f, 1.0f);
+            if (result % _nudge_amount != 0)
+            {
+                result = ((result / _nudge_amount) + 1) * _nudge_amount;
+            }
+            result = Utility::Clamp(result, minimum, maximum);
+        }
+        else
+        {
+            // Default to Position::TOP.
+            result = (result / _nudge_amount) * _nudge_amount;
+            result = Utility::Clamp(result, minimum, maximum);
         }
     }
 

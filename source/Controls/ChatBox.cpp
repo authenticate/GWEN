@@ -45,6 +45,8 @@ GWEN_CONTROL_CONSTRUCTOR(ChatBox, ScrollControl)
 {
     _inner_panel->SetPadding(Padding(2, 2, 2, 2));
 
+    _scroll_bar->SetAlignment(Position::BOTTOM);
+
     _table = new Controls::Layout::Table(this);
     _table->SetColumnCount(1);
 
@@ -88,50 +90,52 @@ void ChatBox::_UpdateScrollBar()
     const Gwen::Padding& padding = GetPadding();
 
     // Calculate the control's visible width.
-    int width = Width() - padding._left - padding._right;
-    int height = Height() - padding._top - padding._bottom;
+    unsigned width = Width() - padding._left - padding._right;
+    unsigned height = Height() - padding._top - padding._bottom;
 
     // Calculate the scroll bar's width.
-    int scroll_bar_width = 0;
+    unsigned scroll_bar_width = 0;
     if (!_scroll_bar->Hidden())
     {
         scroll_bar_width = _scroll_bar->Width() - 1;
     }
 
-    // Manually calculate the children's height.
-    int children_height = _table->GetRowCount() * _table->GetDefaultRowHeight();
+    // Calculate the children's height.
+    unsigned children_height = _table->GetRowCount() * _table->GetDefaultRowHeight();
+    children_height += padding._top + padding._bottom;
 
     // Update the size of the inner panel.
     _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
 
     // Determine whether to enable the scroll bar.
-    float height_percent = static_cast<float>(children_height) / static_cast<float>(height);
-    bool can_scroll = height_percent >= 1;
-    _SetScroll(can_scroll);
+    _SetScroll(height <= children_height);
 
     // Update the scroll bar's content and viewable size.
-    _scroll_bar->SetContentSize(static_cast<float>(children_height - height));
-    _scroll_bar->SetViewableContentSize(static_cast<float>(height));
+    _scroll_bar->SetContentSize(children_height);
+    _scroll_bar->SetViewableContentSize(height);
 
     // Set the position of the inner panel.
     int position_y = 0;
     if (!_scroll_bar->Hidden())
     {
         // If clamp to nudge amount...
-        float scrolled_amount = _scroll_bar->GetScrolledAmount();
-        float content_size = _scroll_bar->GetContentSize();
-        float viewable_content_size = _scroll_bar->GetViewableContentSize();
-        float nudge_amount = _scroll_bar->GetNudgeAmount();
+        unsigned scrolled_amount = _scroll_bar->GetScrolledAmount();
+        unsigned content_size = _scroll_bar->GetContentSize();
+        unsigned viewable_content_size = _scroll_bar->GetViewableContentSize();
+        unsigned nudge_amount = _scroll_bar->GetNudgeAmount();
         if (GetClampToNudgeAmount())
         {
             // Add an offset equal to the amount of label overflow since chat boxes are docked at the bottom.
-            if (scrolled_amount > 0.0f && scrolled_amount < 1.0f)
+            if (scrolled_amount > 0)
             {
-                scrolled_amount += fmodf(viewable_content_size, nudge_amount) / content_size;
-                scrolled_amount = Utility::Clamp(scrolled_amount, 0.0f, 1.0f);
+                if (scrolled_amount < content_size - viewable_content_size)
+                {
+                    scrolled_amount -= viewable_content_size / nudge_amount;
+                    scrolled_amount = Utility::Clamp<unsigned>(scrolled_amount, 0, content_size - viewable_content_size);
+                }
             }
         }
-        position_y = static_cast<int>(scrolled_amount * -content_size);
+        position_y = -static_cast<int>(scrolled_amount);
     }
 
     _inner_panel->SetPosition(0, position_y);
@@ -176,7 +180,7 @@ void ChatBox::Layout(Skin::Base* skin)
     _table->SizeToChildren(false, true);
 
     // Update the scroll bars.
-    _scroll_bar->SetNudgeAmount(static_cast<float>(row_height));
+    _scroll_bar->SetNudgeAmount(row_height);
 }
 
 }; // namespace Controls

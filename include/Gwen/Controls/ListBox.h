@@ -90,6 +90,9 @@ public:
     Gwen::Event::Caller _on_row_mouse_double_click_left;
 
 protected:
+    /// \brief Updates the scroll bar.
+    virtual void _UpdateScrollBar() override;
+
     /// \brief Renders the UI element.
     virtual void Render(Skin::Base* skin) override;
 

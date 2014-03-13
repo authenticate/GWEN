@@ -55,17 +55,21 @@ public:
     /// \brief Gets the clamp to nudge amount.
     virtual bool GetClampToNudgeAmount() const;
 
+    /// \brief Sets the alignment of the scroll bar.
+    ///        Only Position::TOP and Position::BOTTOM are supported.
+    virtual void SetAlignment(int alignment);
+
     /// \brief Sets the size of the bar.
-    virtual void SetBarSize(int size) = 0;
+    virtual void SetBarSize(unsigned size) = 0;
 
     /// \brief Gets the size of the bar.
-    virtual int GetBarSize() const = 0;
+    virtual unsigned GetBarSize() const = 0;
 
     /// \brief Gets the position of the bar.
-    virtual int GetBarPosition() const = 0;
+    virtual unsigned GetBarPosition() const = 0;
 
     /// \brief Gets the size of the buttons.
-    virtual int GetButtonSize() const;
+    virtual unsigned GetButtonSize() const;
 
     /// \brief Sets the bar to the left.
     virtual void ScrollToLeft();
@@ -80,40 +84,34 @@ public:
     virtual void ScrollToBottom();
 
     /// \brief Sets the nudge amount.
-    virtual void SetNudgeAmount(float nudge_amount);
+    virtual void SetNudgeAmount(unsigned nudge_amount);
 
     /// \brief Gets the nudge amount.
-    virtual float GetNudgeAmount() const;
-
-    /// \brief Sets the nudge percent.
-    virtual void SetNudgePercent(float nudge_percent);
-
-    /// \brief Gets the nudge percent.
-    virtual float GetNudgePercent() const;
+    virtual unsigned GetNudgeAmount() const;
 
     /// \brief Calculate the amount scrolled.
-    virtual float CalculateScrolledAmount();
+    virtual unsigned CalculateScrolledAmount();
 
     /// \brief Calculate the bar size.
-    virtual int CalculateBarSize();
+    virtual unsigned CalculateBarSize();
 
     /// \brief Sets the amount scrolled.
-    virtual bool SetScrolledAmount(float amount, bool do_events = true);
+    virtual bool SetScrolledAmount(unsigned amount, bool do_events = true);
 
     /// \brief Gets the amount scrolled.
-    virtual float GetScrolledAmount() const;
+    virtual unsigned GetScrolledAmount() const;
 
     /// \brief Sets the content size.
-    virtual void SetContentSize(float size);
+    virtual void SetContentSize(unsigned size);
 
     /// \brief Gets the content size.
-    virtual float GetContentSize() const;
+    virtual unsigned GetContentSize() const;
 
     /// \brief Sets the viewable content size.
-    virtual void SetViewableContentSize(float size);
+    virtual void SetViewableContentSize(unsigned size);
 
     /// \brief Gets the viewable content size.
-    virtual float GetViewableContentSize() const;
+    virtual unsigned GetViewableContentSize() const;
 
     /// \brief Is the bar horizontal?
     virtual bool GetHorizontal() const;
@@ -126,7 +124,7 @@ public:
 
 protected:
     /// \brief Clamps a value to a multiple of the nudge amount.
-    virtual float _ClampToNudgeAmount(float value) const;
+    virtual unsigned _ClampToNudgeAmount(unsigned value) const;
 
     /// \brief Called when the bar is moved.
     virtual void OnBarMoved(Controls::Base* control);
@@ -149,17 +147,21 @@ protected:
     /// \brief Clamps the scroll bar to the nudge amount.
     bool _clamp_to_nudge_amount;
 
+    /// \brief The alignment of the scroll bar.
+    ///        Only Position::TOP and Position::BOTTOM are supported.
+    int _alignment;
+
     /// \brief The amount scrolled.
-    float _scrolled_amount;
+    unsigned _scrolled_amount;
 
     /// \brief The content size.
-    float _content_size;
+    unsigned _content_size;
 
     /// \brief The viewable content size.
-    float _viewable_content_size;
+    unsigned _viewable_content_size;
 
     /// \brief The nudge amount.
-    float _nudge_amount;
+    unsigned _nudge_amount;
 };
 
 }; // namespace ControlsInternal

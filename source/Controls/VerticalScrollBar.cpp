@@ -53,7 +53,9 @@ void VerticalScrollBar::NudgeUp(Base*)
 {
     if (!IsDisabled())
     {
-        SetScrolledAmount(GetScrolledAmount() - GetNudgePercent());
+        int scrolled_amount = GetScrolledAmount() - GetNudgeAmount();
+        scrolled_amount = Utility::Clamp<int>(scrolled_amount, 0, _content_size - _viewable_content_size);
+        SetScrolledAmount(scrolled_amount);
     }
 }
 
@@ -61,56 +63,65 @@ void VerticalScrollBar::NudgeDown(Base*)
 {
     if (!IsDisabled())
     {
-        SetScrolledAmount(GetScrolledAmount() + GetNudgePercent());
+        int scrolled_amount = GetScrolledAmount() + GetNudgeAmount();
+        scrolled_amount = Utility::Clamp<int>(scrolled_amount, 0, _content_size - _viewable_content_size);
+        SetScrolledAmount(scrolled_amount);
     }
 }
 
-void VerticalScrollBar::SetBarSize(int size)
+void VerticalScrollBar::SetBarSize(unsigned size)
 {
     _bar->SetHeight(size);
 }
 
-int VerticalScrollBar::GetBarSize() const
+unsigned VerticalScrollBar::GetBarSize() const
 {
     return _bar->Height();
 }
 
-int VerticalScrollBar::GetBarPosition() const
+unsigned VerticalScrollBar::GetBarPosition() const
 {
     return _bar->Y() - Width();
 }
 
-int VerticalScrollBar::GetButtonSize() const
+unsigned VerticalScrollBar::GetButtonSize() const
 {
     return Width();
 }
 
 void VerticalScrollBar::ScrollToTop()
 {
-    SetScrolledAmount(0.0f);
+    SetScrolledAmount(0);
 }
 
 void VerticalScrollBar::ScrollToBottom()
 {
-    SetScrolledAmount(1.0f);
+    if (_content_size > _viewable_content_size)
+    {
+        SetScrolledAmount(GetContentSize());
+    }
+    else
+    {
+        SetScrolledAmount(0);
+    }
 }
 
-float VerticalScrollBar::CalculateScrolledAmount()
+unsigned VerticalScrollBar::CalculateScrolledAmount()
 {
-    float numerator = static_cast<float>(_bar->Y() - GetButtonSize());
-    float denominator = static_cast<float>(Height() - _bar->Height() - (GetButtonSize() * 2.0f));
-    float result = numerator / denominator;
+    int offset = GetButtonSize();
+    int bar_length = Height() - (GetButtonSize() * 2);
+    unsigned scrolled_amount = (_bar->Y() - offset) * _content_size / bar_length;
 
     // Clamp to the nudge amount.
     if (_clamp_to_nudge_amount)
     {
-        result = _ClampToNudgeAmount(result);
+        scrolled_amount = _ClampToNudgeAmount(scrolled_amount);
     }
 
-    return result;
+    return scrolled_amount;
 }
 
-bool VerticalScrollBar::SetScrolledAmount(float amount, bool do_events)
+bool VerticalScrollBar::SetScrolledAmount(unsigned amount, bool do_events)
 {
     if (!ControlsInternal::ScrollBar::SetScrolledAmount(amount, do_events))
     {
@@ -119,7 +130,12 @@ bool VerticalScrollBar::SetScrolledAmount(float amount, bool do_events)
 
     if (do_events)
     {
-        int new_y = static_cast<int>(GetButtonSize() + (amount * ((Height() - _bar->Height()) - (GetButtonSize() * 2))));
+        int offset = GetButtonSize();
+        int bar_length = Height() - (GetButtonSize() * 2);
+        float percent = static_cast<float>(_scrolled_amount) /
+                        static_cast<float>(_content_size);
+
+        int new_y = static_cast<int>(offset + ceilf(bar_length * percent));
         _bar->MoveTo(_bar->X(), new_y);
     }
 
@@ -178,17 +194,18 @@ void VerticalScrollBar::Layout(Skin::Base* skin)
     // Add padding.
     _bar->SetPadding(Padding(0, GetButtonSize(), 0, GetButtonSize()));
 
-    // Calculate the bar size.
-    int height = Height() - GetButtonSize() * 2;
-    float bar_height = _viewable_content_size / (_content_size + _viewable_content_size) * height;
+    // Calculate the bar height.
+    unsigned height = Height() - GetButtonSize() * 2;
+    unsigned bar_height = static_cast<unsigned>(static_cast<float>(height * _viewable_content_size) /
+                                                static_cast<float>(_content_size));
 
-    // Enforce a minimum bar size.
+    // Enforce a minimum bar height.
     if (bar_height < GetButtonSize())
     {
-        bar_height = static_cast<float>(GetButtonSize());
+        bar_height = GetButtonSize();
     }
 
-    _bar->SetHeight(static_cast<int>(bar_height));
+    _bar->SetHeight(bar_height);
     _bar->SetHidden(height <= bar_height);
 
     if (Hidden())

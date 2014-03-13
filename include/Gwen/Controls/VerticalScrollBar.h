@@ -49,16 +49,16 @@ class VerticalScrollBar : public ControlsInternal::ScrollBar
     virtual void NudgeDown(Base* control);
 
     /// \brief Sets the size of the bar.
-    virtual void SetBarSize(int size) override;
+    virtual void SetBarSize(unsigned size) override;
 
     /// \brief Gets the size of the bar.
-    virtual int GetBarSize() const override;
+    virtual unsigned GetBarSize() const override;
 
     /// \brief Gets the position of the bar.
-    virtual int GetBarPosition() const override;
+    virtual unsigned GetBarPosition() const override;
 
     /// \brief Gets the size of the buttons.
-    virtual int GetButtonSize() const override;
+    virtual unsigned GetButtonSize() const override;
 
     /// \brief Sets the bar to the top.
     virtual void ScrollToTop() override;
@@ -67,10 +67,10 @@ class VerticalScrollBar : public ControlsInternal::ScrollBar
     virtual void ScrollToBottom() override;
 
     /// \brief Calculate the amount scrolled.
-    virtual float CalculateScrolledAmount() override;
+    virtual unsigned CalculateScrolledAmount() override;
 
     /// \brief Sets the amount scrolled.
-    virtual bool SetScrolledAmount(float amount, bool do_events = true) override;
+    virtual bool SetScrolledAmount(unsigned amount, bool do_events = true) override;
 
     /// \brief Called when the bar is moved.
     virtual void OnBarMoved(Controls::Base* control) override;
