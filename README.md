@@ -8,9 +8,7 @@ The original library can be found here: https://github.com/garrynewman/GWEN
 About
 =====
 
-This repository is a fork of GWEN which I use in my personal projects.  I became interested in understanding the implementation of GUI libraries.  So, I started converting GWEN to my own coding style in an effort to force myself to actually understand what the code was doing.  After a while, I had updated most of the library.
-
-Since the original repository no longer appears active, I decided to upload this version in case anyone else was interested in using it.
+This repository is a fork of GWEN which I use in my personal projects.  Since the original repository no longer appears active, I decided to upload this version.
 
 This fork contains a subset of the original repository's widgets.  If I did not directly need the widget, I removed it.  In addition, the only supported rendering and input systems are both SDL2.
 
