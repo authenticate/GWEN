@@ -62,7 +62,10 @@ public:
     virtual void SetCycleSpeed(float cycle_speed);
 
     /// \brief Gets the cycle speed.
-    virtual float GetCycleSpeed();
+    virtual float GetCycleSpeed() const;
+
+    /// \brief Sets the color of the bar.
+    virtual void SetColor(const Gwen::Color& color);
 
     /// \brief Animates the control.
     using Label::Think;
@@ -71,6 +74,12 @@ public:
 protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
+
+    /// \brief The progress bar color.
+    Gwen::Color _color;
+
+    /// \brief The padding between the bounds of the entire widget and the progress bar itself.
+    Gwen::Padding _bar_padding;
 
     /// \brief The progress.
     float _progress;

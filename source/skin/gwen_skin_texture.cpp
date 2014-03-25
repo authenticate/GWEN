@@ -99,7 +99,6 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
     Textures.TextBox.Disabled.Initialize(&_texture, 0, 193, 127, 21, Margin(4, 4, 4, 4));
 
     Textures.ProgressBar.Back.Initialize(&_texture, 384, 0, 31, 31, Margin(8, 8, 8, 8));
-    Textures.ProgressBar.Front.Initialize(&_texture, 384 + 32, 0, 31, 31, Margin(8, 8, 8, 8));
 
     Textures.ScrollBar.TrackV.Initialize(&_texture, 384, 208, 15, 127, Margin(4, 4, 4, 4));
     Textures.ScrollBar.ButtonV_Normal.Initialize(&_texture, 384 + 16, 208, 15, 127, Margin(4, 4, 4, 4));
@@ -515,27 +514,43 @@ void TexturedBase::DrawScrollBarButton(Controls::Base* control, int alignment, b
     return Textures.ScrollBar.Button.Normal[i].Draw(GetRender(), control->GetRenderBounds());
 }
 
-void TexturedBase::DrawProgressBar(Controls::Base* control, bool is_horizontal, float progress)
+void TexturedBase::DrawProgressBar(Controls::Base* control, bool is_horizontal, float progress, const Gwen::Padding& bar_padding, const Gwen::Color& color)
 {
     Gwen::Rectangle bounds = control->GetRenderBounds();
+
     if (is_horizontal)
     {
         Textures.ProgressBar.Back.Draw(GetRender(), bounds);
 
+        bounds._x = bounds._x + bar_padding._left;
+        bounds._y = bounds._y + bar_padding._top;
+        bounds._width = bounds._width - bar_padding._left - bar_padding._right;
+        bounds._height = bounds._height - bar_padding._top - bar_padding._bottom;
+
         bounds._width = static_cast<int>(bounds._width * progress);
         if (bounds._width > 0)
         {
-            Textures.ProgressBar.Front.Draw(GetRender(), bounds);
+            GetRender()->SetDrawColor(color);
+            GetRender()->FillRectangle(bounds);
         }
     }
     else
     {
         Textures.ProgressBar.Back.Draw(GetRender(), bounds);
 
+        bounds._x = bounds._x + bar_padding._left;
+        bounds._y = bounds._y + bar_padding._top;
+        bounds._width = bounds._width - bar_padding._left - bar_padding._right;
+        bounds._height = bounds._height - bar_padding._top - bar_padding._bottom;
+
         int inverse_progress = static_cast<int>(bounds._height * (1.0f - progress));
         bounds._y += inverse_progress;
         bounds._height -= inverse_progress;
-        Textures.ProgressBar.Front.Draw(GetRender(), bounds);
+        if (bounds._height > 0)
+        {
+            GetRender()->SetDrawColor(color);
+            GetRender()->FillRectangle(bounds);
+        }
     }
 }
 

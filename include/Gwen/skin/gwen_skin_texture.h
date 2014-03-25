@@ -124,7 +124,7 @@ public:
 
 
     /// \brief Draws a progress bar.
-    virtual void DrawProgressBar(Controls::Base* control, bool is_horizontal, float progress) override;
+    virtual void DrawProgressBar(Controls::Base* control, bool is_horizontal, float progress, const Gwen::Padding& bar_padding, const Gwen::Color& color) override;
 
 
     /// \brief Draws a list box.
@@ -217,7 +217,6 @@ protected:
         struct ProgressBar_t
         {
             Texturing::Bordered Back;
-            Texturing::Bordered Front;
         } ProgressBar;
 
         /// \brief The scroll bar textures.

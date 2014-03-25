@@ -151,7 +151,7 @@ public:
 
 
     /// \brief Draws a progress bar.
-    virtual void DrawProgressBar(Controls::Base* control, bool is_horizontal, float progress) = 0;
+    virtual void DrawProgressBar(Controls::Base* control, bool is_horizontal, float progress, const Gwen::Padding& bar_padding, const Gwen::Color& color) = 0;
 
 
     /// \brief Draws a list box.

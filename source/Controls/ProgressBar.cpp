@@ -41,12 +41,14 @@ namespace Controls
 
 GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
 {
+    _bar_padding = Gwen::Padding(2, 2, 2, 2);
     _progress = 0.0f;
-    _auto_label = true;
     _cycle_speed = 0.0f;
+    _auto_label = true;
 
     SetAlignment(Position::CENTER);
     SetBounds(Rectangle(0, 0, 128, 32));
+    SetColor(Gwen::Color(30, 224, 63, 255));
     SetHorizontal();
     SetMouseInputEnabled(true);
     SetTextPadding(Padding(3, 3, 3, 3));
@@ -100,9 +102,14 @@ void ProgressBar::SetCycleSpeed(float cycle_speed)
     _cycle_speed = cycle_speed;
 }
 
-float ProgressBar::GetCycleSpeed()
+float ProgressBar::GetCycleSpeed() const
 {
     return _cycle_speed;
+}
+
+void ProgressBar::SetColor(const Gwen::Color& color)
+{
+    _color = color;
 }
 
 void ProgressBar::Think(float delta)
@@ -133,7 +140,7 @@ void ProgressBar::Think(float delta)
 
 void ProgressBar::Render(Skin::Base* skin)
 {
-    skin->DrawProgressBar(this, _is_horizontal, _progress);
+    skin->DrawProgressBar(this, _is_horizontal, _progress, _bar_padding, _color);
 }
 
 }; // namespace Controls
