@@ -73,7 +73,6 @@ SET(INCLUDE_CONTROL_FILES
     ${GWEN_ROOT}/include/Gwen/Controls/MenuItemRightArrow.h
     ${GWEN_ROOT}/include/Gwen/Controls/MenuStrip.h
     ${GWEN_ROOT}/include/Gwen/Controls/ProgressBar.h
-    ${GWEN_ROOT}/include/Gwen/Controls/ProgressBarThink.h
     ${GWEN_ROOT}/include/Gwen/Controls/RadioButton.h
     ${GWEN_ROOT}/include/Gwen/Controls/RadioButtonWithLabel.h
     ${GWEN_ROOT}/include/Gwen/Controls/RadioButtonController.h
@@ -169,7 +168,6 @@ SET(SOURCE_CONTROL_FILES
     ${GWEN_ROOT}/source/Controls/MenuItemRightArrow.cpp
     ${GWEN_ROOT}/source/Controls/MenuStrip.cpp
     ${GWEN_ROOT}/source/Controls/ProgressBar.cpp
-    ${GWEN_ROOT}/source/Controls/ProgressBarThink.cpp
     ${GWEN_ROOT}/source/Controls/RadioButton.cpp
     ${GWEN_ROOT}/source/Controls/RadioButtonWithLabel.cpp
     ${GWEN_ROOT}/source/Controls/RadioButtonController.cpp
