@@ -31,7 +31,6 @@
 
 #include "Gwen/Animation.h"
 #include "Gwen/Controls/ScrollControl.h"
-#include "Gwen/Controls/ProgressBarThink.h"
 #include "Gwen/Utility.h"
 
 namespace Gwen
@@ -42,9 +41,10 @@ namespace Controls
 GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
 {
     _bar_padding = Gwen::Padding(2, 2, 2, 2);
-    _progress = 0.0f;
-    _cycle_speed = 0.0f;
-    _auto_label = true;
+    _progress = 0;
+    _maximum_progress = 100;
+    _display_label = true;
+    _as_percentage = true;
 
     SetAlignment(Position::CENTER);
     SetBounds(Rectangle(0, 0, 128, 32));
@@ -52,34 +52,47 @@ GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
     SetHorizontal();
     SetMouseInputEnabled(true);
     SetTextPadding(Padding(3, 3, 3, 3));
-
-    Animation::Add(this, new ControlsInternal::ProgressBarThink());
 }
 
-void ProgressBar::SetValue(float value)
+void ProgressBar::SetProgress(unsigned progress)
 {
-    if (value < 0.0f)
+    if (progress > _maximum_progress)
     {
-        value = 0.0f;
+        progress = _maximum_progress;
     }
 
-    if (value > 1.0f)
-    {
-        value = 1.0f;
-    }
+    _progress = progress;
 
-    _progress = value;
-
-    if (_auto_label)
+    if (_display_label)
     {
-        int display_value = static_cast<int>(_progress * 100);
-        SetText(Utility::ToString(display_value) + "%");
+        if (_as_percentage)
+        {
+            int value = static_cast<int>(static_cast<float>(_progress) / static_cast<float>(_maximum_progress) * 100.0f);
+            SetText(Utility::ToString(value) + "%");
+        }
+        else
+        {
+            SetText(Utility::ToString(_progress) + "/" + Utility::ToString(_maximum_progress));
+        }
     }
 }
 
-float ProgressBar::GetValue() const
+unsigned ProgressBar::GetProgress() const
 {
     return _progress;
+}
+
+void ProgressBar::SetMaximumProgress(unsigned maximum_progress)
+{
+    _maximum_progress = maximum_progress;
+
+    // Reset the progress incase the maximum progress is now less than the progress.
+    SetProgress(_progress);
+}
+
+unsigned ProgressBar::GetMaximumProgress() const
+{
+    return _maximum_progress;
 }
 
 void ProgressBar::SetVertical()
@@ -92,19 +105,10 @@ void ProgressBar::SetHorizontal()
     _is_horizontal = true;
 }
 
-void ProgressBar::SetAutoLabel(bool auto_label)
+void ProgressBar::SetDisplayLabel(bool display_label, bool as_percentage)
 {
-    _auto_label = auto_label;
-}
-
-void ProgressBar::SetCycleSpeed(float cycle_speed)
-{
-    _cycle_speed = cycle_speed;
-}
-
-float ProgressBar::GetCycleSpeed() const
-{
-    return _cycle_speed;
+    _display_label = display_label;
+    _as_percentage = as_percentage;
 }
 
 void ProgressBar::SetColor(const Gwen::Color& color)
@@ -112,35 +116,10 @@ void ProgressBar::SetColor(const Gwen::Color& color)
     _color = color;
 }
 
-void ProgressBar::Think(float delta)
-{
-    if (!Visible())
-    {
-        return;
-    }
-
-    if (_cycle_speed == 0.0f)
-    {
-        return;
-    }
-
-    _progress += _cycle_speed * delta;
-    if (_progress < 0.0f)
-    {
-        _progress = 0.0f;
-    }
-
-    if (_progress > 1.0f)
-    {
-        _progress = 1.0f;
-    }
-
-    Redraw();
-}
-
 void ProgressBar::Render(Skin::Base* skin)
 {
-    skin->DrawProgressBar(this, _is_horizontal, _progress, _bar_padding, _color);
+    float progress = static_cast<float>(_progress) / static_cast<float>(_maximum_progress);
+    skin->DrawProgressBar(this, _is_horizontal, progress, _bar_padding, _color);
 }
 
 }; // namespace Controls

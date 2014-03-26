@@ -43,11 +43,17 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ProgressBar, Label);
 
-    /// \brief Sets the progress bar to value.
-    virtual void SetValue(float value);
+    /// \brief Sets the progress bar's value.
+    virtual void SetProgress(unsigned progress);
 
-    /// \brief Gets the progress bar to value.
-    virtual float GetValue() const;
+    /// \brief Gets the progress bar's value.
+    virtual unsigned GetProgress() const;
+
+    /// \brief Sets the progress bar's maximum value.
+    virtual void SetMaximumProgress(unsigned maximum_progress);
+
+    /// \brief Gets the progress bar's maximum value.
+    virtual unsigned GetMaximumProgress() const;
 
     /// \brief Sets the progress bar to vertical.
     virtual void SetVertical();
@@ -55,21 +61,11 @@ public:
     /// \brief Sets the progress bar to horizontal.
     virtual void SetHorizontal();
 
-    /// \brief Automatically updates the label.
-    virtual void SetAutoLabel(bool auto_label);
-
-    /// \brief Sets the cycle speed.
-    virtual void SetCycleSpeed(float cycle_speed);
-
-    /// \brief Gets the cycle speed.
-    virtual float GetCycleSpeed() const;
+    /// \brief Should the progress bar display its label?
+    virtual void SetDisplayLabel(bool display_label, bool as_percentage = true);
 
     /// \brief Sets the color of the bar.
     virtual void SetColor(const Gwen::Color& color);
-
-    /// \brief Animates the control.
-    using Label::Think;
-    virtual void Think(float delta);
 
 protected:
     /// \brief Draws the UI element.
@@ -82,16 +78,19 @@ protected:
     Gwen::Padding _bar_padding;
 
     /// \brief The progress.
-    float _progress;
+    unsigned _progress;
 
-    /// \brief The cycle speed.
-    float _cycle_speed;
+    /// \brief The maximum progress.
+    unsigned _maximum_progress;
 
     /// \brief Is the progress bar horizontal?
     bool _is_horizontal;
 
-    /// \brief Should the progress bar automatically update its label?
-    bool _auto_label;
+    /// \brief Should the progress bar display its label?
+    bool _display_label;
+
+    /// \brief Should the progress bar display its label as a percentage?
+    bool _as_percentage;
 };
 
 }; // namespace Controls
