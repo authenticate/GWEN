@@ -73,7 +73,12 @@ Layout::TableRow* ListBox::AddItem(const std::string& label, const std::string& 
 
 void ListBox::RemoveItem(Layout::TableRow* row)
 {
-    _selected_rows.erase(std::find(_selected_rows.begin(), _selected_rows.end(), row));
+    auto i = std::find(_selected_rows.begin(), _selected_rows.end(), row);
+    if (i != _selected_rows.end())
+    {
+        _selected_rows.erase(i);
+    }
+
     _table->Remove(row);
 }
 

@@ -194,6 +194,14 @@ void Slider::Layout(Skin::Base* skin)
     Base::Layout(skin);
 }
 
+void Slider::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
+{
+    // Call the base class.
+    Base::_OnBoundsChanged(old_bounds);
+
+    UpdateBarFromValue();
+}
+
 }; // namespace ControlsInternal
 
 }; // namespace Gwen

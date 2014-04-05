@@ -102,10 +102,13 @@ protected:
     virtual void Render(Skin::Base* skin) = 0;
 
     /// brief Draws the UI.
-    virtual void RenderFocus(Gwen::Skin::Base* skin);
+    virtual void RenderFocus(Gwen::Skin::Base* skin) override;
 
     /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin);
+    virtual void Layout(Skin::Base* skin) override;
+
+    /// \brief Called when the bounds change.
+    virtual void _OnBoundsChanged(const Gwen::Rectangle& old_bounds) override;
 
     /// \brief The slider bar control.
     SliderBar* _bar;

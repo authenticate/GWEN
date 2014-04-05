@@ -261,7 +261,7 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
         return false;
     }
 
-    if (button > MAX_MOUSE_BUTTONS)
+    if (button >= MAX_MOUSE_BUTTONS)
     {
         return false;
     }
