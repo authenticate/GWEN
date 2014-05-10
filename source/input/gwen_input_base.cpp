@@ -256,11 +256,6 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
         return false;
     }
 
-    if (Gwen::Controls::_hovered_control == canvas)
-    {
-        return false;
-    }
-
     if (button >= MAX_MOUSE_BUTTONS)
     {
         return false;
