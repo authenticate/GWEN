@@ -27,7 +27,7 @@
 //
 
 #include "Gwen.h"
-#include "Gwen/Controls/ToolTip.h"
+#include "Gwen/Controls/gwen_controls_tooltip.h"
 
 #include "Gwen/Controls/Canvas.h"
 #include "Gwen/input/gwen_input_base.h"
@@ -37,33 +37,33 @@ namespace Gwen
 {
 namespace Controls
 {
-namespace ToolTip
+namespace Tooltip
 {
 
-/// \brief A pointer to the tool tip.
-Controls::Base* _tool_tip = nullptr;
+/// \brief A pointer to the tooltip.
+Controls::Base* _tooltip = nullptr;
 
 void Enable(Controls::Base* control)
 {
-    if (!control->GetToolTip())
+    if (!control->GetTooltip())
     {
         return;
     }
 
-    _tool_tip = control;
+    _tooltip = control;
 }
 
 void Disable(Controls::Base* control)
 {
-    if (_tool_tip == control)
+    if (_tooltip == control)
     {
-        _tool_tip = nullptr;
+        _tooltip = nullptr;
     }
 }
 
 void Render(Skin::Base* skin)
 {
-    if (!_tool_tip)
+    if (!_tooltip)
     {
         return;
     }
@@ -71,31 +71,31 @@ void Render(Skin::Base* skin)
     Renderer::Base* render = skin->GetRender();
     Point old_offset = render->GetRenderOffset();
     Point mouse_position = Input::GetMousePosition();
-    Rectangle bounds = _tool_tip->GetToolTip()->GetBounds();
+    Rectangle bounds = _tooltip->GetTooltip()->GetBounds();
 
     Rectangle offset = Gwen::Rectangle(mouse_position._x - bounds._width / 2,
                                        mouse_position._y - bounds._height - 10,
                                        bounds._width,
                                        bounds._height);
-    offset = Utility::ClampRectToRect(offset, _tool_tip->GetCanvas()->GetBounds());
+    offset = Utility::ClampRectToRect(offset, _tooltip->GetCanvas()->GetBounds());
 
     // Calculate the offset on screen bounds.
     render->AddRenderOffset(Point(offset._x, offset._y));
     render->EndClipping();
 
-    skin->DrawToolTip(_tool_tip->GetToolTip());
+    skin->DrawTooltip(_tooltip->GetTooltip());
 
-    _tool_tip->GetToolTip()->DoRender(skin);
+    _tooltip->GetTooltip()->DoRender(skin);
 
     render->SetRenderOffset(old_offset);
 }
 
-bool GetToolTipActive()
+bool GetTooltipActive()
 {
-    return _tool_tip != nullptr;
+    return _tooltip != nullptr;
 }
 
-}; // namespace ToolTip
+}; // namespace Tooltip
 
 }; // namespace Controls
 

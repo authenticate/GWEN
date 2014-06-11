@@ -76,13 +76,13 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
     Colors.Tab.Inactive.Down                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 508, Color(255, 255, 0));
     Colors.Tab.Inactive.Disabled            = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 508, Color(255, 255, 0));
 
-    Colors.TooltipText                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 508, Color(255, 255, 0));
+    Colors.TooltipTextColor                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 508, Color(255, 255, 0));
 
     Textures.StatusBar.Initialize(&_texture, 128, 288, 127, 31, Margin(8, 8, 8, 8));
 
     Textures.Shadow.Initialize(&_texture, 448, 0, 31, 31, Margin(8, 8, 8, 8));
 
-    Textures.ToolTip.Initialize(&_texture, 128, 320, 127, 31, Margin(8, 8, 8, 8));
+    Textures.Tooltip.Initialize(&_texture, 128, 320, 127, 31, Margin(8, 8, 8, 8));
 
     Textures.CheckBox.Active.Checked.Initialize(&_texture, 448, 32, 15, 15);
     Textures.CheckBox.Active.Normal.Initialize(&_texture, 464, 32, 15, 15);
@@ -720,9 +720,9 @@ void TexturedBase::DrawComboDownArrow(Gwen::Controls::Base* control, bool is_hov
     Textures.Input.ComboBox.Button.Normal.Draw(GetRender(), control->GetRenderBounds());
 }
 
-void TexturedBase::DrawToolTip(Controls::Base* control)
+void TexturedBase::DrawTooltip(Controls::Base* control)
 {
-    return Textures.ToolTip.Draw(GetRender(), control->GetRenderBounds());
+    return Textures.Tooltip.Draw(GetRender(), control->GetRenderBounds());
 }
 
 }; // namespace Skin

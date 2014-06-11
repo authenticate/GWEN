@@ -180,8 +180,8 @@ public:
     /// \brief Draw combo box down arrow.
     virtual void DrawComboDownArrow(Controls::Base* control, bool is_hovered, bool is_down, bool is_open, bool is_disabled) = 0;
 
-    /// \brief Draws a tool tip.
-    virtual void DrawToolTip(Controls::Base* control) = 0;
+    /// \brief Draws a tooltip.
+    virtual void DrawTooltip(Controls::Base* control) = 0;
 
 
     /// \brief The colors for the skin.
@@ -228,8 +228,8 @@ public:
 
         } Tab;
 
-        /// \brief The tool tip text color.
-        Gwen::Color TooltipText;
+        /// \brief The tooltip text color.
+        Gwen::Color TooltipTextColor;
 
     } Colors;
 

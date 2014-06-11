@@ -33,8 +33,8 @@
 #include "Gwen/renderer/gwen_renderer_base.h"
 
 #include "Gwen/Controls/Canvas.h"
+#include "Gwen/Controls/gwen_controls_tooltip.h"
 #include "Gwen/Controls/Label.h"
-#include "Gwen/Controls/ToolTip.h"
 
 #include "Gwen/platform/gwen_platform_base.h"
 #include "Gwen/skin/gwen_skin_base.h"
@@ -60,7 +60,7 @@ Base::Base(Base* parent, const std::string& name)
     _parent = nullptr;
     _actual_parent = nullptr;
     _inner_panel = nullptr;
-    _tool_tip = nullptr;
+    _tooltip = nullptr;
     _skin = nullptr;
 
     _bounds = Rectangle(0, 0, 10, 10);
@@ -88,7 +88,7 @@ Base::Base(Base* parent, const std::string& name)
     SetRestrictToParent(false);
     SetShouldDrawBackground(true);
     SetTabable(false);
-    SetToolTip(nullptr);
+    SetTooltip(nullptr);
 
     Invalidate();
 }
@@ -133,7 +133,7 @@ Base::~Base()
         Gwen::Controls::_mouse_focus = nullptr;
     }
 
-    ToolTip::Disable(this);
+    Tooltip::Disable(this);
     Animation::Cancel(this);
 }
 
@@ -1090,13 +1090,13 @@ void Base::OnMouseEnter()
 {
     _on_hover_enter.Call(this);
 
-    if (GetToolTip())
+    if (GetTooltip())
     {
-        ToolTip::Enable(this);
+        Tooltip::Enable(this);
     }
-    else if (GetParent() && GetParent()->GetToolTip())
+    else if (GetParent() && GetParent()->GetTooltip())
     {
-        ToolTip::Enable(GetParent());
+        Tooltip::Enable(GetParent());
     }
 
     Redraw();
@@ -1106,9 +1106,9 @@ void Base::OnMouseLeave()
 {
     _on_hover_leave.Call(this);
 
-    if (GetToolTip())
+    if (GetTooltip())
     {
-        ToolTip::Disable(this);
+        Tooltip::Disable(this);
     }
 
     Redraw();
@@ -1182,30 +1182,40 @@ void Base::UpdateColors()
 {
 }
 
-void Base::SetToolTip(const std::string& text)
+void Base::SetTooltip(const std::string& text)
 {
     Label* tooltip = new Label(this);
     tooltip->SetText(text);
-    tooltip->SetTextColorOverride(GetSkin()->Colors.TooltipText);
+    tooltip->SetTextColorOverride(GetSkin()->Colors.TooltipTextColor);
     tooltip->SetPadding(Padding(5, 3, 5, 3));
     tooltip->SizeToContents();
 
-    SetToolTip(tooltip);
+    SetTooltip(tooltip);
 }
 
-void Base::SetToolTip(Base* tooltip)
+void Base::SetTooltip(Base* tooltip)
 {
-    _tool_tip = tooltip;
-    if (_tool_tip)
+    // Clean up the old tooltip.
+    if (_tooltip != nullptr)
     {
-        _tool_tip->SetParent(this);
-        _tool_tip->SetHidden(true);
+        delete _tooltip;
+        _tooltip = nullptr;
+    }
+
+    // Store the new tooltip.
+    _tooltip = tooltip;
+
+    // Configure the new tooltip.
+    if (_tooltip)
+    {
+        _tooltip->SetParent(this);
+        _tooltip->SetHidden(true);
     }
 }
 
-Base* Base::GetToolTip()
+Base* Base::GetTooltip()
 {
-    return _tool_tip;
+    return _tooltip;
 }
 
 bool Base::GetMenuComponent()

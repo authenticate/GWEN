@@ -153,8 +153,8 @@ public:
     /// \brief Draw combo box down arrow.
     virtual void DrawComboDownArrow(Controls::Base* control, bool is_hovered, bool is_down, bool is_open, bool is_disabled) override;
 
-    /// \brief Draws a tool tip.
-    virtual void DrawToolTip(Controls::Base* control) override;
+    /// \brief Draws a tooltip.
+    virtual void DrawTooltip(Controls::Base* control) override;
 
 protected:
     /// \brief The textures for the skin.
@@ -166,8 +166,8 @@ protected:
         /// \brief The shadow texture.
         Texturing::Bordered Shadow;
 
-        /// \brief The tool tip texture.
-        Texturing::Bordered ToolTip;
+        /// \brief The tooltip texture.
+        Texturing::Bordered Tooltip;
 
         /// \brief The check box textures.
         struct CheckBox_t

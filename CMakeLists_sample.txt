@@ -60,6 +60,7 @@ SET(INCLUDE_CONTROL_FILES
     ${GWEN_ROOT}/include/Gwen/Controls/ComboBox.h
     ${GWEN_ROOT}/include/Gwen/Controls/ComboBoxDownArrow.h
     ${GWEN_ROOT}/include/Gwen/Controls/Dragger.h
+    ${GWEN_ROOT}/include/Gwen/Controls/gwen_controls_tooltip.h
     ${GWEN_ROOT}/include/Gwen/Controls/Highlight.h
     ${GWEN_ROOT}/include/Gwen/Controls/HorizontalSlider.h
     ${GWEN_ROOT}/include/Gwen/Controls/ImagePanel.h
@@ -93,7 +94,6 @@ SET(INCLUDE_CONTROL_FILES
     ${GWEN_ROOT}/include/Gwen/Controls/TextBoxNumeric.h
     ${GWEN_ROOT}/include/Gwen/Controls/TextBoxPassword.h
     ${GWEN_ROOT}/include/Gwen/Controls/TextBoxThink.h
-    ${GWEN_ROOT}/include/Gwen/Controls/ToolTip.h
     ${GWEN_ROOT}/include/Gwen/Controls/VerticalScrollBar.h
     ${GWEN_ROOT}/include/Gwen/Controls/VerticalSlider.h
 )
@@ -155,6 +155,7 @@ SET(SOURCE_CONTROL_FILES
     ${GWEN_ROOT}/source/Controls/ComboBox.cpp
     ${GWEN_ROOT}/source/Controls/ComboBoxDownArrow.cpp
     ${GWEN_ROOT}/source/Controls/Dragger.cpp
+    ${GWEN_ROOT}/source/Controls/gwen_controls_tooltip.cpp
     ${GWEN_ROOT}/source/Controls/Highlight.cpp
     ${GWEN_ROOT}/source/Controls/HorizontalSlider.cpp
     ${GWEN_ROOT}/source/Controls/ImagePanel.cpp
@@ -188,7 +189,6 @@ SET(SOURCE_CONTROL_FILES
     ${GWEN_ROOT}/source/Controls/TextBoxNumeric.cpp
     ${GWEN_ROOT}/source/Controls/TextBoxPassword.cpp
     ${GWEN_ROOT}/source/Controls/TextBoxThink.cpp
-    ${GWEN_ROOT}/source/Controls/ToolTip.cpp
     ${GWEN_ROOT}/source/Controls/VerticalScrollBar.cpp
     ${GWEN_ROOT}/source/Controls/VerticalSlider.cpp
 )

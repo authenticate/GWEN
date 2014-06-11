@@ -31,8 +31,8 @@
 
 #include "Gwen/Animation.h"
 
+#include "Gwen/Controls/gwen_controls_tooltip.h"
 #include "Gwen/Controls/Menu.h"
-#include "Gwen/Controls/ToolTip.h"
 
 #include "Gwen/skin/gwen_skin_base.h"
 
@@ -88,7 +88,7 @@ void Canvas::RenderCanvas()
 
     DoRender(_skin);
 
-    ToolTip::Render(_skin);
+    Tooltip::Render(_skin);
 
     render->End();
 }
@@ -178,7 +178,7 @@ bool Canvas::InputMouseMoved(int x, int y, int delta_x, int delta_y)
         return false;
     }
 
-    if (ToolTip::GetToolTipActive())
+    if (Tooltip::GetTooltipActive())
     {
         Redraw();
     }

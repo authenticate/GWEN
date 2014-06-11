@@ -401,14 +401,14 @@ public:
     /// \brief Updates the control's colors.
     virtual void UpdateColors();
 
-    /// \brief Sets the tool tip.
-    virtual void SetToolTip(const std::string& text);
+    /// \brief Sets the tooltip.
+    virtual void SetTooltip(const std::string& text);
 
-    /// \brief Sets the tool tip.
-    virtual void SetToolTip(Base* tooltip);
+    /// \brief Sets the tooltip.
+    virtual void SetTooltip(Base* tooltip);
 
-    /// \brief Gets the tool tip.
-    virtual Base* GetToolTip();
+    /// \brief Gets the tooltip.
+    virtual Base* GetTooltip();
 
     /// \brief Is this control a menu control?
     virtual bool GetMenuComponent();
@@ -528,8 +528,8 @@ protected:
     /// \brief The inner panel.
     Base* _inner_panel;
 
-    /// \brief The tool tip.
-    Base* _tool_tip;
+    /// \brief The tooltip.
+    Base* _tooltip;
 
     /// \brief The children.
     std::list<Base*> _children;

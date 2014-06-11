@@ -35,22 +35,22 @@ namespace Gwen
 {
 namespace Controls
 {
-namespace ToolTip
+namespace Tooltip
 {
 
-/// \brief Enables the tool tip.
+/// \brief Enables the tooltip.
 void Enable(Controls::Base* control);
 
-/// \brief Disables the tool tip.
+/// \brief Disables the tooltip.
 void Disable(Controls::Base* control);
 
-/// \brief Draws the tool tip.
+/// \brief Draws the tooltip.
 void Render(Skin::Base* skin);
 
-/// \brief Is the tool tip active?
-bool GetToolTipActive();
+/// \brief Is the tooltip active?
+bool GetTooltipActive();
 
-}; // namespace ToolTip
+}; // namespace Tooltip
 
 }; // namespace Controls
 
