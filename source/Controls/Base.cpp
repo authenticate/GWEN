@@ -134,6 +134,12 @@ Base::~Base()
     }
 
     Tooltip::Disable(this);
+    if (_tooltip != nullptr)
+    {
+        delete _tooltip;
+        _tooltip = nullptr;
+    }
+
     Animation::Cancel(this);
 }
 
