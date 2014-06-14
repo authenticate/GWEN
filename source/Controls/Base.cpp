@@ -1211,6 +1211,20 @@ void Base::SetTooltip(Base* tooltip)
         _tooltip->SetParent(this);
         _tooltip->SetHidden(true);
     }
+
+    // Handle the case where a tooltip was added or removed
+    // from the hovered control.
+    if (Gwen::Controls::_hovered_control == this)
+    {
+        if (GetTooltip())
+        {
+            Tooltip::Enable(this);
+        }
+        else if (GetParent() && GetParent()->GetTooltip())
+        {
+            Tooltip::Enable(GetParent());
+        }
+    }
 }
 
 Base* Base::GetTooltip()
