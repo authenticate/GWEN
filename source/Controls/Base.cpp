@@ -1090,11 +1090,11 @@ void Base::OnMouseEnter()
 {
     _on_hover_enter.Call(this);
 
-    if (GetTooltip())
+    if (GetTooltip() != nullptr)
     {
         Tooltip::Enable(this);
     }
-    else if (GetParent() && GetParent()->GetTooltip())
+    else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
     {
         Tooltip::Enable(GetParent());
     }
@@ -1198,7 +1198,12 @@ void Base::SetTooltip(Base* tooltip)
     // Clean up the old tooltip.
     if (_tooltip != nullptr)
     {
-        Tooltip::Disable(_tooltip);
+        // Handle the case where a tooltip was removed from the hovered control.
+        if (Gwen::Controls::_hovered_control == this)
+        {
+            Tooltip::Disable(this);
+        }
+
         delete _tooltip;
         _tooltip = nullptr;
     }
@@ -1213,15 +1218,14 @@ void Base::SetTooltip(Base* tooltip)
         _tooltip->SetHidden(true);
     }
 
-    // Handle the case where a tooltip was added or removed
-    // from the hovered control.
+    // Handle the case where a tooltip was added from the hovered control.
     if (Gwen::Controls::_hovered_control == this)
     {
-        if (GetTooltip())
+        if (GetTooltip() != nullptr)
         {
             Tooltip::Enable(this);
         }
-        else if (GetParent() && GetParent()->GetTooltip())
+        else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
         {
             Tooltip::Enable(GetParent());
         }

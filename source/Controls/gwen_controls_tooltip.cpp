@@ -46,8 +46,8 @@ Controls::Base* _tooltip = nullptr;
 void Enable(Controls::Base* control)
 {
     // Sanity.
-    assert(control != nullptr);
-    if (control == nullptr || !control->GetTooltip())
+    assert(control != nullptr && control->GetTooltip() != nullptr);
+    if (control == nullptr || control->GetTooltip() == nullptr)
     {
         return;
     }
@@ -72,12 +72,13 @@ void Render(Skin::Base* skin)
         return;
     }
 
-    if (!_tooltip)
+    if (_tooltip == nullptr)
     {
         return;
     }
 
-    if (!_tooltip->GetTooltip())
+    assert(_tooltip->GetTooltip() != nullptr);
+    if (_tooltip->GetTooltip() == nullptr)
     {
         Disable(_tooltip);
         return;
