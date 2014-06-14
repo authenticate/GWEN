@@ -45,7 +45,9 @@ Controls::Base* _tooltip = nullptr;
 
 void Enable(Controls::Base* control)
 {
-    if (!control->GetTooltip())
+    // Sanity.
+    assert(control != nullptr);
+    if (control == nullptr || !control->GetTooltip())
     {
         return;
     }
@@ -63,31 +65,48 @@ void Disable(Controls::Base* control)
 
 void Render(Skin::Base* skin)
 {
+    // Sanity.
+    assert(skin != nullptr);
+    if (skin == nullptr)
+    {
+        return;
+    }
+
     if (!_tooltip)
     {
         return;
     }
 
+    if (!_tooltip->GetTooltip())
+    {
+        Disable(_tooltip);
+        return;
+    }
+
     Renderer::Base* render = skin->GetRender();
-    Point old_offset = render->GetRenderOffset();
-    Point mouse_position = Input::GetMousePosition();
-    Rectangle bounds = _tooltip->GetTooltip()->GetBounds();
+    assert(render != nullptr);
+    if (render != nullptr)
+    {
+        Point old_offset = render->GetRenderOffset();
+        Point mouse_position = Input::GetMousePosition();
+        Rectangle bounds = _tooltip->GetTooltip()->GetBounds();
 
-    Rectangle offset = Gwen::Rectangle(mouse_position._x - bounds._width / 2,
-                                       mouse_position._y - bounds._height - 10,
-                                       bounds._width,
-                                       bounds._height);
-    offset = Utility::ClampRectToRect(offset, _tooltip->GetCanvas()->GetBounds());
+        Rectangle offset = Gwen::Rectangle(mouse_position._x - bounds._width / 2,
+                                           mouse_position._y - bounds._height - 10,
+                                           bounds._width,
+                                           bounds._height);
+        offset = Utility::ClampRectToRect(offset, _tooltip->GetCanvas()->GetBounds());
 
-    // Calculate the offset on screen bounds.
-    render->AddRenderOffset(Point(offset._x, offset._y));
-    render->EndClipping();
+        // Calculate the offset on screen bounds.
+        render->AddRenderOffset(Point(offset._x, offset._y));
+        render->EndClipping();
 
-    skin->DrawTooltip(_tooltip->GetTooltip());
+        skin->DrawTooltip(_tooltip->GetTooltip());
 
-    _tooltip->GetTooltip()->DoRender(skin);
+        _tooltip->GetTooltip()->DoRender(skin);
 
-    render->SetRenderOffset(old_offset);
+        render->SetRenderOffset(old_offset);
+    }
 }
 
 bool GetTooltipActive()

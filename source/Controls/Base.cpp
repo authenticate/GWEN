@@ -1198,6 +1198,7 @@ void Base::SetTooltip(Base* tooltip)
     // Clean up the old tooltip.
     if (_tooltip != nullptr)
     {
+        Tooltip::Disable(_tooltip);
         delete _tooltip;
         _tooltip = nullptr;
     }
