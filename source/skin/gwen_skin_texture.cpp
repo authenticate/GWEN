@@ -76,7 +76,7 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
     Colors.Tab.Inactive.Down                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 508, Color(255, 255, 0));
     Colors.Tab.Inactive.Disabled            = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 508, Color(255, 255, 0));
 
-    Colors.TooltipTextColor                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 508, Color(255, 255, 0));
+    Colors.TooltipTextColor                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 500, Color(255, 255, 0));
 
     Textures.StatusBar.Initialize(&_texture, 128, 288, 127, 31, Margin(8, 8, 8, 8));
 
