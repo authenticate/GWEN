@@ -44,7 +44,7 @@ GWEN_CONTROL_CONSTRUCTOR(TabButton, Button)
     _control = nullptr;
 
     SetAlignment(Position::TOP | Position::LEFT);
-    SetTextPadding(Padding(8, 3, 7, 0));
+    SetTextPadding(Padding(8, 4, 7, 0));
 }
 
 void TabButton::SetPage(Base* page)

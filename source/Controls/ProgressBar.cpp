@@ -51,7 +51,7 @@ GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
     SetColor(Gwen::Color(30, 224, 63, 255));
     SetHorizontal();
     SetMouseInputEnabled(true);
-    SetTextPadding(Padding(3, 3, 3, 3));
+    SetTextPadding(Padding(3, 5, 3, 3));
 }
 
 void ProgressBar::SetProgress(unsigned progress)
@@ -68,7 +68,7 @@ void ProgressBar::SetProgress(unsigned progress)
         if (_as_percentage)
         {
             int value = static_cast<int>(static_cast<float>(_progress) / static_cast<float>(_maximum_progress) * 100.0f);
-            SetText(Utility::ToString(value) + "%");
+            SetText(Utility::ToString(value) + " %");
         }
         else
         {

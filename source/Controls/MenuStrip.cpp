@@ -52,8 +52,8 @@ bool MenuStrip::GetHoverOpenMenu() const
 void MenuStrip::OnAddItem(MenuItem* item)
 {
     item->SetDock(Position::LEFT);
-    item->SetTextPadding(Padding(5, 0, 5, 0));
     item->SetPadding(Padding(10, 0, 10, 0));
+    item->SetTextPadding(Padding(5, 2, 5, 0));
     item->SizeToContents();
     item->SetOnStrip(true);
     item->_on_hover_enter.Add(this, &Menu::OnHoverItem);

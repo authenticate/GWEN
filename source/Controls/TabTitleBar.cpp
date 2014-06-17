@@ -41,7 +41,7 @@ GWEN_CONTROL_CONSTRUCTOR(TabTitleBar, Label)
 {
     SetMouseInputEnabled(true);
     SetPadding(Gwen::Padding(1, 2, 1, 2));
-    SetTextPadding(Gwen::Padding(5, 2, 5, 2));
+    SetTextPadding(Gwen::Padding(5, 4, 5, 2));
 }
 
 void TabTitleBar::UpdateFromTab(TabButton* button)
