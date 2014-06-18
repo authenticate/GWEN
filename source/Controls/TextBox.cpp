@@ -156,11 +156,13 @@ void TextBox::InsertText(const std::string& text)
     current_text.insert(_cursor_begin, new_text);
 
     // Store the text.
+    int cursor_begin = _cursor_begin;
     SetText(current_text);
 
     // Update the cursor.
-    _cursor_begin += static_cast<int>(new_text.size());
+    _cursor_begin = cursor_begin + static_cast<int>(new_text.size());
     _cursor_end = _cursor_begin;
+
     RefreshCursorBounds();
 }
 
