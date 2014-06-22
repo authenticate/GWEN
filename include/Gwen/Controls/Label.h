@@ -43,6 +43,9 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(Label, Base);
 
+    /// \brief Destructor.
+    virtual ~Label() override;
+
     /// \brief Sets the text.
     virtual void SetText(const std::string& text);
 

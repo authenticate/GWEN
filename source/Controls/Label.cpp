@@ -49,6 +49,23 @@ GWEN_CONTROL_CONSTRUCTOR(Label, Base)
     SetTextPadding(Gwen::Padding(0, 1, 0, 0));
 }
 
+Label::~Label()
+{
+    if (_font != nullptr)
+    {
+        GetSkin()->ReleaseFont(_font);
+        delete _font;
+        _font = nullptr;
+        SetFont(nullptr);
+    }
+
+    if (_text != nullptr)
+    {
+        delete _text;
+        _text = nullptr;
+    }
+}
+
 void Label::SetText(const std::string& text)
 {
     _text->SetText(text);

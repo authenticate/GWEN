@@ -24,6 +24,9 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(Button, Label);
 
+    /// \brief Destructor.
+    virtual ~Button() override;
+
     /// \brief Sets depressed.
     virtual void SetDepressed(bool is_depressed);
 

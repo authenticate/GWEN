@@ -53,6 +53,15 @@ GWEN_CONTROL_CONSTRUCTOR(Button, Label)
     SetToggle(false);
 }
 
+Button::~Button()
+{
+    if (_image != nullptr)
+    {
+        delete _image;
+        _image = nullptr;
+    }
+}
+
 void Button::SetDepressed(bool is_depressed)
 {
     if (_depressed == is_depressed)
