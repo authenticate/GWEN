@@ -784,6 +784,13 @@ void Base::SetHidden(bool hidden)
 
     _hidden = hidden;
 
+    // If this control is hidden and has a tooltip...
+    if (_hidden && GetTooltip())
+    {
+        // Disable the tooltip.
+        Tooltip::Disable(this);
+    }
+
     Invalidate();
     Redraw();
 }
