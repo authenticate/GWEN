@@ -39,6 +39,7 @@ namespace Controls
 GWEN_CONTROL_CONSTRUCTOR(LabelClickable, Button)
 {
     SetAlignment(Position::LEFT | Position::CENTER_V);
+    SetShouldDrawBackground(false);
     SetToggle(false);
 }
 
