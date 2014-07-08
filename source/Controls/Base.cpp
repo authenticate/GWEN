@@ -1191,11 +1191,17 @@ void Base::UpdateColors()
 
 void Base::SetTooltip(const std::string& text)
 {
-    Label* tooltip = new Label(this);
-    tooltip->SetText(text);
-    tooltip->SetTextColorOverride(GetSkin()->Colors.TooltipTextColor);
-    tooltip->SetPadding(Padding(6, 4, 6, 4));
-    tooltip->SizeToContents();
+    Label* tooltip = nullptr;
+
+    // Only create a tooltip if there's text.
+    if (!text.empty())
+    {
+        tooltip = new Label(this);
+        tooltip->SetText(text);
+        tooltip->SetTextColorOverride(GetSkin()->Colors.TooltipTextColor);
+        tooltip->SetPadding(Padding(6, 4, 6, 4));
+        tooltip->SizeToContents();
+    }
 
     SetTooltip(tooltip);
 }
