@@ -369,14 +369,22 @@ bool OnKeyEvent(Controls::Base* canvas, int key, bool is_down)
     return false;
 }
 
-void OnCanvasThink(Controls::Base* control)
+void OnCanvasThink(Controls::Base* canvas)
 {
-    if (Gwen::Controls::_mouse_focus && !Gwen::Controls::_mouse_focus->Visible())
+    if (!Gwen::Controls::_hovered_control ||
+        !Gwen::Controls::_hovered_control->Visible())
+    {
+        UpdateHoveredControl(canvas);
+    }
+
+    if (Gwen::Controls::_mouse_focus &&
+        (!Gwen::Controls::_mouse_focus->Visible() || !Gwen::Controls::_mouse_focus->GetMouseInputEnabled()))
     {
         Gwen::Controls::_mouse_focus = nullptr;
     }
 
-    if (Gwen::Controls::_keyboard_focus && (!Gwen::Controls::_keyboard_focus->Visible() || !Gwen::Controls::_keyboard_focus->GetKeyboardInputEnabled()))
+    if (Gwen::Controls::_keyboard_focus &&
+        (!Gwen::Controls::_keyboard_focus->Visible() || !Gwen::Controls::_keyboard_focus->GetKeyboardInputEnabled()))
     {
         Gwen::Controls::_keyboard_focus = nullptr;
     }
@@ -386,7 +394,7 @@ void OnCanvasThink(Controls::Base* control)
         return;
     }
 
-    if (Gwen::Controls::_keyboard_focus->GetCanvas() != control)
+    if (Gwen::Controls::_keyboard_focus->GetCanvas() != canvas)
     {
         return;
     }
