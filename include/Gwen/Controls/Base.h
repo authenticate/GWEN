@@ -234,7 +234,7 @@ public:
     virtual Gwen::Rectangle GetBounds() const;
 
     /// \brief Gets The control at the position.
-    virtual Base* GetControlAt(int x, int y, bool only_if_mouse_enabled = true);
+    virtual Base* GetControlAt(int x, int y, bool only_if_visible = true, bool only_if_mouse_enabled = true);
 
     /// \brief Gets the inner bounds. (What's the difference between bounds? Why are there three bounds?)
     virtual Gwen::Rectangle GetInnerBounds() const;

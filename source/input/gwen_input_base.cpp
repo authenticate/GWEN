@@ -98,7 +98,7 @@ static Gwen::Point _last_click_position;
 /// \brief A helper function to update the hovered control.
 static void UpdateHoveredControl(Controls::Base* canvas)
 {
-    Controls::Base* hovered = canvas->GetControlAt(_mouse_position._x, _mouse_position._y);
+    Controls::Base* hovered = canvas->GetControlAt(_mouse_position._x, _mouse_position._y, false);
     if (hovered != Gwen::Controls::_hovered_control)
     {
         if (Gwen::Controls::_hovered_control)
@@ -371,12 +371,6 @@ bool OnKeyEvent(Controls::Base* canvas, int key, bool is_down)
 
 void OnCanvasThink(Controls::Base* canvas)
 {
-    if (!Gwen::Controls::_hovered_control ||
-        !Gwen::Controls::_hovered_control->Visible())
-    {
-        UpdateHoveredControl(canvas);
-    }
-
     if (Gwen::Controls::_mouse_focus &&
         (!Gwen::Controls::_mouse_focus->Visible() || !Gwen::Controls::_mouse_focus->GetMouseInputEnabled()))
     {
@@ -387,6 +381,12 @@ void OnCanvasThink(Controls::Base* canvas)
         (!Gwen::Controls::_keyboard_focus->Visible() || !Gwen::Controls::_keyboard_focus->GetKeyboardInputEnabled()))
     {
         Gwen::Controls::_keyboard_focus = nullptr;
+    }
+
+    if (!Gwen::Controls::_hovered_control ||
+        !Gwen::Controls::_hovered_control->Visible())
+    {
+        UpdateHoveredControl(canvas);
     }
 
     if (!Gwen::Controls::_keyboard_focus)

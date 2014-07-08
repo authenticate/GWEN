@@ -663,9 +663,9 @@ Gwen::Rectangle Base::GetBounds() const
     return _bounds;
 }
 
-Base* Base::GetControlAt(int x, int y, bool only_if_mouse_enabled)
+Base* Base::GetControlAt(int x, int y, bool only_if_visible, bool only_if_mouse_enabled)
 {
-    if (Hidden())
+    if (only_if_visible && Hidden())
     {
         return nullptr;
     }
@@ -679,7 +679,7 @@ Base* Base::GetControlAt(int x, int y, bool only_if_mouse_enabled)
     {
         Base* child = *i;
         Base* found = nullptr;
-        found = child->GetControlAt(x - child->X(), y - child->Y(), only_if_mouse_enabled);
+        found = child->GetControlAt(x - child->X(), y - child->Y(), only_if_visible, only_if_mouse_enabled);
         if (found)
         {
             return found;
@@ -789,6 +789,20 @@ void Base::SetHidden(bool hidden)
     {
         // Disable the tooltip.
         Tooltip::Disable(this);
+    }
+
+    // If this control is not hidden and is the hovered control...
+    if (!_hidden && _hovered_control == this)
+    {
+        // Update the tooltip.
+        if (GetTooltip() != nullptr)
+        {
+            Tooltip::Enable(this);
+        }
+        else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
+        {
+            Tooltip::Enable(GetParent());
+        }
     }
 
     Invalidate();
@@ -1097,13 +1111,16 @@ void Base::OnMouseEnter()
 {
     _on_hover_enter.Call(this);
 
-    if (GetTooltip() != nullptr)
+    if (Visible())
     {
-        Tooltip::Enable(this);
-    }
-    else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
-    {
-        Tooltip::Enable(GetParent());
+        if (GetTooltip() != nullptr)
+        {
+            Tooltip::Enable(this);
+        }
+        else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
+        {
+            Tooltip::Enable(GetParent());
+        }
     }
 
     Redraw();
@@ -1234,13 +1251,16 @@ void Base::SetTooltip(Base* tooltip)
     // Handle the case where a tooltip was added from the hovered control.
     if (Gwen::Controls::_hovered_control == this)
     {
-        if (GetTooltip() != nullptr)
+        if (Visible())
         {
-            Tooltip::Enable(this);
-        }
-        else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
-        {
-            Tooltip::Enable(GetParent());
+            if (GetTooltip() != nullptr)
+            {
+                Tooltip::Enable(this);
+            }
+            else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
+            {
+                Tooltip::Enable(GetParent());
+            }
         }
     }
 }
