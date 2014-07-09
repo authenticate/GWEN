@@ -98,7 +98,31 @@ static Gwen::Point _last_click_position;
 /// \brief A helper function to update the hovered control.
 static void UpdateHoveredControl(Controls::Base* canvas)
 {
-    Controls::Base* hovered = canvas->GetControlAt(_mouse_position._x, _mouse_position._y, false);
+    Controls::Base* hovered = nullptr;
+
+    // Calculate the hovered controls.
+    std::vector<Controls::Base*> hovered_controls = canvas->GetControlsAt(_mouse_position._x, _mouse_position._y, false);
+
+    if (!hovered_controls.empty())
+    {
+        // Try to set the first visible control as the hovered control.
+        for (auto control : hovered_controls)
+        {
+            if (control->Visible())
+            {
+                hovered = control;
+                break;
+            }
+        }
+
+        // If the hovered controls are hidden...
+        if (hovered == nullptr)
+        {
+            // Set the first control as the hovered control.
+            hovered = *hovered_controls.begin();
+        }
+    }
+
     if (hovered != Gwen::Controls::_hovered_control)
     {
         if (Gwen::Controls::_hovered_control)

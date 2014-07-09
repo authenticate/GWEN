@@ -663,35 +663,45 @@ Gwen::Rectangle Base::GetBounds() const
     return _bounds;
 }
 
-Base* Base::GetControlAt(int x, int y, bool only_if_visible, bool only_if_mouse_enabled)
+std::vector<Base*> Base::GetControlsAt(int x, int y, bool only_if_visible, bool only_if_mouse_enabled)
 {
+    // Sanity.
     if (only_if_visible && Hidden())
     {
-        return nullptr;
+        return std::vector<Base*>();
     }
 
+    // Sanity.
     if (x < 0 || y < 0 || x >= Width() || y >= Height())
     {
-        return nullptr;
+        return std::vector<Base*>();
     }
 
+    std::vector<Base*> result;
     for (auto i = _children.rbegin(); i != _children.rend(); ++i)
     {
         Base* child = *i;
-        Base* found = nullptr;
-        found = child->GetControlAt(x - child->X(), y - child->Y(), only_if_visible, only_if_mouse_enabled);
-        if (found)
+
+        std::vector<Base*> found = child->GetControlsAt(x - child->X(), y - child->Y(), only_if_visible, only_if_mouse_enabled);
+        if (!found.empty())
         {
-            return found;
+            result.insert(result.end(), found.begin(), found.end());
         }
     }
 
-    if (only_if_mouse_enabled && !GetMouseInputEnabled())
+    if (!result.empty())
     {
-        return nullptr;
+        return result;
     }
 
-    return this;
+    // Sanity.
+    if (only_if_mouse_enabled && !GetMouseInputEnabled())
+    {
+        return std::vector<Base*>();
+    }
+
+    result.push_back(this);
+    return result;
 }
 
 Gwen::Rectangle Base::GetInnerBounds() const
