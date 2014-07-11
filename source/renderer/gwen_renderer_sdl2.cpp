@@ -242,23 +242,51 @@ Gwen::Color SDL2::GetPixelColor(Renderer::Texture* texture, unsigned x, unsigned
 
 void SDL2::DrawText(Renderer::Font* font, const Gwen::Point& position, const std::string& text)
 {
-    TTF_Font* ttf_font = static_cast<TTF_Font*>(font->_data);
+    assert(font != nullptr);
+    if (font != nullptr)
+    {
+        TTF_Font* ttf_font = static_cast<TTF_Font*>(font->_data);
+        assert(ttf_font != nullptr);
+        if (ttf_font != nullptr)
+        {
+            int x = position._x;
+            int y = position._y;
+            Translate(x, y);
 
-    int x = position._x;
-    int y = position._y;
-    Translate(x, y);
+            SDL_Surface* surface = TTF_RenderUTF8_Blended(ttf_font, text.c_str(), _color);
+            assert(surface != nullptr);
+            if (surface != nullptr)
+            {
+                SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, surface);
+                assert(texture != nullptr);
+                if (texture != nullptr)
+                {
+                    SDL_SetTextureAlphaMod(texture, _color.a);
 
-    SDL_Surface* surf = TTF_RenderUTF8_Blended(ttf_font, text.c_str(), _color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer, surf);
-    SDL_FreeSurface(surf);
+                    int width = 0;
+                    int height = 0;
+                    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 
-    int w, h;
-    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    const SDL_Rect dest = { x, y, w, h };
+                    const SDL_Rect destination_rectangle = { x, y, width, height };
+                    SDL_RenderCopy(_renderer, texture, nullptr, &destination_rectangle);
+                }
 
-    SDL_RenderCopy(_renderer, texture, nullptr, &dest);
+                // Clean up the texture.
+                if (texture != nullptr)
+                {
+                    SDL_DestroyTexture(texture);
+                    texture = nullptr;
+                }
+            }
 
-    SDL_DestroyTexture(texture);
+            // Clean up the surface.
+            if (surface != nullptr)
+            {
+                SDL_FreeSurface(surface);
+                surface = nullptr;
+            }
+        }
+    }
 }
 
 Gwen::Point SDL2::MeasureText(Renderer::Font* font, const std::string& text)
