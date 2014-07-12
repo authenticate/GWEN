@@ -222,7 +222,7 @@ int Text::GetClosestCharacter(const Gwen::Point& point)
         return characters + position;
     }
 
-    int distance = 4096;
+    int distance = std::numeric_limits<int>::max();
     int character = 0;
 
     for (unsigned i = 0; i < _text.length() + 1; i++)
@@ -530,6 +530,8 @@ void Text::RefreshSizeWrap()
         {
             Text* text = new Text(this);
             text->SetFont(GetFont());
+            text->SetTextColor(_color);
+            text->SetTextColorOverride(_color_override);
 
             if (is_wrapped)
             {
