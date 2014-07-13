@@ -48,7 +48,7 @@ GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
 
     SetAlignment(Position::CENTER);
     SetBounds(Rectangle(0, 0, 128, 32));
-    SetColor(Gwen::Color(30, 224, 63, 255));
+    SetColor(Gwen::Color(75, 157, 233, 255));
     SetHorizontal();
     SetMouseInputEnabled(true);
     SetTextPadding(Padding(3, 5, 3, 3));

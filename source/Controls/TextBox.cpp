@@ -49,7 +49,6 @@ GWEN_CONTROL_CONSTRUCTOR(TextBox, Base)
     _label->SetKeyboardInputEnabled(false);
     _label->SetMouseInputEnabled(false);
     _label->SetTabable(false);
-    _label->SetTextColor(Gwen::Color(50, 50, 50, 255));
 
     _editable = true;
     _select_all_on_focus = false;
@@ -311,7 +310,7 @@ void TextBox::MoveCursorToEnd()
 void TextBox::RefreshCursorBounds()
 {
     _next_cursor_color_change = Gwen::Platform::GetTimeInSeconds() + 0.5f;
-    _cursor_color = Gwen::Color(30, 30, 30, 255);
+    _cursor_color = Gwen::Color(240, 170, 47, 255);
 
     MakeCursorVisible();
 
@@ -350,7 +349,7 @@ void TextBox::UpdateCursorColor()
     Gwen::Color target_color = Gwen::Color(230, 230, 230, 255);
     if (_cursor_color == target_color)
     {
-        target_color = Gwen::Color(20, 20, 20, 255);
+        target_color = Gwen::Color(240, 170, 47, 255);
     }
 
     _next_cursor_color_change = Gwen::Platform::GetTimeInSeconds() + 0.5f;
@@ -680,7 +679,7 @@ void TextBox::Render(Gwen::Skin::Base* skin)
         if (_cursor_begin != _cursor_end)
         {
             // Draw selection.
-            skin->GetRender()->SetDrawColor(Gwen::Color(98, 165, 232, 255));
+            skin->GetRender()->SetDrawColor(Gwen::Color(240, 170, 47, 255));
             skin->GetRender()->FillRectangle(_selection_bounds);
         }
 

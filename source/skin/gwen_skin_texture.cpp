@@ -64,7 +64,7 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
 
     Colors.Button.Normal                    = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
     Colors.Button.Hover                     = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
-    Colors.Button.Down                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
+    Colors.Button.Down                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
     Colors.Button.Disabled                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
 
     Colors.Tab.Active.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 508, Color(255, 255, 0));
