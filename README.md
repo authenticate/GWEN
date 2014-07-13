@@ -34,7 +34,7 @@ gwen_renderer->Initialize();
 
 // Create the skin.
 gwen_skin = new Gwen::Skin::TexturedBase(gwen_renderer);
-gwen_skin->Initialize(...;
+gwen_skin->Initialize(...);
 
 // Create the canvas.
 gwen_canvas = new Gwen::Controls::Canvas(gwen_skin);
