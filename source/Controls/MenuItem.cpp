@@ -118,7 +118,14 @@ Menu* MenuItem::GetMenu()
 
 void MenuItem::UpdateColors()
 {
-    SetTextColor(GetSkin()->Colors.Button.Normal);
+    if (GetDepressed() || _hovered_control == this || GetOpen())
+    {
+        SetTextColor(GetSkin()->Colors.Button.Hover);
+    }
+    else
+    {
+        SetTextColor(GetSkin()->Colors.Button.Normal);
+    }
 }
 
 void MenuItem::OnPressLeft()
@@ -182,11 +189,13 @@ bool MenuItem::GetMenuComponent()
 
 void MenuItem::Open()
 {
+    // Sanity.
     if (!_menu)
     {
         return;
     }
 
+    // Open the menu.
     _menu->SetHidden(false);
     _menu->BringToFront();
     Gwen::Point point = LocalPositionToCanvas(Gwen::Point(0, 0));
@@ -201,16 +210,24 @@ void MenuItem::Open()
     {
         _menu->SetPosition(point._x + Width(), point._y);
     }
+
+    // Update the text color of the menu item.
+    UpdateColors();
 }
 
 void MenuItem::Close()
 {
+    // Sanity.
     if (!_menu)
     {
         return;
     }
 
+    // Close the menu.
     _menu->CloseMenus();
+
+    // Update the text color of the menu item.
+    UpdateColors();
 }
 
 void MenuItem::Toggle()

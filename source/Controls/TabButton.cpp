@@ -128,7 +128,6 @@ void TabButton::UpdateColors()
 {
     if (!GetActive())
     {
-        SetImageAlpha(0.5f);
         if (IsDisabled())
         {
             return SetTextColor(GetSkin()->Colors.Tab.Inactive.Disabled);
@@ -147,7 +146,6 @@ void TabButton::UpdateColors()
         return SetTextColor(GetSkin()->Colors.Tab.Inactive.Normal);
     }
 
-    SetImageAlpha(1.0f);
     if (IsDisabled())
     {
         return SetTextColor(GetSkin()->Colors.Tab.Active.Disabled);
