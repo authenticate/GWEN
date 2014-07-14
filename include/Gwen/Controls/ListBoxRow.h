@@ -55,6 +55,12 @@ public:
     virtual void SetSelected(bool selected) override;
 
 protected:
+    /// \brief Called when the mouse enters the control.
+    virtual void OnMouseEnter() override;
+
+    /// \brief Called when the mouse leaves the control.
+    virtual void OnMouseLeave() override;
+
     /// \brief Called when the left mouse button is pressed.
     virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
 
@@ -63,7 +69,10 @@ protected:
 
 private:
     /// \brief A helper function to do the selection.
-    void DoSelect();
+    void _DoSelect();
+
+    /// \brief A helper function to update the text color.
+    void _UpdateTextColor();
 };
 
 }; // namespace Controls

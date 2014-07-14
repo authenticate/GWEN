@@ -318,7 +318,7 @@ bool ListBox::OnKeyDown(bool is_down)
             ListBoxRow* row = dynamic_cast<ListBoxRow*>(*result);
             if (row)
             {
-                row->DoSelect();
+                row->_DoSelect();
 
                 Controls::VerticalScrollBar* scroll_bar = dynamic_cast<Controls::VerticalScrollBar*>(_scroll_bar);
                 if (scroll_bar)
@@ -359,7 +359,7 @@ bool ListBox::OnKeyUp(bool is_down)
             ListBoxRow* row = dynamic_cast<ListBoxRow*>(*result);
             if (row)
             {
-                row->DoSelect();
+                row->_DoSelect();
 
                 Controls::VerticalScrollBar* scroll_bar = dynamic_cast<Controls::VerticalScrollBar*>(_scroll_bar);
                 if (scroll_bar)

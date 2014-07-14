@@ -50,39 +50,67 @@ void ListBoxRow::Render(Skin::Base* skin)
 
 void ListBoxRow::SetSelected(bool selected)
 {
-    // Call the base function.
+    // Call the base class function.
     TableRow::SetSelected(selected);
 
-    // Update the text color.
-    if (GetSelected())
-    {
-        SetTextColor(Gwen::Colors::WHITE);
-    }
-    else
-    {
-        SetTextColor(GetSkin()->Colors.Button.Normal);
-    }
+    _UpdateTextColor();
+}
+
+void ListBoxRow::OnMouseEnter()
+{
+    // Call the base class function.
+    Base::OnMouseLeave();
+
+    _UpdateTextColor();
+}
+
+void ListBoxRow::OnMouseLeave()
+{
+    // Call the base class.
+    Base::OnMouseLeave();
+
+    _UpdateTextColor();
 }
 
 void ListBoxRow::OnMouseClickLeft(int, int, bool is_down)
 {
     if (is_down)
     {
-        DoSelect();
+        _DoSelect();
     }
 }
 
 void ListBoxRow::OnMouseDoubleClickLeft(int, int)
 {
-    DoSelect();
+    _DoSelect();
     _on_mouse_double_click_left.Call(this);
 }
 
-void ListBoxRow::DoSelect()
+void ListBoxRow::_DoSelect()
 {
     SetSelected(true);
     _on_selected.Call(this);
     Redraw();
+}
+
+void ListBoxRow::_UpdateTextColor()
+{
+    //
+    // Update the text color.
+    //
+
+    if (GetSelected())
+    {
+        SetTextColor(GetSkin()->Colors.Button.Down);
+    }
+    else if (_hovered_control == this)
+    {
+        SetTextColor(GetSkin()->Colors.Button.Hover);
+    }
+    else
+    {
+        SetTextColor(GetSkin()->Colors.Button.Normal);
+    }
 }
 
 }; // namespace Controls
