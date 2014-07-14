@@ -50,6 +50,9 @@ GWEN_CONTROL_CONSTRUCTOR(Table, Base)
     {
         _column_width[i] = 0;
     }
+
+    SetHidden(false);
+    SetMouseInputEnabled(true);
 }
 
 void Table::SetColumnCount(int count)
@@ -118,9 +121,14 @@ void Table::Clear()
     }
 }
 
-TableRow* Table::GetRow(int row)
+TableRow* Table::GetRow(unsigned index)
 {
-    return dynamic_cast<TableRow*>(GetChild(row));
+    return dynamic_cast<TableRow*>(GetChild(index));
+}
+
+const TableRow* Table::GetRow(unsigned index) const
+{
+    return dynamic_cast<const TableRow*>(GetChild(index));
 }
 
 unsigned Table::GetRowCount() const

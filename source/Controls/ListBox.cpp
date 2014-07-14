@@ -52,11 +52,13 @@ GWEN_CONTROL_CONSTRUCTOR(ListBox, ScrollControl)
     _table = new Controls::Layout::Table(this);
     _table->SetColumnCount(1);
 
+    SetHidden(false);
     SetMargin(Margin(1, 1, 1, 1));
+    SetMouseInputEnabled(true);
     SetPadding(Padding(0, 1, 0, 1));
 }
 
-Layout::TableRow* ListBox::AddItem(const std::string& label, const std::string& name)
+Layout::TableRow* ListBox::AddRow(const std::string& label, const std::string& name)
 {
     // Allocate a new row.
     ListBoxRow* row = new ListBoxRow(this);
@@ -69,6 +71,32 @@ Layout::TableRow* ListBox::AddItem(const std::string& label, const std::string& 
     _table->AddRow(row, Position::TOP);
 
     return row;
+}
+
+std::vector<Layout::TableRow*> ListBox::GetRows()
+{
+    std::vector<Layout::TableRow*> result;
+
+    unsigned count = _table->GetRowCount();
+    for (unsigned i = 0; i < count; ++i)
+    {
+        result.push_back(_table->GetRow(i));
+    }
+
+    return result;
+}
+
+std::vector<const Layout::TableRow*> ListBox::GetRows() const
+{
+    std::vector<const Layout::TableRow*> result;
+
+    unsigned count = _table->GetRowCount();
+    for (unsigned i = 0; i < count; ++i)
+    {
+        result.push_back(_table->GetRow(i));
+    }
+
+    return result;
 }
 
 void ListBox::RemoveItem(Layout::TableRow* row)
@@ -127,7 +155,7 @@ void ListBox::SetSelectedRow(Gwen::Controls::Base* row, bool clear_others)
     _on_row_selected.Call(this);
 }
 
-void ListBox::SelectByString(const std::string& string, bool clear_others)
+void ListBox::SetSelectedRow(const std::string& string, bool clear_others)
 {
     if (clear_others)
     {
@@ -160,19 +188,33 @@ Layout::TableRow* ListBox::GetSelectedRow()
     return *_selected_rows.begin();
 }
 
+const Layout::TableRow* ListBox::GetSelectedRow() const
+{
+    if (_selected_rows.empty())
+    {
+        return nullptr;
+    }
+
+    return *_selected_rows.begin();
+}
+
 const std::list<Layout::TableRow*>& ListBox::GetSelectedRows()
 {
     return _selected_rows;
 }
 
-std::string ListBox::GetSelectedRowName()
+std::string ListBox::GetSelectedRowName() const
 {
-    Layout::TableRow* row = GetSelectedRow();
-    if (!row)
+    std::string result;
+
+    const Layout::TableRow* row = GetSelectedRow();
+    assert(row != nullptr);
+    if (row != nullptr)
     {
-        return "";
+        result = row->GetName();
     }
-    return row->GetName();
+
+    return result;
 }
 
 void ListBox::SetColumnCount(int count)

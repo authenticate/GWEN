@@ -279,6 +279,27 @@ Controls::Base* Base::GetChild(unsigned int index)
     return nullptr;
 }
 
+const Base* Base::GetChild(unsigned index) const
+{
+    if (index >= GetChildrenCount())
+    {
+        return nullptr;
+    }
+
+    for (auto i = _children.begin(); i != _children.end(); ++i)
+    {
+        if (index == 0)
+        {
+            return *i;
+        }
+
+        --index;
+    }
+
+    // Should never happen.
+    return nullptr;
+}
+
 Gwen::Point Base::ChildrenSize() const
 {
     Gwen::Point size;
@@ -794,11 +815,11 @@ void Base::SetHidden(bool hidden)
 
     _hidden = hidden;
 
-    // If this control is hidden and has a tooltip...
-    if (_hidden && GetTooltip())
+    // If this control is hidden...
+    if (_hidden)
     {
-        // Disable the tooltip.
         Tooltip::Disable(this);
+        Tooltip::Disable(GetParent());
     }
 
     // If this control is not hidden and is the hovered control...
@@ -1140,10 +1161,8 @@ void Base::OnMouseLeave()
 {
     _on_hover_leave.Call(this);
 
-    if (GetTooltip())
-    {
-        Tooltip::Disable(this);
-    }
+    Tooltip::Disable(this);
+    Tooltip::Disable(GetParent());
 
     Redraw();
 }
@@ -1242,6 +1261,7 @@ void Base::SetTooltip(Base* tooltip)
         if (Gwen::Controls::_hovered_control == this)
         {
             Tooltip::Disable(this);
+            Tooltip::Disable(GetParent());
         }
 
         delete _tooltip;

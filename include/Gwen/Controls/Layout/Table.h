@@ -64,7 +64,10 @@ public:
     void Clear();
 
     /// \brief Gets a row.
-    TableRow* GetRow(int row);
+    TableRow* GetRow(unsigned index);
+
+    /// \brief Gets a row.
+    const TableRow* GetRow(unsigned index) const;
 
     /// \briefs Gets the number of rows.
     unsigned GetRowCount() const;

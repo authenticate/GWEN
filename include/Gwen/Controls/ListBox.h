@@ -44,8 +44,14 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ListBox, ScrollControl);
 
-    /// \brief Adds an item to the list box.
-    Layout::TableRow* AddItem(const std::string& label, const std::string& name = "");
+    /// \brief Adds a row to the list box.
+    Layout::TableRow* AddRow(const std::string& label, const std::string& name = "");
+
+    /// \brief Gets the rows from the list box.
+    std::vector<Layout::TableRow*> GetRows();
+
+    /// \brief Gets the rows from the list box.
+    std::vector<const Layout::TableRow*> GetRows() const;
 
     /// \brief Removes an item from the list box.
     void RemoveItem(Layout::TableRow* row);
@@ -66,16 +72,19 @@ public:
     virtual void SetSelectedRow(Gwen::Controls::Base* row, bool clear_others = true);
 
     /// \brief Sets the selected row.
-    virtual void SelectByString(const std::string& string, bool clear_others = true);
+    virtual void SetSelectedRow(const std::string& string, bool clear_others = true);
 
     /// \brief Gets the selected row.
     virtual Layout::TableRow* GetSelectedRow();
 
+    /// \brief Gets the selected row.
+    virtual const Layout::TableRow* GetSelectedRow() const;
+
     /// \brief Gets the selected rows.
     virtual const std::list<Layout::TableRow*>& GetSelectedRows();
 
-    /// \brief Sets the selected row by its name.
-    virtual std::string GetSelectedRowName();
+    /// \brief Gets the name of the selected row.
+    virtual std::string GetSelectedRowName() const;
 
     /// \brief Sets the number of columns.
     void SetColumnCount(int count);

@@ -41,15 +41,17 @@ namespace Layout
 
 GWEN_CONTROL_CONSTRUCTOR(TableRow, Base)
 {
-    SetEven(false);
-    SetSelected(false);
-
     for (int i = 0; i < MAX_COLUMNS; ++i)
     {
         _columns[i] = nullptr;
     }
 
     _column_count = 0;
+
+    SetEven(false);
+    SetHidden(false);
+    SetMouseInputEnabled(true);
+    SetSelected(false);
 }
 
 void TableRow::SetColumnCount(int count)

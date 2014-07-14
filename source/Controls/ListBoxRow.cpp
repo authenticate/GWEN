@@ -39,6 +39,7 @@ namespace Controls
 GWEN_CONTROL_CONSTRUCTOR(ListBoxRow, Layout::TableRow)
 {
     SetColumnCount(1);
+    SetHidden(false);
     SetMouseInputEnabled(true);
     SetSelected(false);
 }
@@ -59,7 +60,7 @@ void ListBoxRow::SetSelected(bool selected)
 void ListBoxRow::OnMouseEnter()
 {
     // Call the base class function.
-    Base::OnMouseLeave();
+    Base::OnMouseEnter();
 
     _UpdateTextColor();
 }

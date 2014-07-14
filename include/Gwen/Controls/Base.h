@@ -112,6 +112,9 @@ public:
     /// \brief Gets a child.
     virtual Base* GetChild(unsigned index);
 
+    /// \brief Gets a child.
+    virtual const Base* GetChild(unsigned index) const;
+
     /// \brief The size of the children.
     virtual Gwen::Point ChildrenSize() const;
 
