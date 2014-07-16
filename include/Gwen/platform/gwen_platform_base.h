@@ -50,6 +50,9 @@ Rectangle GetDesktopSize();
 /// \brief Gets the time in seconds.
 float GetTimeInSeconds();
 
+/// \brief Gets the time in milliseconds.
+long long GetTimeInMilliseconds();
+
 }; // namespace Platform
 
 }; // namespace Gwen

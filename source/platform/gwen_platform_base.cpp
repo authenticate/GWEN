@@ -73,6 +73,16 @@ float GetTimeInSeconds()
     return static_cast<float>(milliseconds * 0.001f);
 }
 
+long long GetTimeInMilliseconds()
+{
+    auto now = std::chrono::system_clock::now().time_since_epoch();
+    long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+
+    milliseconds -= std::chrono::duration_cast<std::chrono::milliseconds>(_application_start).count();
+
+    return milliseconds;
+}
+
 }; // namespace Platform
 
 }; // namespace Gwen
