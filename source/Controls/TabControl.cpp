@@ -118,8 +118,22 @@ void TabControl::AddPage(TabButton* button)
 
 void TabControl::RemovePage(TabButton* button)
 {
-    button->SetParent(GetCanvas());
-    OnRemovedTab(button);
+    // Sanity.
+    assert(button != nullptr);
+    if (button != nullptr)
+    {
+        // Hide the button's page.
+        Base* page = button->GetPage();
+        assert(page != nullptr);
+        if (page != nullptr)
+        {
+            page->SetHidden(true);
+        }
+
+        // Update the button.
+        button->SetParent(GetCanvas());
+        OnRemovedTab(button);
+    }
 }
 
 void TabControl::OnPressedTab(Base* control)
