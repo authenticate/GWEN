@@ -52,6 +52,17 @@ GWEN_CONTROL_CONSTRUCTOR(TableRow, Base)
     SetHidden(false);
     SetMouseInputEnabled(true);
     SetSelected(false);
+    SetUserData(nullptr);
+}
+
+void TableRow::SetUserData(void* user_data)
+{
+    _user_data = user_data;
+}
+
+void* TableRow::GetUserData() const
+{
+    return _user_data;
 }
 
 void TableRow::SetColumnCount(int count)

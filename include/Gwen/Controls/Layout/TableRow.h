@@ -53,6 +53,12 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(TableRow, Base);
 
+    /// \brief Sets the user data.
+    virtual void SetUserData(void* user_data);
+
+    /// \brief Gets the user data.
+    virtual void* GetUserData() const;
+
     /// \brief Sets the number of columns.
     void SetColumnCount(int count);
 
@@ -93,6 +99,9 @@ public:
     Gwen::Event::Caller _on_selected;
 
 private:
+    /// \brief A pointer for user data.
+    void* _user_data;
+
     /// \brief Is this row selected?
     bool _selected;
 
