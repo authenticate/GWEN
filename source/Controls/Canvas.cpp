@@ -110,6 +110,8 @@ void Canvas::DoThink()
 
     ProcessDelayedDeletes();
 
+    RecurseLayout(_skin);
+
     // If there's no next tab, cycle to the start.
     if (_next_tab == nullptr)
     {
