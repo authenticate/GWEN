@@ -1440,11 +1440,6 @@ void Base::RecurseLayout(Skin::Base* skin)
         skin = _skin;
     }
 
-    if (Hidden())
-    {
-        return;
-    }
-
     if (NeedsLayout())
     {
         _needs_layout = false;
@@ -1463,10 +1458,6 @@ void Base::RecurseLayout(Skin::Base* skin)
     for (auto i = _children.begin(); i != _children.end(); ++i)
     {
         Base* child = *i;
-        if (child->Hidden())
-        {
-            continue;
-        }
 
         int dock = child->GetDock();
         if (dock & Position::FILL)
