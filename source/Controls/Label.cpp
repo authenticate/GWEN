@@ -129,6 +129,11 @@ Gwen::Color Label::GetTextColorOverride() const
 
 void Label::SetAlignment(int alignment)
 {
+    SetAlignment(static_cast<Gwen::Position::Position>(alignment));
+}
+
+void Label::SetAlignment(const Gwen::Position::Position& alignment)
+{
     if (_alignment == alignment)
     {
         return;
@@ -138,7 +143,7 @@ void Label::SetAlignment(int alignment)
     Invalidate();
 }
 
-int Label::GetAlignment()
+Gwen::Position::Position Label::GetAlignment()
 {
     return _alignment;
 }
@@ -200,7 +205,7 @@ void Label::PreDelete(Gwen::Skin::Base* skin)
 
 void Label::PostLayout(Skin::Base*)
 {
-    _text->SetPosition(_alignment);
+    _text->SetPosition(_alignment, 0, 0);
 }
 
 void Label::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)

@@ -76,8 +76,11 @@ public:
     /// \brief Sets the alignment of the text.
     virtual void SetAlignment(int alignment);
 
+    /// \brief Sets the alignment of the text.
+    virtual void SetAlignment(const Gwen::Position::Position& alignment);
+
     /// \brief Gets the alignment of the text.
-    virtual int GetAlignment();
+    virtual Gwen::Position::Position GetAlignment();
 
     /// \brief Sets the wrap.
     virtual void SetWrap(bool do_wrap);
@@ -120,7 +123,7 @@ protected:
     ControlsInternal::Text* _text;
 
     /// \brief The alignment.
-    int _alignment;
+    Gwen::Position::Position _alignment;
 };
 
 }; // namespace Controls

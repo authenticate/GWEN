@@ -522,7 +522,7 @@ void Base::SetPosition(const Point& point)
     return SetPosition(point._x, point._y);
 }
 
-void Base::SetPosition(unsigned alignment, int x_padding, int y_padding)
+void Base::SetPosition(const Gwen::Position::Position& alignment, int x_padding, int y_padding)
 {
     const Rectangle& bounds = GetParent()->GetInnerBounds();
     const Margin& margin = GetMargin();

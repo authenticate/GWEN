@@ -294,11 +294,11 @@ void Button::PostLayout(Skin::Base* pSkin)
     {
         if (_center)
         {
-            _image->SetPosition(Position::CENTER);
+            _image->SetPosition(Position::CENTER, 0, 0);
         }
         else
         {
-            _image->SetPosition(Position::LEFT | Position::CENTER_V);
+            _image->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 0, 0);
         }
     }
 }

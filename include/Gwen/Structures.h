@@ -34,7 +34,7 @@ namespace Gwen
 namespace Position
 {
 
-enum
+enum Position
 {
     NONE        = 0,
     LEFT        = (1 << 1),
@@ -109,7 +109,10 @@ struct Rectangle
 struct Point
 {
     /// \brief Constructor.
-    Point(int x = 0, int y = 0);
+    Point();
+
+    /// \brief Constructor.
+    explicit Point(int x, int y);
 
     /// \brief Operator.
     void operator+=(const Point& point);

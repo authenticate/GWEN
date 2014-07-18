@@ -195,7 +195,7 @@ public:
     virtual void SetPosition(const Point& point);
 
     /// \brief Sets the position
-    void SetPosition(unsigned alignment, int x_padding = 0, int y_padding = 0);
+    virtual void SetPosition(const Gwen::Position::Position& alignment, int x_padding, int y_padding);
 
     /// \brief Gets the position.
     virtual Point GetPosition() const;

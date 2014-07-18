@@ -59,6 +59,10 @@ public:
     ///        Only Position::TOP and Position::BOTTOM are supported.
     virtual void SetAlignment(int alignment);
 
+    /// \brief Sets the alignment of the scroll bar.
+    ///        Only Position::TOP and Position::BOTTOM are supported.
+    virtual void SetAlignment(const Gwen::Position::Position& alignment);
+
     /// \brief Sets the size of the bar.
     virtual void SetBarSize(unsigned size) = 0;
 
@@ -149,7 +153,7 @@ protected:
 
     /// \brief The alignment of the scroll bar.
     ///        Only Position::TOP and Position::BOTTOM are supported.
-    int _alignment;
+    Gwen::Position::Position _alignment;
 
     /// \brief The amount scrolled.
     unsigned _scrolled_amount;

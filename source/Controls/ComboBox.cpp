@@ -258,7 +258,7 @@ void ComboBox::Layout(Skin::Base* skin)
     // Call the base class.
     Button::Layout(skin);
 
-    _button->SetPosition(Position::RIGHT | Position::CENTER_V, 4, 0);
+    _button->SetPosition(static_cast<Gwen::Position::Position>(Position::RIGHT | Position::CENTER_V), 4, 0);
 }
 
 }; // namespace Controls

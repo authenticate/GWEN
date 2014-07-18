@@ -74,6 +74,11 @@ bool ScrollBar::GetClampToNudgeAmount() const
 
 void ScrollBar::SetAlignment(int alignment)
 {
+    SetAlignment(static_cast<Gwen::Position::Position>(alignment));
+}
+
+void ScrollBar::SetAlignment(const Gwen::Position::Position& alignment)
+{
     _alignment = alignment;
 }
 
