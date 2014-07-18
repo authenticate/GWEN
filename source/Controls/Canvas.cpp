@@ -75,6 +75,8 @@ void Canvas::RenderCanvas()
     Gwen::Renderer::Base* render = _skin->GetRender();
     render->Begin();
 
+    RecurseLayout(false, _skin);
+
     render->SetClippingRegion(GetBounds());
     render->SetRenderOffset(Gwen::Point(0, 0));
 
