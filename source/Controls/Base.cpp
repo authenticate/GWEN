@@ -1433,11 +1433,16 @@ void Base::UpdateRenderBounds()
     _render_bounds._height = _bounds._height;
 }
 
-void Base::RecurseLayout(Skin::Base* skin)
+void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
 {
     if (_skin)
     {
         skin = _skin;
+    }
+
+    if (!layout_hidden_controls && Hidden())
+    {
+        return;
     }
 
     if (NeedsLayout())
@@ -1458,6 +1463,10 @@ void Base::RecurseLayout(Skin::Base* skin)
     for (auto i = _children.begin(); i != _children.end(); ++i)
     {
         Base* child = *i;
+        if (!layout_hidden_controls && child->Hidden())
+        {
+            continue;
+        }
 
         int dock = child->GetDock();
         if (dock & Position::FILL)
@@ -1509,7 +1518,7 @@ void Base::RecurseLayout(Skin::Base* skin)
             bounds._height -= height;
         }
 
-        child->RecurseLayout(skin);
+        child->RecurseLayout(layout_hidden_controls, skin);
     }
 
     _inner_bounds = bounds;
@@ -1528,7 +1537,7 @@ void Base::RecurseLayout(Skin::Base* skin)
         const Margin& margin = child->GetMargin();
         child->SetBounds(bounds._x + margin._left, bounds._y + margin._top,
                          bounds._width - margin._left - margin._right, bounds._height - margin._top - margin._bottom);
-        child->RecurseLayout(skin);
+        child->RecurseLayout(layout_hidden_controls, skin);
     }
 
     PostLayout(skin);
@@ -1554,11 +1563,11 @@ void Base::RecurseLayout(Skin::Base* skin)
     }
 }
 
-void Base::Layout(Skin::Base*)
+void Base::Layout(Gwen::Skin::Base*)
 {
 }
 
-void Base::PostLayout(Skin::Base*)
+void Base::PostLayout(Gwen::Skin::Base*)
 {
 }
 

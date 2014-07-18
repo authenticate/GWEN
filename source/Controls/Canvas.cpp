@@ -75,8 +75,6 @@ void Canvas::RenderCanvas()
     Gwen::Renderer::Base* render = _skin->GetRender();
     render->Begin();
 
-    RecurseLayout(_skin);
-
     render->SetClippingRegion(GetBounds());
     render->SetRenderOffset(Gwen::Point(0, 0));
 
@@ -88,6 +86,7 @@ void Canvas::RenderCanvas()
 
     DoRender(_skin);
 
+    Tooltip::Layout(_skin);
     Tooltip::Render(_skin);
 
     render->End();
@@ -97,20 +96,21 @@ void Canvas::DoThink()
 {
     ProcessDelayedDeletes();
 
+    // Sanity.
     if (Hidden())
     {
         return;
     }
 
+    // Update the animation.
     Animation::Think();
 
     // Reset the tabbing.
     _next_tab = nullptr;
     _first_tab = nullptr;
 
-    ProcessDelayedDeletes();
-
-    RecurseLayout(_skin);
+    // Update the layout.
+    RecurseLayout(false, _skin);
 
     // If there's no next tab, cycle to the start.
     if (_next_tab == nullptr)
@@ -118,6 +118,7 @@ void Canvas::DoThink()
         _next_tab = _first_tab;
     }
 
+    // Update the input.
     Gwen::Input::OnCanvasThink(this);
 }
 

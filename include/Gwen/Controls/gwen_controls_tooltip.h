@@ -44,8 +44,11 @@ void Enable(Controls::Base* control);
 /// \brief Disables the tooltip.
 void Disable(Controls::Base* control);
 
+/// \brief Lays out the tooltip.
+void Layout(Gwen::Skin::Base* skin);
+
 /// \brief Draws the tooltip.
-void Render(Skin::Base* skin);
+void Render(Gwen::Skin::Base* skin);
 
 /// \brief Is the tooltip active?
 bool GetTooltipActive();

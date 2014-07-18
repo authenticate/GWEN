@@ -42,16 +42,27 @@
 namespace Gwen
 {
 
+// Forward declarations.
 namespace Skin
 {
 
-// Forward declarations.
 class Base;
 
 }; // namespace Skin
 
 namespace Controls
 {
+
+// Forward declarations.
+class Canvas;
+
+// Forward declarations.
+namespace Tooltip
+{
+
+void Layout(Gwen::Skin::Base* skin);
+
+}; // namespace Tooltip
 
 /// \brief A global pointer to the hovered control.
 extern Base* _hovered_control;
@@ -62,12 +73,11 @@ extern Base* _keyboard_focus;
 /// \brief A global pointer to the control with mouse focus.
 extern Base* _mouse_focus;
 
-// Forward declarations.
-class Canvas;
-
 /// \brief This class represents a base class for all UI controls.
 class Base : public Event::Handler
 {
+    friend void Gwen::Controls::Tooltip::Layout(Gwen::Skin::Base* skin);
+
 public:
     /// \brief Constructor.
     Base(Base* parent, const std::string& name = "");
@@ -496,13 +506,13 @@ protected:
     virtual void UpdateRenderBounds();
 
     /// \brief Lays out the control.
-    virtual void RecurseLayout(Skin::Base* skin);
+    virtual void RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin);
 
     /// \brief Lays out the control.
-    virtual void Layout(Skin::Base* skin);
+    virtual void Layout(Gwen::Skin::Base* skin);
 
     /// \brief Lays out the control.
-    virtual void PostLayout(Skin::Base* skin);
+    virtual void PostLayout(Gwen::Skin::Base* skin);
 
     /// \brief Called when a child control is added.
     virtual void _OnChildAdded(Base* child);

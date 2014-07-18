@@ -63,7 +63,32 @@ void Disable(Controls::Base* control)
     }
 }
 
-void Render(Skin::Base* skin)
+void Layout(Gwen::Skin::Base* skin)
+{
+    // Sanity.
+    assert(skin != nullptr);
+    if (skin == nullptr)
+    {
+        return;
+    }
+
+    if (_tooltip == nullptr)
+    {
+        return;
+    }
+
+    assert(_tooltip->GetTooltip() != nullptr);
+    if (_tooltip->GetTooltip() == nullptr)
+    {
+        Disable(_tooltip);
+        return;
+    }
+
+    // Layout the tooltip.
+    _tooltip->RecurseLayout(true, skin);
+}
+
+void Render(Gwen::Skin::Base* skin)
 {
     // Sanity.
     assert(skin != nullptr);
