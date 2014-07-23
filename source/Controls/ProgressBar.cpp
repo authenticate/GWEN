@@ -48,10 +48,17 @@ GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
 
     SetAlignment(Position::CENTER);
     SetBounds(Rectangle(0, 0, 128, 32));
-    SetColor(Gwen::Color(75, 157, 233, 255));
     SetHorizontal();
     SetMouseInputEnabled(true);
     SetTextPadding(Padding(3, 5, 3, 3));
+
+    Gwen::Skin::Base* skin = GetSkin();
+    assert(skin != nullptr);
+    if (skin != nullptr)
+    {
+        SetColor(skin->Colors.ProgressBar.Bar);
+        SetTextColor(skin->Colors.ProgressBar.Text);
+    }
 }
 
 void ProgressBar::SetProgress(unsigned progress)

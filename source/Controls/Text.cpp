@@ -40,7 +40,7 @@ namespace ControlsInternal
 GWEN_CONTROL_CONSTRUCTOR(Text, Controls::Base)
 {
     _font = nullptr;
-    _color = GetSkin()->Colors.Label.Default;
+    _color = GetSkin()->Colors.Label.Text;
     _color_override = Color(255, 255, 255, 0);
     _changed = false;
 

@@ -62,7 +62,7 @@ GWEN_CONTROL_CONSTRUCTOR(TextBox, Base)
 
     SetKeyboardInputEnabled(true);
     SetMouseInputEnabled(true);
-    SetPadding(Gwen::Padding(4, 3, 5, 3));
+    SetPadding(Gwen::Padding(4, 4, 5, 4));
     SetSize(200, 20);
     SetTabable(true);
 
@@ -310,7 +310,7 @@ void TextBox::MoveCursorToEnd()
 void TextBox::RefreshCursorBounds()
 {
     _next_cursor_color_change = Gwen::Platform::GetTimeInSeconds() + 0.5f;
-    _cursor_color = Gwen::Color(240, 170, 47, 255);
+    _cursor_color = Gwen::Color(30, 30, 30, 255);
 
     MakeCursorVisible();
 
@@ -346,14 +346,14 @@ void TextBox::UpdateCursorColor()
         return;
     }
 
-    Gwen::Color target_color = Gwen::Color(230, 230, 230, 255);
-    if (_cursor_color == target_color)
+    Gwen::Color cursor_color = Gwen::Color(241, 241, 241, 255);
+    if (_cursor_color == cursor_color)
     {
-        target_color = Gwen::Color(240, 170, 47, 255);
+        cursor_color = Gwen::Color(30, 30, 30, 255);
     }
 
     _next_cursor_color_change = Gwen::Platform::GetTimeInSeconds() + 0.5f;
-    _cursor_color = target_color;
+    _cursor_color = cursor_color;
     Redraw();
 }
 
@@ -679,7 +679,7 @@ void TextBox::Render(Gwen::Skin::Base* skin)
         if (_cursor_begin != _cursor_end)
         {
             // Draw selection.
-            skin->GetRender()->SetDrawColor(Gwen::Color(240, 170, 47, 255));
+            skin->GetRender()->SetDrawColor(Gwen::Color(255, 195, 0, 255));
             skin->GetRender()->FillRectangle(_selection_bounds);
         }
 

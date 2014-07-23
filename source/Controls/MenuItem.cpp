@@ -50,6 +50,13 @@ GWEN_CONTROL_CONSTRUCTOR(MenuItem, Button)
     SetOnStrip(false);
     SetTabable(false);
     SetToggle(true);
+
+    Gwen::Skin::Base* skin = GetSkin();
+    assert(skin != nullptr);
+    if (skin != nullptr)
+    {
+        SetTextColor(skin->Colors.Menu.Normal);
+    }
 }
 
 void MenuItem::SetOnStrip(bool on_strip)
@@ -120,11 +127,11 @@ void MenuItem::UpdateColors()
 {
     if (GetDepressed() || _hovered_control == this || GetOpen())
     {
-        SetTextColor(GetSkin()->Colors.Button.Hover);
+        SetTextColor(GetSkin()->Colors.Menu.Hover);
     }
     else
     {
-        SetTextColor(GetSkin()->Colors.Button.Normal);
+        SetTextColor(GetSkin()->Colors.Menu.Normal);
     }
 }
 

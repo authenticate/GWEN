@@ -187,15 +187,6 @@ public:
     /// \brief The colors for the skin.
     struct
     {
-        /// \brief The label colors.
-        struct Label_t
-        {
-            Gwen::Color Default;
-            Gwen::Color Bright;
-            Gwen::Color Dark;
-            Gwen::Color Highlight;
-        } Label;
-
         /// \brief The button colors.
         struct Button_t
         {
@@ -204,6 +195,26 @@ public:
             Gwen::Color Down;
             Gwen::Color Disabled;
         } Button;
+
+        /// \brief The label colors.
+        struct Label_t
+        {
+            Gwen::Color Text;
+        } Label;
+
+        /// \brief The menu colors.
+        struct Menu_t
+        {
+            Gwen::Color Normal;
+            Gwen::Color Hover;
+        } Menu;
+
+        /// \brief The progress bar colors.
+        struct ProgressBar_t
+        {
+            Gwen::Color Bar;
+            Gwen::Color Text;
+        } ProgressBar;
 
         /// \brief The tab colors.
         struct Tab_t

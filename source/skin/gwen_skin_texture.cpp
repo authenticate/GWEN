@@ -57,24 +57,27 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
 
     _texture.Load(texture_name, GetRender(), true);
 
-    Colors.Label.Default                    = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 508, Color(255, 255, 0));
-    Colors.Label.Bright                     = GetRender()->GetPixelColor(&_texture, 4 + 8 * 9, 508, Color(255, 255, 0));
-    Colors.Label.Dark                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 8, 500, Color(255, 255, 0));
-    Colors.Label.Highlight                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 9, 500, Color(255, 255, 0));
-
-    Colors.Button.Normal                    = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
+    Colors.Button.Normal                    = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
     Colors.Button.Hover                     = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
-    Colors.Button.Down                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
-    Colors.Button.Disabled                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
+    Colors.Button.Down                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Button.Disabled                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
 
-    Colors.Tab.Active.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
-    Colors.Tab.Active.Hover                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
-    Colors.Tab.Active.Down                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
-    Colors.Tab.Active.Disabled              = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
+    Colors.Label.Text                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 5, 508, Color(255, 255, 0));
+
+    Colors.Menu.Normal                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 5, 508, Color(255, 255, 0));
+    Colors.Menu.Hover                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
+
+    Colors.ProgressBar.Bar                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
+    Colors.ProgressBar.Text                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+
+    Colors.Tab.Active.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Tab.Active.Hover                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
+    Colors.Tab.Active.Down                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Tab.Active.Disabled              = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
     Colors.Tab.Inactive.Normal              = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
-    Colors.Tab.Inactive.Hover               = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
-    Colors.Tab.Inactive.Down                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
-    Colors.Tab.Inactive.Disabled            = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
+    Colors.Tab.Inactive.Hover               = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
+    Colors.Tab.Inactive.Down                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Tab.Inactive.Disabled            = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
 
     Colors.TooltipTextColor                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 500, Color(255, 255, 0));
 
