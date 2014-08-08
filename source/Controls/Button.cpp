@@ -277,7 +277,7 @@ void Button::Render(Skin::Base* skin)
         return;
     }
 
-    bool draw_depressed = GetDepressed() && IsHovered();
+    bool draw_depressed = GetDepressed();
     if (GetToggle())
     {
         draw_depressed = draw_depressed || GetToggleState();

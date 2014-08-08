@@ -291,6 +291,12 @@ public:
     /// \brief Gets should draw background.
     virtual bool GetShouldDrawBackground() const;
 
+    /// \brief Called when the mouse enters the control.
+    virtual void OnMouseEnter();
+
+    /// \brief Called when the mouse leaves the control.
+    virtual void OnMouseLeave();
+
     /// \brief Called when the mouse is moved.
     virtual void OnMouseMoved(int x, int y, int delta_x, int delta_y);
 
@@ -383,12 +389,6 @@ public:
 
     /// \brief Called when the escape key is pressed.
     virtual bool OnKeyEscape(bool is_down);
-
-    /// \brief Called when the mouse enters the control.
-    virtual void OnMouseEnter();
-
-    /// \brief Called when the mouse leaves the control.
-    virtual void OnMouseLeave();
 
     /// \brief Is the mouse over this control?
     virtual bool IsHovered();

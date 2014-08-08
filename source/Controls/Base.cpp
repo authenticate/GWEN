@@ -917,6 +917,35 @@ bool Base::GetShouldDrawBackground() const
     return _draw_background;
 }
 
+void Base::OnMouseEnter()
+{
+    _on_hover_enter.Call(this);
+
+    if (Visible())
+    {
+        if (GetTooltip() != nullptr)
+        {
+            Tooltip::Enable(this);
+        }
+        else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
+        {
+            Tooltip::Enable(GetParent());
+        }
+    }
+
+    Redraw();
+}
+
+void Base::OnMouseLeave()
+{
+    _on_hover_leave.Call(this);
+
+    Tooltip::Disable(this);
+    Tooltip::Disable(GetParent());
+
+    Redraw();
+}
+
 void Base::OnMouseMoved(int, int, int, int)
 {
 }
@@ -1136,35 +1165,6 @@ bool Base::OnKeyDown(bool)
 bool Base::OnKeyEscape(bool)
 {
     return false;
-}
-
-void Base::OnMouseEnter()
-{
-    _on_hover_enter.Call(this);
-
-    if (Visible())
-    {
-        if (GetTooltip() != nullptr)
-        {
-            Tooltip::Enable(this);
-        }
-        else if (GetParent() != nullptr && GetParent()->GetTooltip() != nullptr)
-        {
-            Tooltip::Enable(GetParent());
-        }
-    }
-
-    Redraw();
-}
-
-void Base::OnMouseLeave()
-{
-    _on_hover_leave.Call(this);
-
-    Tooltip::Disable(this);
-    Tooltip::Disable(GetParent());
-
-    Redraw();
 }
 
 bool Base::IsHovered()

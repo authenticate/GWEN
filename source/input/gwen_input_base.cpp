@@ -138,17 +138,6 @@ static void UpdateHoveredControl(Controls::Base* canvas)
             Gwen::Controls::_hovered_control->OnMouseEnter();
         }
     }
-
-    if (Gwen::Controls::_mouse_focus && Gwen::Controls::_mouse_focus->GetCanvas() == canvas)
-    {
-        if (Gwen::Controls::_hovered_control)
-        {
-            Controls::Base* old_hovered = Gwen::Controls::_hovered_control;
-            Gwen::Controls::_hovered_control = nullptr;
-            old_hovered->Redraw();
-        }
-        Gwen::Controls::_hovered_control = Gwen::Controls::_mouse_focus;
-    }
 }
 
 /// \brief A helper function to find the keyboard focus.
@@ -265,21 +254,29 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
         canvas->CloseMenus();
     }
 
-    if (!Gwen::Controls::_hovered_control)
+    Gwen::Controls::Base* target = Gwen::Controls::_mouse_focus;
+    if (!target)
+    {
+        target = Gwen::Controls::_hovered_control;
+    }
+
+    if (target && target->GetCanvas() != canvas)
+    {
+        target = nullptr;
+    }
+
+    if (target && !target->Visible())
+    {
+        target = nullptr;
+    }
+
+    // Sanity.
+    if (!target)
     {
         return false;
     }
 
-    if (Gwen::Controls::_hovered_control->GetCanvas() != canvas)
-    {
-        return false;
-    }
-
-    if (!Gwen::Controls::_hovered_control->Visible())
-    {
-        return false;
-    }
-
+    // Sanity.
     if (button >= MAX_MOUSE_BUTTONS)
     {
         return false;
@@ -311,7 +308,7 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
 
     if (is_down)
     {
-        if (!FindKeyboardFocus(Gwen::Controls::_hovered_control))
+        if (!FindKeyboardFocus(target))
         {
             if (Gwen::Controls::_keyboard_focus)
             {
@@ -325,11 +322,11 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
     case 0:
         if (is_double_click)
         {
-            Gwen::Controls::_hovered_control->OnMouseDoubleClickLeft(_mouse_position._x, _mouse_position._y);
+            target->OnMouseDoubleClickLeft(_mouse_position._x, _mouse_position._y);
         }
         else
         {
-            Gwen::Controls::_hovered_control->OnMouseClickLeft(_mouse_position._x, _mouse_position._y, is_down);
+            target->OnMouseClickLeft(_mouse_position._x, _mouse_position._y, is_down);
         }
 
         return true;
@@ -337,11 +334,11 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
     case 1:
         if (is_double_click)
         {
-            Gwen::Controls::_hovered_control->OnMouseDoubleClickRight(_mouse_position._x, _mouse_position._y);
+            target->OnMouseDoubleClickRight(_mouse_position._x, _mouse_position._y);
         }
         else
         {
-            Gwen::Controls::_hovered_control->OnMouseClickRight(_mouse_position._x, _mouse_position._y, is_down);
+            target->OnMouseClickRight(_mouse_position._x, _mouse_position._y, is_down);
         }
 
         return true;
