@@ -307,7 +307,7 @@ public:
     virtual void OnMouseClickLeft(int x, int y, bool is_down);
 
     /// \brief Called when the right mouse button is pressed.
-    virtual void OnMouseClickRight(int, int, bool);
+    virtual void OnMouseClickRight(int x, int y, bool is_down);
 
     /// \brief Called when the left mouse button is double clicked.
     virtual void OnMouseDoubleClickLeft(int x, int y);
