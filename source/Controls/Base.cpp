@@ -684,44 +684,36 @@ Gwen::Rectangle Base::GetBounds() const
     return _bounds;
 }
 
-std::vector<Base*> Base::GetControlsAt(int x, int y, bool only_if_visible, bool only_if_mouse_enabled)
+std::vector<Base*> Base::GetControlsAt(int x, int y)
 {
-    // Sanity.
-    if (only_if_visible && Hidden())
-    {
-        return std::vector<Base*>();
-    }
-
-    // Sanity.
-    if (x < 0 || y < 0 || x >= Width() || y >= Height())
-    {
-        return std::vector<Base*>();
-    }
-
     std::vector<Base*> result;
+
+    //
+    // Recursively add any child controls.
+    //
+
+    // For each child...
     for (auto i = _children.rbegin(); i != _children.rend(); ++i)
     {
+        // Get the child.
         Base* child = *i;
 
-        std::vector<Base*> found = child->GetControlsAt(x - child->X(), y - child->Y(), only_if_visible, only_if_mouse_enabled);
-        if (!found.empty())
+        // Get the child's children.
+        std::vector<Base*> children = child->GetControlsAt(x - child->X(), y - child->Y());
+        if (!children.empty())
         {
-            result.insert(result.end(), found.begin(), found.end());
+            // Store the result.
+            result.insert(result.end(), children.begin(), children.end());
         }
     }
 
-    if (!result.empty())
+    // If the mouse is over this control...
+    if (x >= 0 && y >= 0 && x < Width() && y < Height())
     {
-        return result;
+        // Add this control.
+        result.push_back(this);
     }
 
-    // Sanity.
-    if (only_if_mouse_enabled && !GetMouseInputEnabled())
-    {
-        return std::vector<Base*>();
-    }
-
-    result.push_back(this);
     return result;
 }
 

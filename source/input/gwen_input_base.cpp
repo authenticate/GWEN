@@ -101,21 +101,21 @@ static void UpdateHoveredControl(Controls::Base* canvas)
     Controls::Base* hovered = nullptr;
 
     // Calculate the hovered controls.
-    std::vector<Controls::Base*> hovered_controls = canvas->GetControlsAt(_mouse_position._x, _mouse_position._y, false);
+    std::vector<Controls::Base*> hovered_controls = canvas->GetControlsAt(_mouse_position._x, _mouse_position._y);
 
     if (!hovered_controls.empty())
     {
-        // Try to set the first visible control as the hovered control.
+        // Try to set the first visible, mouse enabled control as the hovered control.
         for (auto control : hovered_controls)
         {
-            if (control->Visible())
+            if (control->Visible() && control->GetMouseInputEnabled())
             {
                 hovered = control;
                 break;
             }
         }
 
-        // If the hovered controls are hidden...
+        // If the hovered controls are hidden and not mouse enabled...
         if (hovered == nullptr)
         {
             // Set the first control as the hovered control.
