@@ -814,6 +814,18 @@ void Base::SetHidden(bool hidden)
         Tooltip::Disable(GetParent());
     }
 
+    // Get the canvas.
+    Canvas* canvas = GetCanvas();
+    assert(canvas != nullptr);
+    if (canvas != nullptr)
+    {
+        // Get the mouse position.
+        Gwen::Point mouse_position = Gwen::Input::GetMousePosition();
+
+        // Recalculate the hovered control.
+        Gwen::Input::OnMouseMoved(canvas, mouse_position._x, mouse_position._y, 0, 0);
+    }
+
     // If this control is not hidden and is the hovered control...
     if (!_hidden && _hovered_control == this)
     {
@@ -1206,6 +1218,7 @@ void Base::SetDisabled(bool disabled)
     }
 
     _disabled = disabled;
+
     Redraw();
 }
 

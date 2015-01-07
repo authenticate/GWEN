@@ -96,7 +96,7 @@ static float _last_click_time[MAX_MOUSE_BUTTONS];
 static Gwen::Point _last_click_position;
 
 /// \brief A helper function to update the hovered control.
-static void UpdateHoveredControl(Controls::Base* canvas)
+static void _UpdateHoveredControl(Controls::Base* canvas)
 {
     Controls::Base* hovered = nullptr;
 
@@ -243,7 +243,7 @@ void OnMouseMoved(Controls::Base* canvas, int x, int y, int, int)
 {
     _mouse_position._x = x;
     _mouse_position._y = y;
-    UpdateHoveredControl(canvas);
+    _UpdateHoveredControl(canvas);
 }
 
 bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
@@ -407,7 +407,7 @@ void OnCanvasThink(Controls::Base* canvas)
     if (!Gwen::Controls::_hovered_control ||
         !Gwen::Controls::_hovered_control->Visible())
     {
-        UpdateHoveredControl(canvas);
+        _UpdateHoveredControl(canvas);
     }
 
     if (!Gwen::Controls::_keyboard_focus)
