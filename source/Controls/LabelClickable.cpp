@@ -38,8 +38,10 @@ namespace Controls
 
 GWEN_CONTROL_CONSTRUCTOR(LabelClickable, Button)
 {
-    SetAlignment(Position::LEFT | Position::CENTER_V);
+    SetAlignment(Position::LEFT | Position::TOP);
     SetShouldDrawBackground(false);
+    SetSize(200, 20);
+    SetTextPadding(Gwen::Padding(0, 1, 0, 0));
     SetToggle(false);
 }
 
