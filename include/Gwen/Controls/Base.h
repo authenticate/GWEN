@@ -56,14 +56,6 @@ namespace Controls
 // Forward declarations.
 class Canvas;
 
-// Forward declarations.
-namespace Tooltip
-{
-
-void Layout(Gwen::Skin::Base* skin);
-
-}; // namespace Tooltip
-
 /// \brief A global pointer to the hovered control.
 extern Base* _hovered_control;
 
@@ -76,14 +68,12 @@ extern Base* _mouse_focus;
 /// \brief This class represents a base class for all UI controls.
 class Base : public Event::Handler
 {
-    friend void Gwen::Controls::Tooltip::Layout(Gwen::Skin::Base* skin);
-
 public:
     /// \brief Constructor.
-    Base(Base* parent, const std::string& name = "");
+    explicit Base(Base* parent, const std::string& name = "");
 
     /// \brief Destructor.
-    virtual ~Base();
+    virtual ~Base() override;
 
     /// \brief Called before the control is deleted.
     virtual void PreDelete(Gwen::Skin::Base*);
@@ -232,10 +222,10 @@ public:
     virtual bool SetBounds(const Gwen::Rectangle& bounds);
 
     /// \brief Sets the padding.
-    virtual void SetPadding(const Padding& padding);
+    virtual bool SetPadding(const Padding& padding);
 
-    /// \brief Sets the margin. (What's the difference between margin and padding?)
-    virtual void SetMargin(const Margin& margin);
+    /// \brief Sets the margin. (TODO: What's the difference between margin and padding?)
+    virtual bool SetMargin(const Margin& margin);
 
     /// \brief Moves the control.
     virtual void MoveTo(int x, int y);
@@ -255,10 +245,10 @@ public:
     /// \brief Gets the render bounds. (What's the difference between bounds? Why are there three bounds?)
     virtual Gwen::Rectangle GetRenderBounds() const;
 
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void DoRender(Gwen::Skin::Base* skin);
 
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void RenderRecursive(Gwen::Skin::Base* skin, const Gwen::Rectangle& clipping_rectangle);
 
     /// \brief Should the control clip its children?
@@ -471,9 +461,6 @@ public:
         _accelerators[accelerator_name] = caller;
     }
 
-    /// \brief Does this control need layed out?
-    virtual bool NeedsLayout() const;
-
     /// \brief Flags the control for redraw.
     virtual void Invalidate();
 
@@ -483,6 +470,18 @@ public:
     /// \briefs Flags the children for redraw.
     virtual void InvalidateChildren(bool recursive = false);
 
+    /// \brief Does this control need layed out?
+    virtual bool NeedsLayout() const;
+
+    /// \brief Lays out the control.
+    virtual void Layout(Gwen::Skin::Base* skin);
+
+    /// \brief Lays out the control.
+    virtual void RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin);
+
+    /// \brief Lays out the control.
+    virtual void PostLayout(Gwen::Skin::Base* skin);
+
     /// \brief An event for when the mouse enters the control.
     Gwen::Event::Caller _on_hover_enter;
 
@@ -490,29 +489,20 @@ public:
     Gwen::Event::Caller _on_hover_leave;
 
 protected:
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void Render(Gwen::Skin::Base* skin);
 
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void RenderUnder(Gwen::Skin::Base* skin);
 
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void RenderOver(Gwen::Skin::Base* skin);
 
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void RenderFocus(Gwen::Skin::Base* skin);
 
     /// \brief Update the render bounds.
     virtual void UpdateRenderBounds();
-
-    /// \brief Lays out the control.
-    virtual void RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin);
-
-    /// \brief Lays out the control.
-    virtual void Layout(Gwen::Skin::Base* skin);
-
-    /// \brief Lays out the control.
-    virtual void PostLayout(Gwen::Skin::Base* skin);
 
     /// \brief Called when a child control is added.
     virtual void _OnChildAdded(Base* child);

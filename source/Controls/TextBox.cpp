@@ -320,9 +320,9 @@ void TextBox::RefreshCursorBounds()
     Gwen::Rectangle end = _label->GetCharacterPosition(_cursor_end);
     end._x += _label->X();
 
-    _selection_bounds._x = Utility::Min(position._x, end._x);
+    _selection_bounds._x = std::min(position._x, end._x);
     _selection_bounds._y = GetPadding()._top;
-    _selection_bounds._width = Utility::Max(position._x, end._x) - _selection_bounds._x;
+    _selection_bounds._width = std::max(position._x, end._x) - _selection_bounds._x;
     _selection_bounds._height = Height() - GetPadding()._top - GetPadding()._bottom;
 
     _cursor_bounds._x = position._x;
@@ -364,8 +364,8 @@ std::string TextBox::GetSelection() const
         return "";
     }
 
-    int start = Utility::Min(_cursor_begin, _cursor_end);
-    int end = Utility::Max(_cursor_begin, _cursor_end);
+    int start = std::min(_cursor_begin, _cursor_end);
+    int end = std::max(_cursor_begin, _cursor_end);
 
     const std::string& current_text = _label->GetText();
     return current_text.substr(start, end - start);
@@ -373,8 +373,8 @@ std::string TextBox::GetSelection() const
 
 void TextBox::EraseSelection()
 {
-    int start = Utility::Min(_cursor_begin, _cursor_end);
-    int end = Utility::Max(_cursor_begin, _cursor_end);
+    int start = std::min(_cursor_begin, _cursor_end);
+    int end = std::max(_cursor_begin, _cursor_end);
     DeleteText(start, end - start);
 
     // Update the cursor position.
@@ -627,6 +627,15 @@ void TextBox::OnMouseDoubleClickLeft(int, int)
     OnSelectAll(this);
 }
 
+void TextBox::Layout(Gwen::Skin::Base* skin)
+{
+    RefreshCursorBounds();
+}
+
+void TextBox::PostLayout(Gwen::Skin::Base*)
+{
+}
+
 void TextBox::OnTextChanged()
 {
     if (_select_all_on_focus)
@@ -690,15 +699,6 @@ void TextBox::Render(Gwen::Skin::Base* skin)
 }
 
 void TextBox::RenderFocus(Gwen::Skin::Base* skin)
-{
-}
-
-void TextBox::Layout(Gwen::Skin::Base* skin)
-{
-    RefreshCursorBounds();
-}
-
-void TextBox::PostLayout(Gwen::Skin::Base*)
 {
 }
 

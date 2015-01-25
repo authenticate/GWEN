@@ -59,6 +59,17 @@ GWEN_CONTROL_CONSTRUCTOR(MenuItem, Button)
     }
 }
 
+void MenuItem::Layout(Skin::Base* skin)
+{
+    // Call the base class.
+    Button::Layout(skin);
+
+    if (_submenu_arrow)
+    {
+        _submenu_arrow->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 102, 7);
+    }
+}
+
 void MenuItem::SetOnStrip(bool on_strip)
 {
     _on_strip = on_strip;
@@ -203,8 +214,9 @@ void MenuItem::Open()
     }
 
     // Open the menu.
-    _menu->SetHidden(false);
-    _menu->BringToFront();
+    _menu->Open();
+
+    // Update the position.
     Gwen::Point point = LocalPositionToCanvas(Gwen::Point(0, 0));
 
     // Strip menus open downwards.
@@ -271,17 +283,6 @@ void MenuItem::Render(Skin::Base* skin)
     if (_accelerator)
     {
         _accelerator->SetTextColorOverride(GetTextColor());
-    }
-}
-
-void MenuItem::Layout(Skin::Base* skin)
-{
-    // Call the base class.
-    Button::Layout(skin);
-
-    if (_submenu_arrow)
-    {
-        _submenu_arrow->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 102, 7);
     }
 }
 

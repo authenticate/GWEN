@@ -169,11 +169,6 @@ bool TabButton::GetShouldClip() const
     return false;
 }
 
-void TabButton::Render(Skin::Base* skin)
-{
-    skin->DrawTabButton(this, GetActive(), _control->GetTabStrip()->GetDock());
-}
-
 void TabButton::Layout(Skin::Base* skin)
 {
     // Call the base class.
@@ -192,6 +187,11 @@ void TabButton::Layout(Skin::Base* skin)
     {
         SetPadding(Padding(3, 2, 5, 2));
     }
+}
+
+void TabButton::Render(Skin::Base* skin)
+{
+    skin->DrawTabButton(this, GetActive(), _control->GetTabStrip()->GetDock());
 }
 
 }; // namespace Controls

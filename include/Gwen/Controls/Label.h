@@ -109,9 +109,10 @@ public:
     /// \brief Called before the control is deleted.
     virtual void PreDelete(Gwen::Skin::Base* skin) override;
 
-protected:
     /// \brief Lays out the UI element.
     virtual void PostLayout(Skin::Base* skin) override;
+
+protected:
 
     /// \brief Called when the bounds change.
     virtual void _OnBoundsChanged(const Gwen::Rectangle& old_bounds) override;

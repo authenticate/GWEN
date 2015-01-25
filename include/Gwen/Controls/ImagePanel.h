@@ -78,7 +78,7 @@ public:
     virtual bool FailedToLoad();
 
 protected:
-    /// \brief Renders the UI element.
+    /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
 
     /// \brief The texture.

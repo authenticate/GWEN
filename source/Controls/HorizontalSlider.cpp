@@ -40,6 +40,11 @@ GWEN_CONTROL_CONSTRUCTOR(HorizontalSlider, ControlsInternal::Slider)
 {
 }
 
+void HorizontalSlider::Layout(Skin::Base*)
+{
+    _bar->SetSize(15, Height());
+}
+
 float HorizontalSlider::CalculateValue()
 {
     return static_cast<float>(_bar->X()) / static_cast<float>(Width() - _bar->Width());
@@ -53,11 +58,6 @@ void HorizontalSlider::UpdateBarFromValue()
 void HorizontalSlider::Render(Skin::Base* skin)
 {
     skin->DrawSlider(this, true, _clamp_to_notches ? _number_of_notches : 0, _bar->Width());
-}
-
-void HorizontalSlider::Layout(Skin::Base*)
-{
-    _bar->SetSize(15, Height());
 }
 
 void HorizontalSlider::OnMouseClickLeft(int x, int y, bool is_down)

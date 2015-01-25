@@ -44,19 +44,14 @@ GWEN_CONTROL_CONSTRUCTOR(MenuStrip, Menu)
     SetBounds(0, 0, 200, 22);
 }
 
+void MenuStrip::Layout(Skin::Base* skin)
+{
+    // Intentionally blank.
+}
+
 bool MenuStrip::GetHoverOpenMenu() const
 {
     return GetOpen();
-}
-
-void MenuStrip::OnAddItem(MenuItem* item)
-{
-    item->SetDock(Position::LEFT);
-    item->SetPadding(Padding(10, 0, 10, 0));
-    item->SetTextPadding(Padding(5, 2, 5, 0));
-    item->SizeToContents();
-    item->SetOnStrip(true);
-    item->_on_hover_enter.Add(this, &Menu::OnHoverItem);
 }
 
 void MenuStrip::Close()
@@ -74,9 +69,14 @@ void MenuStrip::RenderUnder(Skin::Base*)
     // Intentionally blank.
 }
 
-void MenuStrip::Layout(Skin::Base*)
+void MenuStrip::_OnAddItem(MenuItem* item)
 {
-    // Intentionally blank.
+    item->SetDock(Position::LEFT);
+    item->SetPadding(Padding(10, 0, 10, 0));
+    item->SetTextPadding(Padding(5, 2, 5, 0));
+    item->SizeToContents();
+    item->SetOnStrip(true);
+    item->_on_hover_enter.Add(this, &Menu::_OnHoverItem);
 }
 
 }; // namespace Controls

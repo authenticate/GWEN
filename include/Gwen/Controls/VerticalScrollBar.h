@@ -78,7 +78,6 @@ class VerticalScrollBar : public ControlsInternal::ScrollBar
     /// \brief Called when the left mouse button is pressed.
     virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
 
-protected:
     /// \brief Lays out the UI element.
     virtual void Layout(Skin::Base* skin) override;
 };

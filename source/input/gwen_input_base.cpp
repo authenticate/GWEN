@@ -392,6 +392,9 @@ bool OnKeyEvent(Controls::Base* canvas, int key, bool is_down)
 
 void OnCanvasThink(Controls::Base* canvas)
 {
+    Gwen::Point mouse_position = Gwen::Input::GetMousePosition();
+    Gwen::Input::OnMouseMoved(canvas, mouse_position._x, mouse_position._y, 0, 0);
+
     if (Gwen::Controls::_mouse_focus &&
         (!Gwen::Controls::_mouse_focus->Visible() || !Gwen::Controls::_mouse_focus->GetMouseInputEnabled()))
     {

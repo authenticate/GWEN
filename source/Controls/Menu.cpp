@@ -49,6 +49,31 @@ GWEN_CONTROL_CONSTRUCTOR(Menu, ScrollControl)
     _SetScrollBarHidden(true);
 }
 
+void Menu::Layout(Skin::Base* skin)
+{
+    // Call the base class.
+    ScrollControl::Layout(skin);
+
+    int children_height = 0;
+
+    for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
+    {
+        Base* child = (*i);
+        assert(child != nullptr);
+        if (child != nullptr)
+        {
+            children_height += child->Height();
+        }
+    }
+
+    if (Y() + children_height > GetCanvas()->Height())
+    {
+        children_height = GetCanvas()->Height() - Y();
+    }
+
+    SetSize(Width(), children_height);
+}
+
 MenuItem* Menu::AddItem(const std::string& name, const std::string& icon_name, const std::string& accelerator)
 {
     MenuItem* item = new MenuItem(this);
@@ -57,7 +82,7 @@ MenuItem* Menu::AddItem(const std::string& name, const std::string& icon_name, c
     item->SetImage(icon_name);
     item->SetAccelerator(accelerator);
 
-    OnAddItem(item);
+    _OnAddItem(item);
 
     return item;
 }
@@ -74,11 +99,11 @@ void Menu::Clear()
     for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
     {
         Base* child = *i;
-        if (!child)
+        assert(child != nullptr);
+        if (child != nullptr)
         {
-            continue;
+            child->DelayedDelete();
         }
-        child->DelayedDelete();
     }
 }
 
@@ -107,40 +132,6 @@ bool Menu::GetHoverOpenMenu() const
     return true;
 }
 
-void Menu::OnAddItem(MenuItem* item)
-{
-    item->SetTextPadding(Padding(GetIconMarginDisabled() ? 0 : 24, 2, 16, 0));
-    item->SetDock(Position::TOP);
-    item->SizeToContents();
-    item->SetAlignment(Position::CENTER_V | Position::LEFT);
-    item->_on_hover_enter.Add(this, &Menu::OnHoverItem);
-
-    const int width = Utility::Max(item->Width() + 10 + 32, Width());
-    SetSize(width, Height());
-}
-
-void Menu::OnHoverItem(Gwen::Controls::Base* control)
-{
-    if (!GetHoverOpenMenu())
-    {
-        return;
-    }
-
-    MenuItem* item = dynamic_cast<MenuItem*>(control);
-    if (!item)
-    {
-        return;
-    }
-
-    if (item->GetOpen())
-    {
-        return;
-    }
-
-    CloseSubMenus();
-    item->Open();
-}
-
 bool Menu::GetMenuComponent()
 {
     return true;
@@ -150,9 +141,6 @@ void Menu::Open()
 {
     SetHidden(false);
     BringToFront();
-
-    Gwen::Point position = Input::GetMousePosition();
-    SetPosition(position._x, position._y);
 }
 
 void Menu::Close()
@@ -169,11 +157,10 @@ void Menu::CloseSubMenus()
     for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
     {
         MenuItem* item = dynamic_cast<MenuItem*>(*i);
-        if (!item)
+        if (item != nullptr)
         {
-            continue;
+            item->Close();
         }
-        item->Close();
     }
 }
 
@@ -191,12 +178,7 @@ bool Menu::GetOpen() const
     for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
     {
         MenuItem* item = dynamic_cast<MenuItem*>(*i);
-        if (!item)
-        {
-            continue;
-        }
-
-        if (item->GetOpen())
+        if (item != nullptr && item->GetOpen())
         {
             return true;
         }
@@ -218,30 +200,31 @@ void Menu::RenderUnder(Skin::Base* skin)
     skin->DrawShadow(this);
 }
 
-void Menu::Layout(Skin::Base* skin)
+void Menu::_OnAddItem(MenuItem* item)
 {
-    // Call the base class.
-    ScrollControl::Layout(skin);
+    item->SetTextPadding(Padding(GetIconMarginDisabled() ? 0 : 24, 2, 16, 0));
+    item->SetDock(Position::TOP);
+    item->SizeToContents();
+    item->SetAlignment(Position::CENTER_V | Position::LEFT);
+    item->_on_hover_enter.Add(this, &Menu::_OnHoverItem);
 
-    int children_height = 0;
+    const int width = std::max(item->Width() + 10 + 32, Width());
+    SetSize(width, Height());
+}
 
-    for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
+void Menu::_OnHoverItem(Gwen::Controls::Base* control)
+{
+    if (!GetHoverOpenMenu())
     {
-        Base* child = (*i);
-        if (!child)
-        {
-            continue;
-        }
-
-        children_height += child->Height();
+        return;
     }
 
-    if (Y() + children_height > GetCanvas()->Height())
+    MenuItem* item = dynamic_cast<MenuItem*>(control);
+    if (item != nullptr && !item->GetOpen())
     {
-        children_height = GetCanvas()->Height() - Y();
+        CloseSubMenus();
+        item->Open();
     }
-
-    SetSize(Width(), children_height);
 }
 
 }; // namespace Controls

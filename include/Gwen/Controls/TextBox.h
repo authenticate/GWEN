@@ -153,6 +153,12 @@ class TextBox : public Base
     /// \brief Called when the left mouse button is double clicked.
     virtual void OnMouseDoubleClickLeft(int x, int y) override;
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Gwen::Skin::Base* skin) override;
+
+    /// \brief Lays out the UI element.
+    virtual void PostLayout(Gwen::Skin::Base* skin) override;
+
     /// \brief An event for when the text is changed.
     Event::Caller _on_text_changed;
 
@@ -171,12 +177,6 @@ protected:
 
     /// \brief Draws the UI element.
     virtual void RenderFocus(Gwen::Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Gwen::Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void PostLayout(Gwen::Skin::Base* skin) override;
 
     /// \brief The lable.
     Label* _label;

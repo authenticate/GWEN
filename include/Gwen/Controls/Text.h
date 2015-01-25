@@ -105,6 +105,9 @@ public:
     /// \brief Refresh the size.
     void RefreshSize();
 
+    /// \brief Lays out the control.
+    void Layout(Skin::Base* skin) override;
+
 protected:
     /// \brief Called when the scale of the control changes.
     virtual void _OnScaleChanged() override;
@@ -112,11 +115,8 @@ protected:
     /// \brief Splits the words of a string.
     virtual void _SplitWords(const std::string& string, std::vector<std::string>& result);
 
-    /// brief Draws the UI.
+    /// \brief Draws the UI.
     void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the control.
-    void Layout(Skin::Base* skin) override;
 
 private:
     /// \brief Refreshes the word wrap.

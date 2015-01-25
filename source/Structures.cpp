@@ -40,6 +40,16 @@ Margin::Margin(int left, int top, int right, int bottom) :
 {
 }
 
+bool Margin::operator==(const Margin& margin) const
+{
+    return _top == margin._top && _bottom == margin._bottom && _left == margin._left && _right == margin._right;
+}
+
+bool Margin::operator!=(const Margin& margin) const
+{
+    return !(*this == margin);
+}
+
 Margin Margin::operator+(const Margin& left_margin) const
 {
     Margin margin;
@@ -68,26 +78,26 @@ Rectangle::Rectangle(int x, int y, int width, int height) :
 {
 }
 
-bool Rectangle::operator==(const Rectangle& other) const
+bool Rectangle::operator==(const Rectangle& rectangle) const
 {
-    return _x == other._x && _y == other._y && _width == other._width && _height == other._height;
+    return _x == rectangle._x && _y == rectangle._y && _width == rectangle._width && _height == rectangle._height;
 }
 
-bool Rectangle::operator!=(const Rectangle& other) const
+bool Rectangle::operator!=(const Rectangle& rectangle) const
 {
-    return !(*this == other);
+    return !(*this == rectangle);
 }
 
-Rectangle Rectangle::operator+(const Rectangle& other) const
+Rectangle Rectangle::operator+(const Rectangle& rectangle) const
 {
-    Rectangle rectangle;
+    Rectangle result;
 
-    rectangle._x = _x + other._x;
-    rectangle._y = _y + other._y;
-    rectangle._width = _width + other._width;
-    rectangle._height = _height + other._height;
+    result._x = _x + rectangle._x;
+    result._y = _y + rectangle._y;
+    result._width = _width + rectangle._width;
+    result._height = _height + rectangle._height;
 
-    return rectangle;
+    return result;
 }
 
 Point::Point() :
@@ -100,6 +110,16 @@ Point::Point(int x, int y) :
     _x(x),
     _y(y)
 {
+}
+
+bool Point::operator==(const Point& point) const
+{
+    return _x == point._x && _y == point._y;
+}
+
+bool Point::operator!=(const Point& point) const
+{
+    return !(*this == point);
 }
 
 void Point::operator+=(const Point& point)
@@ -130,6 +150,16 @@ Color::Color(unsigned char red, unsigned char green, unsigned char blue, unsigne
     _blue(blue),
     _alpha(alpha)
 {
+}
+
+bool Color::operator==(const Color& color) const
+{
+    return color._red == _red && color._green == _green && color._blue == _blue && color._alpha == _alpha;
+}
+
+bool Color::operator!=(const Color& color) const
+{
+    return !(*this == color);
 }
 
 void Color::operator=(const Color& color)
@@ -177,11 +207,6 @@ Color Color::operator-(const Color& color) const
 Color Color::operator+(const Color& color) const
 {
     return Color(_red + color._red, _green + color._green, _blue + color._blue, _alpha + color._alpha);
-}
-
-bool Color::operator==(const Color& color) const
-{
-    return color._red == _red && color._green == _green && color._blue == _blue && color._alpha == _alpha;
 }
 
 }; // namespace Gwen

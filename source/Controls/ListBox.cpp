@@ -58,6 +58,22 @@ GWEN_CONTROL_CONSTRUCTOR(ListBox, ScrollControl)
     SetPadding(Padding(0, 1, 0, 1));
 }
 
+void ListBox::Layout(Skin::Base* skin)
+{
+    // Call the base class function.
+    ScrollControl::Layout(skin);
+
+    // Update the table.
+    const Gwen::Rectangle& inner_bounds = _inner_panel->GetInnerBounds();
+    _table->SetPosition(inner_bounds._x, inner_bounds._y);
+    _table->SetWidth(inner_bounds._width);
+    _table->SizeToChildren(false, true);
+
+    // Update the scroll bars.
+    unsigned row_height = _table->GetDefaultRowHeight();
+    _scroll_bar->SetNudgeAmount(row_height);
+}
+
 Layout::TableRow* ListBox::AddRow(const std::string& label, const std::string& name)
 {
     // Allocate a new row.
@@ -253,7 +269,7 @@ void ListBox::_UpdateScrollBar()
     children_height += padding._top + padding._bottom;
 
     // Update the size of the inner panel.
-    _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
+    _inner_panel->SetSize(width - scroll_bar_width, std::max(height, children_height));
 
     // Determine whether to display the scroll bars.
     _SetScroll(height <= children_height);
@@ -290,22 +306,6 @@ void ListBox::Render(Skin::Base* skin)
     // Store the new clipping region.
     skin->GetRender()->SetClippingRegion(bounds);
     skin->GetRender()->StartClipping();
-}
-
-void ListBox::Layout(Skin::Base* skin)
-{
-    // Call the base class function.
-    ScrollControl::Layout(skin);
-
-    // Update the table.
-    const Gwen::Rectangle& inner_bounds = _inner_panel->GetInnerBounds();
-    _table->SetPosition(inner_bounds._x, inner_bounds._y);
-    _table->SetWidth(inner_bounds._width);
-    _table->SizeToChildren(false, true);
-
-    // Update the scroll bars.
-    unsigned row_height = _table->GetDefaultRowHeight();
-    _scroll_bar->SetNudgeAmount(row_height);
 }
 
 void ListBox::OnRowSelected(Base* control)

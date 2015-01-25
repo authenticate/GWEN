@@ -44,14 +44,10 @@ namespace Controls
 Canvas::Canvas(Gwen::Skin::Base* skin) :
     Base(nullptr),
     _first_tab(nullptr),
-    _next_tab(nullptr),
-    _needs_redraw(true),
-    _any_delete(false),
-    _draw_background(false)
+    _next_tab(nullptr)
 {
-    SetBackgroundColor(Color(255, 255, 255, 255));
+    SetBackgroundColor(Color(0, 0, 0, 0));
     SetBounds(0, 0, 10000, 10000);
-    SetDrawBackground(false);
 
     if (skin)
     {
@@ -60,81 +56,6 @@ Canvas::Canvas(Gwen::Skin::Base* skin) :
 }
 
 Canvas::~Canvas()
-{
-    ReleaseChildren();
-}
-
-void Canvas::Initialize()
-{
-}
-
-void Canvas::RenderCanvas()
-{
-    DoThink();
-
-    Gwen::Renderer::Base* render = _skin->GetRender();
-    render->Begin();
-
-    RecurseLayout(false, _skin);
-
-    render->SetClippingRegion(GetBounds());
-    render->SetRenderOffset(Gwen::Point(0, 0));
-
-    if (_draw_background)
-    {
-        render->SetDrawColor(_background_color);
-        render->FillRectangle(GetRenderBounds());
-    }
-
-    DoRender(_skin);
-
-    Tooltip::Layout(_skin);
-    Tooltip::Render(_skin);
-
-    render->End();
-}
-
-void Canvas::DoThink()
-{
-    ProcessDelayedDeletes();
-
-    // Sanity.
-    if (Hidden())
-    {
-        return;
-    }
-
-    // Update the animation.
-    Animation::Think();
-
-    // Reset the tabbing.
-    _next_tab = nullptr;
-    _first_tab = nullptr;
-
-    // Update the layout.
-    RecurseLayout(false, _skin);
-
-    // If there's no next tab, cycle to the start.
-    if (_next_tab == nullptr)
-    {
-        _next_tab = _first_tab;
-    }
-
-    // Update the input.
-    Gwen::Input::OnCanvasThink(this);
-}
-
-void Canvas::Redraw()
-{
-    _needs_redraw = true;
-}
-
-Canvas* Canvas::GetCanvas()
-{
-    return this;
-}
-
-void Canvas::ReleaseChildren()
 {
     auto i = _children.begin();
     while (i != _children.end())
@@ -145,33 +66,62 @@ void Canvas::ReleaseChildren()
     }
 }
 
+void Canvas::Initialize()
+{
+}
+
+void Canvas::Render()
+{
+    _Think();
+
+    Gwen::Renderer::Base* render = _skin->GetRender();
+    render->Begin();
+
+    // Update the bounds and offets.
+    render->SetClippingRegion(GetBounds());
+    render->SetRenderOffset(Gwen::Point(0, 0));
+
+    // Draw the background.
+    render->SetDrawColor(_background_color);
+    render->FillRectangle(GetRenderBounds());
+
+    // Draw the controls.
+    DoRender(_skin);
+
+    // Draw the tooltip.
+    Tooltip::Render(_skin);
+
+    render->End();
+}
+
+Canvas* Canvas::GetCanvas()
+{
+    return this;
+}
+
 void Canvas::AddDelayedDelete(Base* control)
 {
-    if (!_any_delete || _delete_set.find(control) == _delete_set.end())
+    auto control_iterator = std::find(_controls_delete.begin(), _controls_delete.end(), control);
+    assert(control_iterator == _controls_delete.end());
+    if (control_iterator == _controls_delete.end())
     {
-        _any_delete = true;
-        _delete_set.insert(control);
-        _delete_list.push_back(control);
+        _controls_delete.push_back(control);
     }
 }
 
 void Canvas::ProcessDelayedDeletes()
 {
-    while (_any_delete)
+    for (unsigned i = 0; i < _controls_delete.size(); ++i)
     {
-        _any_delete = false;
-
-        std::list<Base*> delete_list = _delete_list;
-        _delete_list.clear();
-        _delete_set.clear();
-        for (auto i = delete_list.begin(); i != delete_list.end(); ++i)
+        Base* control = _controls_delete.at(i);
+        assert(control != nullptr);
+        if (control != nullptr)
         {
-            Base* control = *i;
             control->PreDelete(GetSkin());
             delete control;
-            Redraw();
         }
     }
+    _controls_delete.clear();
 }
 
 bool Canvas::InputMouseMoved(int x, int y, int delta_x, int delta_y)
@@ -319,37 +269,18 @@ bool Canvas::InputCharacter(char character)
     return _keyboard_focus->OnCharacter(character);
 }
 
-bool Canvas::InputQuit()
-{
-    return true;
-}
-
 void Canvas::SetBackgroundColor(const Gwen::Color& color)
 {
     _background_color = color;
 }
 
-void Canvas::SetDrawBackground(bool should_draw)
-{
-    _draw_background = should_draw;
-}
-
 void Canvas::PreDeleteCanvas(Base* control)
 {
-    if (_any_delete)
+    auto control_iterator = std::find(_controls_delete.begin(), _controls_delete.end(), control);
+    if (control_iterator != _controls_delete.end())
     {
-        if (_delete_set.find(control) != _delete_set.end())
-        {
-            _delete_list.remove(control);
-            _delete_set.erase(control);
-            _any_delete = !_delete_set.empty();
-        }
+        _controls_delete.erase(control_iterator);
     }
-}
-
-void Canvas::Render(Gwen::Skin::Base*)
-{
-    _needs_redraw = false;
 }
 
 void Canvas::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
@@ -360,6 +291,36 @@ void Canvas::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
     InvalidateChildren(true);
 }
 
+void Canvas::_Think()
+{
+    ProcessDelayedDeletes();
+
+    // Update the input.
+    Gwen::Input::OnCanvasThink(this);
+
+    // Update the animation.
+    Animation::Think();
+
+    // Sanity.
+    if (Hidden())
+    {
+        return;
+    }
+
+    // Reset the tabbing.
+    _next_tab = nullptr;
+    _first_tab = nullptr;
+
+    // Update the layouts.
+    RecurseLayout(false, _skin);
+    Tooltip::Layout(_skin);
+
+    // If there's no next tab, cycle to the start.
+    if (_next_tab == nullptr)
+    {
+        _next_tab = _first_tab;
+    }
+}
 
 }; // namespace Controls
 

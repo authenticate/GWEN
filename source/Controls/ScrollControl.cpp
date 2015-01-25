@@ -58,6 +58,14 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollControl, Base)
     _SetScrollBarHidden(false);
 }
 
+void ScrollControl::Layout(Skin::Base* skin)
+{
+    // Call the base class function.
+    Base::Layout(skin);
+
+    _UpdateScrollBar();
+}
+
 void ScrollControl::SetClampToNudgeAmount(bool clamp_to_nudge_amount)
 {
     _scroll_bar->SetClampToNudgeAmount(clamp_to_nudge_amount);
@@ -145,12 +153,12 @@ void ScrollControl::_UpdateScrollBar()
     for (auto i = _inner_panel->GetChildren().begin(); i != _inner_panel->GetChildren().end(); ++i)
     {
         Base* child = *i;
-        children_height = Utility::Max<int>(children_height, child->Bottom());
+        children_height = std::max<int>(children_height, child->Bottom());
     }
     children_height += padding._top + padding._bottom;
 
     // Update the size of the inner panel.
-    _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
+    _inner_panel->SetSize(width - scroll_bar_width, std::max(height, children_height));
 
     // Determine whether to display the scroll bars.
     _SetScroll(height <= children_height);
@@ -197,14 +205,6 @@ bool ScrollControl::OnMouseWheeled(int delta)
 
 void ScrollControl::Render(Skin::Base*)
 {
-}
-
-void ScrollControl::Layout(Skin::Base* skin)
-{
-    // Call the base class function.
-    Base::Layout(skin);
-
-    _UpdateScrollBar();
 }
 
 }; // namespace Controls

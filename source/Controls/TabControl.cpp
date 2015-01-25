@@ -46,8 +46,6 @@ GWEN_CONTROL_CONSTRUCTOR(TabControl, Base)
     _tab_strip = new TabStrip(this);
     _tab_strip->SetTabPosition(Position::TOP);
 
-    _current_button = nullptr;
-
     _scroll[0] = new ControlsInternal::ScrollBarButton(this);
     _scroll[0]->SetDirectionLeft();
     _scroll[0]->_on_press_left.Add(this, &TabControl::ScrollPressLeft);
@@ -61,9 +59,18 @@ GWEN_CONTROL_CONSTRUCTOR(TabControl, Base)
     _inner_panel->SetDock(Position::FILL);
     _inner_panel->SendToBack();
 
+    _current_button = nullptr;
+
     _offset = 0;
 
     SetTabable(false);
+}
+
+void TabControl::PostLayout(Skin::Base* skin)
+{
+    // Call the base class.
+    Base::PostLayout(skin);
+    HandleOverflow();
 }
 
 TabButton* TabControl::AddPage(const std::string& text, Base* page)
@@ -217,13 +224,6 @@ bool TabControl::DoesAllowDrag() const
 void TabControl::SetAllowReorder(bool allow_reorder)
 {
     GetTabStrip()->SetAllowReorder(allow_reorder);
-}
-
-void TabControl::PostLayout(Skin::Base* skin)
-{
-    // Call the base class.
-    Base::PostLayout(skin);
-    HandleOverflow();
 }
 
 void TabControl::HandleOverflow()

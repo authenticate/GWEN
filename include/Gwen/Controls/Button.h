@@ -75,6 +75,9 @@ public:
     /// \brief Called when the left mouse button is double clicked.
     virtual void OnMouseDoubleClickLeft(int x, int y) override;
 
+    /// \brief Lays out the control.
+    virtual void PostLayout(Skin::Base* skin) override;
+
     /// \brief An event for when the button is pressed with the left mouse button.
     Gwen::Event::Caller _on_press_left;
 
@@ -102,9 +105,6 @@ public:
 protected:
     /// \brief Draws the UI.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the control.
-    virtual void PostLayout(Skin::Base* skin) override;
 
     /// \brief An optional image.
     ImagePanel* _image;

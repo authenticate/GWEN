@@ -44,6 +44,9 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ListBox, ScrollControl);
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Adds a row to the list box.
     Layout::TableRow* AddRow(const std::string& label, const std::string& name = "");
 
@@ -102,11 +105,8 @@ protected:
     /// \brief Updates the scroll bar.
     virtual void _UpdateScrollBar() override;
 
-    /// \brief Renders the UI element.
+    /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
 
     /// \brief Called when a row is selected.
     virtual void OnRowSelected(Base* control);

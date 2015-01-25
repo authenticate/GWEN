@@ -44,7 +44,7 @@ public:
     GWEN_CONTROL(RadioButton, CheckBox);
 
 protected:
-    /// brief Draws the UI element.
+    /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
 
 private:

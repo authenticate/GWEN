@@ -47,6 +47,9 @@ public:
     /// \brief constructor.
     GWEN_CONTROL(MenuItem, Button);
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Sets if the menu item is on the strip.
     virtual void SetOnStrip(bool on_strip);
 
@@ -113,9 +116,6 @@ public:
 protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
 
 private:
     /// \brief The menu.

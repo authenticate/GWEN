@@ -81,6 +81,9 @@ public:
     /// \brief Called when the control loses keyboard focus.
     virtual void OnLostkeyboardFocus() override;
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Is this control a menu component?
     virtual bool GetMenuComponent() override;
 
@@ -102,9 +105,6 @@ public:
 protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
 
     /// \brief The menu.
     Menu* _menu;

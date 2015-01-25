@@ -50,7 +50,7 @@ class SliderBar : public Dragger
 
 protected:
     /// \brief Draws the UI element.
-    virtual void Render(Skin::Base* skin);
+    virtual void Render(Skin::Base* skin) override;
 
     /// \brief Is the slider bar horizonal?
     bool _horizontal;

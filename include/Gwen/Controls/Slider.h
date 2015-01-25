@@ -43,6 +43,9 @@ class Slider : public Controls::Base
     /// \brief Constructor.
     GWEN_CONTROL(Slider, Controls::Base);
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Clamps the value to the notches.
     virtual void SetClampToNotches(bool clamp);
 
@@ -101,11 +104,8 @@ protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) = 0;
 
-    /// brief Draws the UI.
+    /// \brief Draws the UI.
     virtual void RenderFocus(Gwen::Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
 
     /// \brief Called when the bounds change.
     virtual void _OnBoundsChanged(const Gwen::Rectangle& old_bounds) override;

@@ -43,6 +43,9 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ChatBox, ScrollControl);
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Adds an item to the chat box.
     Layout::TableRow* AddItem(const std::string& label, const std::string& name = "");
 
@@ -58,9 +61,6 @@ protected:
 
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
 
     /// \brief The table which contains the chat UI elements.
     Controls::Layout::Table* _table;

@@ -48,25 +48,16 @@ public:
     Canvas(Skin::Base* skin);
 
     /// \brief Destructor.
-    virtual ~Canvas();
+    virtual ~Canvas() override;
 
     /// \brief Call this to fully initialize the canvas.
     virtual void Initialize();
 
     /// \brief Draws the canvas.
-    virtual void RenderCanvas();
-
-    /// \brief Call this to process input.
-    virtual void DoThink();
-
-    /// \brief Call this to redraw the canvas.
-    virtual void Redraw();
+    virtual void Render();
 
     /// \brief Gets the canvas.
     virtual Canvas* GetCanvas() override;
-
-    /// \brief Cleans up any children.
-    virtual void ReleaseChildren();
 
     /// \brief Adds a delayed delete.
     virtual void AddDelayedDelete(Base* control);
@@ -92,14 +83,8 @@ public:
     /// \brief Call to update a character.
     virtual bool InputCharacter(char character);
 
-    /// \brief Call to quit.
-    virtual bool InputQuit();
-
     /// \brief Sets the background color.
     virtual void SetBackgroundColor(const Gwen::Color& color);
-
-    /// \brief Sets if the background should be drawn.
-    virtual void SetDrawBackground(bool should_draw);
 
     /// \brief The first tab.
     Base* _first_tab;
@@ -108,29 +93,17 @@ public:
     Base* _next_tab;
 
 protected:
-    /// \brief Predeletes the canvas.
-    virtual void PreDeleteCanvas(Base*);
-
-    /// \brief Draws the UI element.
-    virtual void Render(Skin::Base* skin) override;
+    /// \brief Predeletes a control from the canvas.
+    virtual void PreDeleteCanvas(Base* control);
 
     /// \brief Called when the bounds change.
     virtual void _OnBoundsChanged(const Gwen::Rectangle& old_bounds) override;
 
-    /// \brief Does the canvas need redrawn?
-    bool _needs_redraw;
+    /// \brief A helper function to process input.
+    virtual void _Think();
 
-    /// \brief Are there any controls to delete?
-    bool _any_delete;
-
-    /// \brief The controls needing deleted.
-    std::list<Base*> _delete_list;
-
-    /// \brief The controls needing deleted.
-    std::set<Base*> _delete_set;
-
-    /// \brief Should the background be drawn?
-    bool _draw_background;
+    /// \brief The controls to delete.
+    std::vector<Base*> _controls_delete;
 
     /// \brief The background color.
     Gwen::Color _background_color;

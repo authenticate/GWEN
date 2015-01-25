@@ -270,6 +270,23 @@ void Button::OnMouseDoubleClickLeft(int x, int y)
     _on_mouse_double_click_left.Call(this);
 }
 
+void Button::PostLayout(Skin::Base* skin)
+{
+    Label::PostLayout(skin);
+
+    if (_image)
+    {
+        if (_center)
+        {
+            _image->SetPosition(Position::CENTER, 0, 0);
+        }
+        else
+        {
+            _image->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 0, 0);
+        }
+    }
+}
+
 void Button::Render(Skin::Base* skin)
 {
     if (!GetShouldDrawBackground())
@@ -284,23 +301,6 @@ void Button::Render(Skin::Base* skin)
     }
 
     skin->DrawButton(this, draw_depressed, IsHovered(), IsDisabled());
-}
-
-void Button::PostLayout(Skin::Base* pSkin)
-{
-    Label::PostLayout(pSkin);
-
-    if (_image)
-    {
-        if (_center)
-        {
-            _image->SetPosition(Position::CENTER, 0, 0);
-        }
-        else
-        {
-            _image->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 0, 0);
-        }
-    }
 }
 
 }; // namespace Controls

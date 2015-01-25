@@ -35,20 +35,6 @@ namespace Gwen
 namespace Utility
 {
 
-/// \brief Finds the minimum.
-template <typename T>
-T Min(T a, T b)
-{
-    return a < b ? a : b;
-}
-
-/// \brief Finds the maximum.
-template <typename T>
-T Max(T a, T b)
-{
-    return a > b ? a : b;
-}
-
 /// \brief Clamps a value.
 template <typename T>
 T Clamp(T value, T minimum, T maximum)
@@ -121,7 +107,7 @@ float Float(const std::string& string);
 }; // namespace String
 
 /// \brief Clamps two rectangles.
-Gwen::Rectangle ClampRectToRect(Gwen::Rectangle inside, Gwen::Rectangle outside, bool clamp_size = false);
+Gwen::Rectangle ClampRectangleToRectangle(Gwen::Rectangle inside, Gwen::Rectangle outside, bool clamp_size = false);
 
 }; // namespace Utility
 

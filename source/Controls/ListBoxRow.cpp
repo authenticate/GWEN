@@ -44,19 +44,6 @@ GWEN_CONTROL_CONSTRUCTOR(ListBoxRow, Layout::TableRow)
     SetSelected(false);
 }
 
-void ListBoxRow::Render(Skin::Base* skin)
-{
-    skin->DrawListBoxLine(this, GetSelected(), GetEven());
-}
-
-void ListBoxRow::SetSelected(bool selected)
-{
-    // Call the base class function.
-    TableRow::SetSelected(selected);
-
-    _UpdateTextColor();
-}
-
 void ListBoxRow::OnMouseEnter()
 {
     // Call the base class function.
@@ -85,6 +72,19 @@ void ListBoxRow::OnMouseDoubleClickLeft(int, int)
 {
     _DoSelect();
     _on_mouse_double_click_left.Call(this);
+}
+
+void ListBoxRow::SetSelected(bool selected)
+{
+    // Call the base class function.
+    TableRow::SetSelected(selected);
+
+    _UpdateTextColor();
+}
+
+void ListBoxRow::Render(Skin::Base* skin)
+{
+    skin->DrawListBoxLine(this, GetSelected(), GetEven());
 }
 
 void ListBoxRow::_DoSelect()

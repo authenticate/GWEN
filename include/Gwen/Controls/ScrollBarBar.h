@@ -67,12 +67,12 @@ public:
     /// \brief Called when the left mouse button is pressed.
     virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
 
-protected:
-    /// brief Draws the UI element.
-    virtual void Render(Skin::Base* skin) override;
-
     /// \brief Lays out the control.
     virtual void Layout(Skin::Base* skin) override;
+
+protected:
+    /// \brief Draws the UI element.
+    virtual void Render(Skin::Base* skin) override;
 
     /// \brief Is the bar horizontal?
     bool _horizontal;

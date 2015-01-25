@@ -201,7 +201,7 @@ void TableRow::SizeToContents()
             _columns[i]->SizeToContents();
         }
 
-        iHeight = Utility::Max(iHeight, _columns[i]->Height());
+        iHeight = std::max(iHeight, _columns[i]->Height());
     }
 
     SetHeight(iHeight);

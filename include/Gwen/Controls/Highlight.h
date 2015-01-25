@@ -43,6 +43,7 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(Highlight, Controls::Base);
 
+protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
 };

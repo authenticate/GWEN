@@ -237,7 +237,7 @@ void Table::DoSizeToContents()
         {
             if (row->_columns[j])
             {
-                _column_width[j] = Utility::Max(_column_width[j], row->_columns[j]->Width());
+                _column_width[j] = std::max(_column_width[j], row->_columns[j]->Width());
             }
         }
     }

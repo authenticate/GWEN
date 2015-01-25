@@ -93,13 +93,6 @@ void ScrollBarBar::OnMouseClickLeft(int x, int y, bool is_down)
     InvalidateParent();
 }
 
-void ScrollBarBar::Render(Skin::Base* skin)
-{
-    // Call the base class.
-    ControlsInternal::Dragger::Render(skin);
-    skin->DrawScrollBarBar(this, _depressed, IsHovered(), GetHorizontal());
-}
-
 void ScrollBarBar::Layout(Skin::Base*)
 {
     if (!GetParent())
@@ -108,6 +101,13 @@ void ScrollBarBar::Layout(Skin::Base*)
     }
 
     MoveTo(X(), Y());
+}
+
+void ScrollBarBar::Render(Skin::Base* skin)
+{
+    // Call the base class.
+    ControlsInternal::Dragger::Render(skin);
+    skin->DrawScrollBarBar(this, _depressed, IsHovered(), GetHorizontal());
 }
 
 }; // namespace ControlsInternal

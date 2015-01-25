@@ -40,7 +40,7 @@ namespace Controls
 
 GWEN_CONTROL_CONSTRUCTOR(TabStrip, Base)
 {
-    m_bAllowReorder = false;
+    _allow_reorder = false;
 }
 
 void TabStrip::SetTabPosition(int position)
@@ -72,12 +72,12 @@ void TabStrip::SetTabPosition(int position)
 
 void TabStrip::SetAllowReorder(bool allow_reorder)
 {
-    m_bAllowReorder = allow_reorder;
+    _allow_reorder = allow_reorder;
 }
 
 bool TabStrip::GetAllowReorder()
 {
-    return m_bAllowReorder;
+    return _allow_reorder;
 }
 
 bool TabStrip::GetShouldClip() const
@@ -90,58 +90,67 @@ void TabStrip::Layout(Skin::Base* skin)
     // Call the base class.
     Base::Layout(skin);
 
+    Gwen::Point size_new = Gwen::Point(0, 0);
+
     int number = 0;
     for (auto i = _children.begin(); i != _children.end(); ++i)
     {
         TabButton* button = dynamic_cast<TabButton*>(*i);
-        if (!button)
+        if (button != nullptr)
         {
-            continue;
+            // Update the button's size.
+            button->SizeToContents();
+
+            // Update the size of the largest tab.
+            Gwen::Point size = button->GetSize();
+            size_new._x = std::max(size_new._x, size._x);
+            size_new._y = std::max(size_new._y, size._y);
+
+            int not_first = number > 0 ? -1 : 0;
+
+            Margin margin;
+            if (_dock == Position::TOP)
+            {
+                margin._left = not_first;
+                button->SetDock(Position::LEFT);
+            }
+
+            if (_dock == Position::LEFT)
+            {
+                margin._top = not_first;
+                button->SetDock(Position::TOP);
+            }
+
+            if (_dock == Position::RIGHT)
+            {
+                margin._right = not_first;
+                button->SetDock(Position::TOP);
+            }
+
+            if (_dock == Position::BOTTOM)
+            {
+                margin._left = not_first;
+                button->SetDock(Position::LEFT);
+            }
+            button->SetMargin(margin);
+
+            ++number;
         }
-
-        button->SizeToContents();
-
-        int not_first = number > 0 ? -1 : 0;
-
-        Margin margin;
-        if (_dock == Position::TOP)
-        {
-            margin._left = not_first;
-            button->SetDock(Position::LEFT);
-        }
-
-        if (_dock == Position::LEFT)
-        {
-            margin._top = not_first;
-            button->SetDock(Position::TOP);
-        }
-
-        if (_dock == Position::RIGHT)
-        {
-            margin._right = not_first;
-            button->SetDock(Position::TOP);
-        }
-
-        if (_dock == Position::BOTTOM)
-        {
-            margin._left = not_first;
-            button->SetDock(Position::LEFT);
-        }
-
-        button->SetMargin(margin);
-        ++number;
     }
 
-    Gwen::Point largest_tab(25, 25);
+    // Verify the new size based on the docking value.
     if (_dock == Position::TOP || _dock == Position::BOTTOM)
     {
-        SetSize(Width(), largest_tab._y);
+        size_new._x = Width();
     }
 
     if (_dock == Position::LEFT || _dock == Position::RIGHT)
     {
-        SetSize(largest_tab._x, Height());
+        size_new._y = Height();
     }
+
+    // Update the size.
+    SetSize(size_new);
 }
 
 }; // namespace Controls

@@ -203,6 +203,15 @@ void ComboBox::OnLostkeyboardFocus()
     SetTextColor(Color(0, 0, 0, 255));
 }
 
+void ComboBox::Layout(Skin::Base* skin)
+{
+    // Call the base class.
+    Button::Layout(skin);
+
+    _button->SetPosition(static_cast<Gwen::Position::Position>(Position::RIGHT | Position::CENTER_V), 4, 0);
+}
+
+
 bool ComboBox::GetMenuComponent()
 {
     return true;
@@ -251,14 +260,6 @@ void ComboBox::Render(Skin::Base* skin)
     }
 
     skin->DrawComboBox(this, GetDepressed(), GetOpen());
-}
-
-void ComboBox::Layout(Skin::Base* skin)
-{
-    // Call the base class.
-    Button::Layout(skin);
-
-    _button->SetPosition(static_cast<Gwen::Position::Position>(Position::RIGHT | Position::CENTER_V), 4, 0);
 }
 
 }; // namespace Controls

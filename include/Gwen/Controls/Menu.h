@@ -36,12 +36,20 @@ namespace Gwen
 namespace Controls
 {
 
+// Forward declarations.
+class MenuStrip;
+
 /// \brief This class represents a menu.
 class Menu : public ScrollControl
 {
+    friend class MenuStrip;
+
 public:
     /// \brief constructor.
     GWEN_CONTROL(Menu, ScrollControl);
+
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
 
     /// \brief Adds an item to the menu.
     virtual MenuItem* AddItem(const std::string& name, const std::string& icon_name = "", const std::string& accelerator = "");
@@ -66,12 +74,6 @@ public:
 
     /// \brief Gets if the menu should open on hover.
     virtual bool GetHoverOpenMenu() const;
-
-    /// \brief Called when an item is added.
-    virtual void OnAddItem(MenuItem* item);
-
-    /// \brief Called when an item is hovered.
-    virtual void OnHoverItem(Gwen::Controls::Base* control);
 
     /// \brief Is this control a menu component?
     virtual bool GetMenuComponent() override;
@@ -98,8 +100,11 @@ protected:
     /// \brief Draws the UI element.
     virtual void RenderUnder(Skin::Base* skin) override;
 
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
+    /// \brief Called when an item is added.
+    virtual void _OnAddItem(MenuItem* item);
+
+    /// \brief Called when an item is hovered.
+    virtual void _OnHoverItem(Gwen::Controls::Base* control);
 
     /// \brief Is the icon margin disabled?
     bool _disable_icon_margin;

@@ -42,6 +42,12 @@ class VerticalSlider : public ControlsInternal::Slider
     /// \brief Constructor.
     GWEN_CONTROL(VerticalSlider, Slider);
 
+    /// \brief Called when the left mouse button is pressed.
+    virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
+
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Calculates the value of the slider.
     virtual float CalculateValue() override;
 
@@ -49,14 +55,8 @@ class VerticalSlider : public ControlsInternal::Slider
     virtual void UpdateBarFromValue() override;
 
 protected:
-    /// \brief Renders the UI element.
+    /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
-
-    /// \brief Called when the left mouse button is pressed.
-    virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
 };
 
 }; // namespace Controls

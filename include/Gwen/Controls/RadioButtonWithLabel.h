@@ -58,8 +58,8 @@ public:
     virtual bool OnKeySpace(bool is_down) override;
 
 protected:
-    /// brief Draws the UI element.
-    void RenderFocus(Gwen::Skin::Base* skin) override;
+    /// \brief Draws the UI element.
+    virtual void RenderFocus(Gwen::Skin::Base* skin) override;
 
 private:
     /// \brief The radio button.

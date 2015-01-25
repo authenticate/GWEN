@@ -121,7 +121,7 @@ void Render(Gwen::Skin::Base* skin)
                                            mouse_position._y - bounds._height - 10,
                                            bounds._width,
                                            bounds._height);
-        offset = Utility::ClampRectToRect(offset, _tooltip->GetCanvas()->GetBounds());
+        offset = Utility::ClampRectangleToRectangle(offset, _tooltip->GetCanvas()->GetBounds());
 
         // Calculate the offset on screen bounds.
         render->AddRenderOffset(Point(offset._x, offset._y));

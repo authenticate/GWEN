@@ -156,7 +156,7 @@ float String::To::Float(const std::string& string)
     return static_cast<float>(atof(string.c_str()));
 }
 
-Gwen::Rectangle ClampRectToRect(Gwen::Rectangle inside, Gwen::Rectangle outside, bool clamp_size)
+Gwen::Rectangle ClampRectangleToRectangle(Gwen::Rectangle inside, Gwen::Rectangle outside, bool clamp_size)
 {
     if (inside._x < outside._x)
     {

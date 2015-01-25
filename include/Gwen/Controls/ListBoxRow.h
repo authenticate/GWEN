@@ -48,13 +48,6 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ListBoxRow, Layout::TableRow);
 
-    /// \brief Renders the UI element.
-    virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Sets if a row is selected.
-    virtual void SetSelected(bool selected) override;
-
-protected:
     /// \brief Called when the mouse enters the control.
     virtual void OnMouseEnter() override;
 
@@ -66,6 +59,13 @@ protected:
 
     /// \brief Called when the elft mouse button is double clicked.
     virtual void OnMouseDoubleClickLeft(int x, int y) override;
+
+    /// \brief Sets if a row is selected.
+    virtual void SetSelected(bool selected) override;
+
+protected:
+    /// \brief Draws the UI element.
+    virtual void Render(Skin::Base* skin) override;
 
 private:
     /// \brief A helper function to do the selection.

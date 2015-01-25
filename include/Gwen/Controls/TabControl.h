@@ -46,6 +46,9 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(TabControl, Base);
 
+    /// \brief Lays out the UI element.
+    virtual void PostLayout(Skin::Base* skin);
+
     /// \brief Adds a page to the tab control.
     virtual TabButton* AddPage(const std::string& text, Base* page = nullptr);
 
@@ -89,9 +92,6 @@ public:
     Gwen::Event::Caller _on_tab_added;
 
 private:
-    /// \brief Lays out the UI element.
-    virtual void PostLayout(Skin::Base* skin);
-
     /// \brief Handles tabs which do not fit in the bounds of the control.
     virtual void HandleOverflow();
 

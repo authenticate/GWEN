@@ -55,31 +55,27 @@ Base* _keyboard_focus = nullptr;
 /// \brief A global pointer to the control with mouse focus.
 Base* _mouse_focus = nullptr;
 
-Base::Base(Base* parent, const std::string& name)
+Base::Base(Base* parent, const std::string& name) :
+    _parent(nullptr),
+    _actual_parent(nullptr),
+    _inner_panel(nullptr),
+    _tooltip(nullptr),
+    _skin(nullptr),
+    _bounds(0, 0, 10, 10),
+    _render_bounds(0, 0, 10, 10),
+    _inner_bounds(0, 0, 10, 10),
+    _padding(0, 0, 0, 0),
+    _margin(0, 0, 0, 0),
+    _dock(0),
+    _restrict_to_parent(false),
+    _disabled(false),
+    _hidden(false),
+    _mouse_input_enabled(false),
+    _keyboard_input_enabled(false),
+    _draw_background(false),
+    _tabable(false),
+    _needs_layout(true)
 {
-    _parent = nullptr;
-    _actual_parent = nullptr;
-    _inner_panel = nullptr;
-    _tooltip = nullptr;
-    _skin = nullptr;
-
-    _bounds = Rectangle(0, 0, 10, 10);
-    _render_bounds = Rectangle(0, 0, 10, 10);
-    _inner_bounds = Rectangle(0, 0, 10, 10);
-    _padding = Padding(0, 0, 0, 0);
-    _margin = Margin(0, 0, 0, 0);
-
-    _dock = 0;
-
-    _restrict_to_parent = false;
-    _disabled = false;
-    _hidden = false;
-    _mouse_input_enabled = false;
-    _keyboard_input_enabled = false;
-    _draw_background = false;
-    _tabable = false;
-    _needs_layout = false;
-
     SetKeyboardInputEnabled(false);
     SetHidden(false);
     SetMouseInputEnabled(true);
@@ -312,8 +308,8 @@ Gwen::Point Base::ChildrenSize() const
             continue;
         }
 
-        size._x = Utility::Max(size._x, child->Right());
-        size._y = Utility::Max(size._y, child->Bottom());
+        size._x = std::max(size._x, child->Right());
+        size._y = std::max(size._y, child->Bottom());
     }
 
     return size;
@@ -613,36 +609,34 @@ bool Base::SetBounds(int x, int y, int width, int height)
     return SetBounds(Rectangle(x, y, width, height));
 }
 
-void Base::SetPadding(const Padding& padding)
+bool Base::SetPadding(const Padding& padding)
 {
-    if (_padding._left == padding._left &&
-        _padding._top == padding._top &&
-        _padding._right == padding._right &&
-        _padding._bottom == padding._bottom)
+    if (_padding == padding)
     {
-        return;
+        return false;
     }
 
     _padding = padding;
 
     Invalidate();
     InvalidateParent();
+
+    return true;
 }
 
-void Base::SetMargin(const Margin& margin)
+bool Base::SetMargin(const Margin& margin)
 {
-    if (_margin._top == margin._top &&
-        _margin._left == margin._left &&
-        _margin._bottom == margin._bottom &&
-        _margin._right == margin._right)
+    if (_margin == margin)
     {
-        return;
+        return false;
     }
 
     _margin = margin;
 
     Invalidate();
     InvalidateParent();
+
+    return true;
 }
 
 void Base::MoveBy(int x, int y)
@@ -814,17 +808,9 @@ void Base::SetHidden(bool hidden)
         Tooltip::Disable(GetParent());
     }
 
-    // Get the canvas.
-    Canvas* canvas = GetCanvas();
-    assert(canvas != nullptr);
-    if (canvas != nullptr)
-    {
-        // Get the mouse position.
-        Gwen::Point mouse_position = Gwen::Input::GetMousePosition();
-
-        // Recalculate the hovered control.
-        Gwen::Input::OnMouseMoved(canvas, mouse_position._x, mouse_position._y, 0, 0);
-    }
+    // Get the mouse position.
+    Gwen::Point mouse_position = Gwen::Input::GetMousePosition();
+    Gwen::Input::OnMouseMoved(GetCanvas(), mouse_position._x, mouse_position._y, 0, 0);
 
     // If this control is not hidden and is the hovered control...
     if (!_hidden && _hovered_control == this)
@@ -1361,11 +1347,6 @@ bool Base::HandleAccelerator(const std::string& accelerator)
     return false;
 }
 
-bool Base::NeedsLayout() const
-{
-    return _needs_layout;
-}
-
 void Base::Invalidate()
 {
     _needs_layout = true;
@@ -1403,6 +1384,158 @@ void Base::InvalidateChildren(bool recursive)
     }
 }
 
+bool Base::NeedsLayout() const
+{
+    return _needs_layout;
+}
+
+void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
+{
+    if (_skin)
+    {
+        skin = _skin;
+    }
+
+    if (!layout_hidden_controls && Hidden())
+    {
+        return;
+    }
+
+    if (NeedsLayout())
+    {
+        _needs_layout = false;
+        Layout(skin);
+    }
+
+    bool bounds_changed = false;
+
+    Gwen::Rectangle bounds = GetRenderBounds();
+
+    // Adjust the bounds for padding.
+    bounds._x += _padding._left;
+    bounds._width -= _padding._left + _padding._right;
+    bounds._y += _padding._top;
+    bounds._height -= _padding._top + _padding._bottom;
+
+    // For each child...
+    for (auto i = _children.begin(); i != _children.end(); ++i)
+    {
+        Base* child = *i;
+        if (!layout_hidden_controls && child->Hidden())
+        {
+            continue;
+        }
+
+        int dock = child->GetDock();
+        if (dock & Position::FILL)
+        {
+            continue;
+        }
+
+        if (dock & Position::LEFT)
+        {
+            const Margin& margin = child->GetMargin();
+            bounds_changed |= child->SetBounds(bounds._x + margin._left,
+                                               bounds._y + margin._top,
+                                               child->Width(),
+                                               bounds._height - margin._top - margin._bottom);
+            int width = margin._left + margin._right + child->Width();
+            bounds._x += width;
+            bounds._width -= width;
+        }
+        else if (dock & Position::RIGHT)
+        {
+            const Margin& margin = child->GetMargin();
+            bounds_changed |= child->SetBounds(bounds._x + bounds._width - child->Width() - margin._right,
+                                               bounds._y + margin._top,
+                                               child->Width(),
+                                               bounds._height - margin._top - margin._bottom);
+            int width = margin._left + margin._right + child->Width();
+            bounds._width -= width;
+        }
+
+        if (dock & Position::TOP)
+        {
+            const Margin& margin = child->GetMargin();
+            bounds_changed |= child->SetBounds(bounds._x + margin._left,
+                                               bounds._y + margin._top,
+                                               bounds._width - margin._left - margin._right,
+                                               child->Height());
+            int height = margin._top + margin._bottom + child->Height();
+            bounds._y += height;
+            bounds._height -= height;
+        }
+        else if (dock & Position::BOTTOM)
+        {
+            const Margin& margin = child->GetMargin();
+            bounds_changed |= child->SetBounds(bounds._x + margin._left,
+                                               bounds._y + bounds._height - child->Height() - margin._bottom,
+                                               bounds._width - margin._left - margin._right,
+                                               child->Height());
+            int height = child->Height() + margin._bottom + margin._top;
+            bounds._height -= height;
+        }
+
+        child->RecurseLayout(layout_hidden_controls, skin);
+    }
+
+    _inner_bounds = bounds;
+
+    // Fill uses the left over space.  So, do that now.
+    for (auto i = _children.begin(); i != _children.end(); ++i)
+    {
+        Base* child = *i;
+        int dock = child->GetDock();
+
+        if (!(dock & Position::FILL))
+        {
+            continue;
+        }
+
+        const Margin& margin = child->GetMargin();
+        bounds_changed |= child->SetBounds(bounds._x + margin._left, bounds._y + margin._top,
+                                           bounds._width - margin._left - margin._right, bounds._height - margin._top - margin._bottom);
+        child->RecurseLayout(layout_hidden_controls, skin);
+    }
+
+    PostLayout(skin);
+
+    // Update the tabbing.
+    if (IsTabable() && !IsDisabled())
+    {
+        if (!GetCanvas()->_first_tab)
+        {
+            GetCanvas()->_first_tab = this;
+        }
+
+        if (!GetCanvas()->_next_tab)
+        {
+            GetCanvas()->_next_tab = this;
+        }
+    }
+
+    // Update the keyboard focus.
+    if (Gwen::Controls::_keyboard_focus == this)
+    {
+        GetCanvas()->_next_tab = nullptr;
+    }
+
+    // If the bounds of a control changed...
+    if (bounds_changed)
+    {
+        // Update the layout again.
+        RecurseLayout(layout_hidden_controls, skin);
+    }
+}
+
+void Base::Layout(Gwen::Skin::Base*)
+{
+}
+
+void Base::PostLayout(Gwen::Skin::Base*)
+{
+}
+
 void Base::Render(Gwen::Skin::Base*)
 {
 }
@@ -1436,144 +1569,6 @@ void Base::UpdateRenderBounds()
     _render_bounds._y = 0;
     _render_bounds._width = _bounds._width;
     _render_bounds._height = _bounds._height;
-}
-
-void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
-{
-    if (_skin)
-    {
-        skin = _skin;
-    }
-
-    if (!layout_hidden_controls && Hidden())
-    {
-        return;
-    }
-
-    if (NeedsLayout())
-    {
-        _needs_layout = false;
-        Layout(skin);
-    }
-
-    Gwen::Rectangle bounds = GetRenderBounds();
-
-    // Adjust the bounds for padding.
-    bounds._x += _padding._left;
-    bounds._width -= _padding._left + _padding._right;
-    bounds._y += _padding._top;
-    bounds._height -= _padding._top + _padding._bottom;
-
-    // For each child...
-    for (auto i = _children.begin(); i != _children.end(); ++i)
-    {
-        Base* child = *i;
-        if (!layout_hidden_controls && child->Hidden())
-        {
-            continue;
-        }
-
-        int dock = child->GetDock();
-        if (dock & Position::FILL)
-        {
-            continue;
-        }
-
-        if (dock & Position::LEFT)
-        {
-            const Margin& margin = child->GetMargin();
-            child->SetBounds(bounds._x + margin._left,
-                             bounds._y + margin._top,
-                             child->Width(),
-                             bounds._height - margin._top - margin._bottom);
-            int width = margin._left + margin._right + child->Width();
-            bounds._x += width;
-            bounds._width -= width;
-        }
-        else if (dock & Position::RIGHT)
-        {
-            const Margin& margin = child->GetMargin();
-            child->SetBounds(bounds._x + bounds._width - child->Width() - margin._right,
-                             bounds._y + margin._top,
-                             child->Width(),
-                             bounds._height - margin._top - margin._bottom);
-            int width = margin._left + margin._right + child->Width();
-            bounds._width -= width;
-        }
-
-        if (dock & Position::TOP)
-        {
-            const Margin& margin = child->GetMargin();
-            child->SetBounds(bounds._x + margin._left,
-                             bounds._y + margin._top,
-                             bounds._width - margin._left - margin._right,
-                             child->Height());
-            int height = margin._top + margin._bottom + child->Height();
-            bounds._y += height;
-            bounds._height -= height;
-        }
-        else if (dock & Position::BOTTOM)
-        {
-            const Margin& margin = child->GetMargin();
-            child->SetBounds(bounds._x + margin._left,
-                             bounds._y + bounds._height - child->Height() - margin._bottom,
-                             bounds._width - margin._left - margin._right,
-                             child->Height());
-            int height = child->Height() + margin._bottom + margin._top;
-            bounds._height -= height;
-        }
-
-        child->RecurseLayout(layout_hidden_controls, skin);
-    }
-
-    _inner_bounds = bounds;
-
-    // Fill uses the left over space.  So, do that now.
-    for (auto i = _children.begin(); i != _children.end(); ++i)
-    {
-        Base* child = *i;
-        int dock = child->GetDock();
-
-        if (!(dock & Position::FILL))
-        {
-            continue;
-        }
-
-        const Margin& margin = child->GetMargin();
-        child->SetBounds(bounds._x + margin._left, bounds._y + margin._top,
-                         bounds._width - margin._left - margin._right, bounds._height - margin._top - margin._bottom);
-        child->RecurseLayout(layout_hidden_controls, skin);
-    }
-
-    PostLayout(skin);
-
-    // Update the tabbing.
-    if (IsTabable() && !IsDisabled())
-    {
-        if (!GetCanvas()->_first_tab)
-        {
-            GetCanvas()->_first_tab = this;
-        }
-
-        if (!GetCanvas()->_next_tab)
-        {
-            GetCanvas()->_next_tab = this;
-        }
-    }
-
-    // Update the keyboard focus.
-    if (Gwen::Controls::_keyboard_focus == this)
-    {
-        GetCanvas()->_next_tab = nullptr;
-    }
-}
-
-void Base::Layout(Gwen::Skin::Base*)
-{
-}
-
-void Base::PostLayout(Gwen::Skin::Base*)
-{
 }
 
 void Base::_OnChildAdded(Base*)

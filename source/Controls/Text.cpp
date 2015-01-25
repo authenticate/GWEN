@@ -381,6 +381,15 @@ void Text::RefreshSize()
     Invalidate();
 }
 
+void Text::Layout(Skin::Base* skin)
+{
+    if (_changed)
+    {
+        RefreshSize();
+        _changed = false;
+    }
+}
+
 void Text::_OnScaleChanged()
 {
     Invalidate();
@@ -456,15 +465,6 @@ void Text::Render(Skin::Base* skin)
     }
 
     skin->GetRender()->DrawText(GetFont(), Gwen::Point(GetPadding()._left, GetPadding()._top), _text);
-}
-
-void Text::Layout(Skin::Base* skin)
-{
-    if (_changed)
-    {
-        RefreshSize();
-        _changed = false;
-    }
 }
 
 void Text::RefreshSizeWrap()

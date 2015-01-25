@@ -53,7 +53,13 @@ enum Position
 struct Margin
 {
     /// \brief Constructor.
-    Margin(int left = 0, int top = 0, int right = 0, int bottom = 0);
+    explicit Margin(int left = 0, int top = 0, int right = 0, int bottom = 0);
+
+    /// \brief Operator.
+    bool operator==(const Margin& margin) const;
+
+    /// \brief Operator.
+    bool operator!=(const Margin& margin) const;
 
     /// \brief Operator.
     Margin operator+(const Margin& left_margin) const;
@@ -78,19 +84,19 @@ typedef Margin Padding;
 struct Rectangle
 {
     /// \brief Constructor.
-    Rectangle();
+    explicit Rectangle();
 
     /// \brief Constructor.
-    Rectangle(int x, int y, int width, int height);
+    explicit Rectangle(int x, int y, int width, int height);
 
     /// \brief Operator.
-    bool operator==(const Rectangle& other) const;
+    bool operator==(const Rectangle& rectangle) const;
 
     /// \brief Operator.
-    bool operator!=(const Rectangle& other) const;
+    bool operator!=(const Rectangle& rectangle) const;
 
     /// \brief Operator.
-    Rectangle operator+(const Rectangle& other) const;
+    Rectangle operator+(const Rectangle& rectangle) const;
 
     /// \brief The X coordinate.
     int _x;
@@ -109,10 +115,16 @@ struct Rectangle
 struct Point
 {
     /// \brief Constructor.
-    Point();
+    explicit Point();
 
     /// \brief Constructor.
     explicit Point(int x, int y);
+
+    /// \brief Operator.
+    bool operator==(const Point& point) const;
+
+    /// \brief Operator.
+    bool operator!=(const Point& point) const;
 
     /// \brief Operator.
     void operator+=(const Point& point);
@@ -137,7 +149,13 @@ struct Point
 struct Color
 {
     /// \brief Constructor.
-    Color(unsigned char red = 255, unsigned char green = 255, unsigned char blue = 255, unsigned char alpha = 255);
+    explicit Color(unsigned char red = 0, unsigned char green = 0, unsigned char blue = 0, unsigned char alpha = 0);
+
+    /// \brief Operator.
+    bool operator==(const Color& color) const;
+
+    /// \brief Operator.
+    bool operator!=(const Color& color) const;
 
     /// \brief Operator.
     void operator=(const Color& color);
@@ -160,9 +178,6 @@ struct Color
     /// \brief Operator.
     Color operator+(const Color& color) const;
 
-    /// \brief Operator.
-    bool operator==(const Color& color) const;
-
     /// \brief The red channel.
     unsigned char _red;
 
@@ -180,14 +195,14 @@ namespace Colors
 {
 
 const Color BLACK(0, 0, 0, 255);
-const Color RED(255, 0, 0, 255);
-const Color YELLOW(255, 255, 0, 255);
-const Color WHITE(255, 255, 255, 255);
 const Color BLUE(0, 0, 255, 255);
 const Color GREEN(0, 255, 0, 255);
 const Color GREY(200, 200, 200, 255);
 const Color LIGHT_GREY(230, 230, 230, 255);
 const Color PINK(255, 65, 199, 255);
+const Color RED(255, 0, 0, 255);
+const Color WHITE(255, 255, 255, 255);
+const Color YELLOW(255, 255, 0, 255);
 
 }; // namespace Colors
 

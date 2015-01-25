@@ -54,13 +54,12 @@ public:
     /// \brief Should the control clip its children?
     virtual bool GetShouldClip() const override;
 
-protected:
     /// \brief Draws the UI element.
     virtual void Layout(Skin::Base* skin) override;
 
 private:
     /// \brief Can the tab pages be reordered?
-    bool m_bAllowReorder;
+    bool _allow_reorder;
 };
 
 }; // namespace Controls

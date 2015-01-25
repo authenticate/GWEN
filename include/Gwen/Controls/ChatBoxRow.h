@@ -41,6 +41,7 @@ class ChatBoxRow : public Layout::TableRow
     /// \brief Constructor.
     GWEN_CONTROL(ChatBoxRow, Layout::TableRow);
 
+protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base*) override;
 };

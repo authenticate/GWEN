@@ -21,11 +21,11 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(MenuStrip, Menu);
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Gets if the menu should open on hover.
     virtual bool GetHoverOpenMenu() const override;
-
-    /// \brief Called when an item is added.
-    virtual void OnAddItem(MenuItem* item) override;
 
     /// \brief Closes the menu strip.
     virtual void Close();
@@ -37,8 +37,8 @@ protected:
     /// \brief Draws the UI element.
     virtual void RenderUnder(Skin::Base* skin) override;
 
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
+    /// \brief Called when an item is added.
+    virtual void _OnAddItem(MenuItem* item) override;
 };
 
 }; // namespace Controls

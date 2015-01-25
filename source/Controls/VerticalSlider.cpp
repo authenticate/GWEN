@@ -43,6 +43,23 @@ GWEN_CONTROL_CONSTRUCTOR(VerticalSlider, ControlsInternal::Slider)
     SetBounds(Rectangle(0, 0, 16, 128));
 }
 
+void VerticalSlider::OnMouseClickLeft(int x, int y, bool is_down)
+{
+    // Convert the mosue coordinates.
+    Gwen::Point point = Gwen::Point(x, y);
+    point = CanvasPositionToLocal(point);
+
+    _bar->MoveTo(_bar->X(), point._y - _bar->Height() / 2);
+    _bar->OnMouseClickLeft(x, y, is_down);
+
+    OnMoved(_bar);
+}
+
+void VerticalSlider::Layout(Skin::Base*)
+{
+    _bar->SetSize(Width(), 15);
+}
+
 float VerticalSlider::CalculateValue()
 {
     return 1.0f - static_cast<float>(_bar->Y()) / static_cast<float>((Height() - _bar->Height()));
@@ -56,23 +73,6 @@ void VerticalSlider::UpdateBarFromValue()
 void VerticalSlider::Render(Skin::Base* skin)
 {
     skin->DrawSlider(this, false, _clamp_to_notches ? _number_of_notches : 0, _bar->Height());
-}
-
-void VerticalSlider::Layout(Skin::Base*)
-{
-    _bar->SetSize(Width(), 15);
-}
-
-void VerticalSlider::OnMouseClickLeft(int x, int y, bool is_down)
-{
-    // Convert the mosue coordinates.
-    Gwen::Point point = Gwen::Point(x, y);
-    point = CanvasPositionToLocal(point);
-
-    _bar->MoveTo(_bar->X(), point._y - _bar->Height() / 2);
-    _bar->OnMouseClickLeft(x, y, is_down);
-
-    OnMoved(_bar);
 }
 
 }; // namespace Controls

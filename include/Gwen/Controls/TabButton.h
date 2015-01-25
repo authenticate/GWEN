@@ -78,12 +78,12 @@ public:
     /// \brief Should the control clip its children?
     virtual bool GetShouldClip() const override;
 
-protected:
-    /// brief Draws the UI element.
-    virtual void Render(Skin::Base* skin) override;
-
-    /// brief Lays out the UI element.
+    /// \brief Lays out the UI element.
     virtual void Layout(Skin::Base* skin) override;
+
+protected:
+    /// \brief Draws the UI element.
+    virtual void Render(Skin::Base* skin) override;
 
 private:
     /// \brief The page.

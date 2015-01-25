@@ -54,6 +54,28 @@ GWEN_CONTROL_CONSTRUCTOR(ChatBox, ScrollControl)
     SetPadding(Padding(0, 1, 0, 1));
 }
 
+void ChatBox::Layout(Skin::Base* skin)
+{
+    // Call the base class function.
+    ScrollControl::Layout(skin);
+
+    const Gwen::Padding& padding = GetPadding();
+    const Gwen::Rectangle& inner_bounds = _inner_panel->GetInnerBounds();
+    unsigned row_height = _table->GetDefaultRowHeight();
+
+    // Manually calculate the Y coordinate of the table.
+    Gwen::Point position = _table->GetPosition();
+    position._y = inner_bounds._y + inner_bounds._height - row_height + padding._top + padding._bottom;
+
+    // Update the table.
+    _table->SetPosition(inner_bounds._x, position._y);
+    _table->SetWidth(inner_bounds._width);
+    _table->SizeToChildren(false, true);
+
+    // Update the scroll bars.
+    _scroll_bar->SetNudgeAmount(row_height);
+}
+
 Layout::TableRow* ChatBox::AddItem(const std::string& label, const std::string& name)
 {
     // Allocate a new row.
@@ -105,7 +127,7 @@ void ChatBox::_UpdateScrollBar()
     children_height += padding._top + padding._bottom;
 
     // Update the size of the inner panel.
-    _inner_panel->SetSize(width - scroll_bar_width, Utility::Max(height, children_height));
+    _inner_panel->SetSize(width - scroll_bar_width, std::max(height, children_height));
 
     // Determine whether to enable the scroll bar.
     _SetScroll(height <= children_height);
@@ -159,28 +181,6 @@ void ChatBox::Render(Skin::Base* skin)
     // Store the new clipping region.
     skin->GetRender()->SetClippingRegion(bounds);
     skin->GetRender()->StartClipping();
-}
-
-void ChatBox::Layout(Skin::Base* skin)
-{
-    // Call the base class function.
-    ScrollControl::Layout(skin);
-
-    const Gwen::Padding& padding = GetPadding();
-    const Gwen::Rectangle& inner_bounds = _inner_panel->GetInnerBounds();
-    unsigned row_height = _table->GetDefaultRowHeight();
-
-    // Manually calculate the Y coordinate of the table.
-    Gwen::Point position = _table->GetPosition();
-    position._y = inner_bounds._y + inner_bounds._height - row_height + padding._top + padding._bottom;
-
-    // Update the table.
-    _table->SetPosition(inner_bounds._x, position._y);
-    _table->SetWidth(inner_bounds._width);
-    _table->SizeToChildren(false, true);
-
-    // Update the scroll bars.
-    _scroll_bar->SetNudgeAmount(row_height);
 }
 
 }; // namespace Controls

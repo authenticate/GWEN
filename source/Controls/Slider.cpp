@@ -56,6 +56,12 @@ GWEN_CONTROL_CONSTRUCTOR(Slider, Base)
     SetTabable(true);
 }
 
+void Slider::Layout(Skin::Base* skin)
+{
+    // Call the base class.
+    Base::Layout(skin);
+}
+
 void Slider::SetClampToNotches(bool clamp)
 {
     _clamp_to_notches = clamp;
@@ -186,12 +192,6 @@ void Slider::RenderFocus(Gwen::Skin::Base* skin)
     }
 
     skin->DrawKeyboardHighlight(this, GetRenderBounds(), 0);
-}
-
-void Slider::Layout(Skin::Base* skin)
-{
-    // Call the base class.
-    Base::Layout(skin);
 }
 
 void Slider::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)

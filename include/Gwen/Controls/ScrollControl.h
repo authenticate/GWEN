@@ -46,6 +46,9 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ScrollControl, Base);
 
+    /// \brief Lays out the UI element.
+    virtual void Layout(Skin::Base* skin) override;
+
     /// \brief Sets the clamp to nudge amount.
     virtual void SetClampToNudgeAmount(bool clamp_to_nudge_amount);
 
@@ -86,11 +89,8 @@ protected:
     /// \brief Called when the mouse is wheeled.
     virtual bool OnMouseWheeled(int delta) override;
 
-    /// \brief Renders the UI element.
+    /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Lays out the UI element.
-    virtual void Layout(Skin::Base* skin) override;
 
     /// \brief The scroll bar.
     ControlsInternal::ScrollBar* _scroll_bar;
