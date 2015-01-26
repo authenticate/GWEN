@@ -43,6 +43,7 @@ namespace Controls
 
 Canvas::Canvas(Gwen::Skin::Base* skin) :
     Base(nullptr),
+    _processing_delayed_deletes(false),
     _first_tab(nullptr),
     _next_tab(nullptr)
 {
@@ -111,6 +112,8 @@ void Canvas::AddDelayedDelete(Base* control)
 
 void Canvas::ProcessDelayedDeletes()
 {
+    _processing_delayed_deletes = true;
+
     for (unsigned i = 0; i < _controls_delete.size(); ++i)
     {
         Base* control = _controls_delete.at(i);
@@ -122,6 +125,8 @@ void Canvas::ProcessDelayedDeletes()
         }
     }
     _controls_delete.clear();
+
+    _processing_delayed_deletes = false;
 }
 
 bool Canvas::InputMouseMoved(int x, int y, int delta_x, int delta_y)
@@ -276,10 +281,13 @@ void Canvas::SetBackgroundColor(const Gwen::Color& color)
 
 void Canvas::_PreDeleteCanvas(Base* control)
 {
-    auto control_iterator = std::find(_controls_delete.begin(), _controls_delete.end(), control);
-    if (control_iterator != _controls_delete.end())
+    if (!_processing_delayed_deletes)
     {
-        _controls_delete.erase(control_iterator);
+        auto control_iterator = std::find(_controls_delete.begin(), _controls_delete.end(), control);
+        if (control_iterator != _controls_delete.end())
+        {
+            _controls_delete.erase(control_iterator);
+        }
     }
 }
 

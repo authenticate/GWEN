@@ -104,20 +104,18 @@ void Table::AddRow(TableRow* row, int dock, bool to_back)
 
 void Table::Remove(TableRow* row)
 {
-    row->DelayedDelete();
+    assert(row);
+    if (row)
+    {
+        row->DelayedDelete();
+    }
 }
 
 void Table::Clear()
 {
-    for (auto i = _children.begin(); i != _children.end(); ++i)
+    for (auto child : _children)
     {
-        TableRow* row = dynamic_cast<TableRow*>(*i);
-        if (!row)
-        {
-            continue;
-        }
-
-        Remove(row);
+        child->DelayedDelete();
     }
 }
 

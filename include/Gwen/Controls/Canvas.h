@@ -103,6 +103,9 @@ protected:
     /// \brief A helper function to process input.
     void _Think();
 
+    /// \brief A flag for processing delayed deletes.
+    bool _processing_delayed_deletes;
+
     /// \brief The controls to delete.
     std::vector<Base*> _controls_delete;
 
