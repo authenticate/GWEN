@@ -103,7 +103,6 @@ void Canvas::Render()
 void Canvas::AddDelayedDelete(Base* control)
 {
     auto control_iterator = std::find(_controls_delete.begin(), _controls_delete.end(), control);
-    assert(control_iterator == _controls_delete.end());
     if (control_iterator == _controls_delete.end())
     {
         _controls_delete.push_back(control);
