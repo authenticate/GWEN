@@ -66,6 +66,11 @@ Canvas::~Canvas()
     }
 }
 
+Canvas* Canvas::GetCanvas()
+{
+    return this;
+}
+
 void Canvas::Initialize()
 {
 }
@@ -92,11 +97,6 @@ void Canvas::Render()
     Tooltip::Render(_skin);
 
     render->End();
-}
-
-Canvas* Canvas::GetCanvas()
-{
-    return this;
 }
 
 void Canvas::AddDelayedDelete(Base* control)
@@ -274,7 +274,7 @@ void Canvas::SetBackgroundColor(const Gwen::Color& color)
     _background_color = color;
 }
 
-void Canvas::PreDeleteCanvas(Base* control)
+void Canvas::_PreDeleteCanvas(Base* control)
 {
     auto control_iterator = std::find(_controls_delete.begin(), _controls_delete.end(), control);
     if (control_iterator != _controls_delete.end())

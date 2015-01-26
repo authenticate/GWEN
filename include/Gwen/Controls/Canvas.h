@@ -50,41 +50,42 @@ public:
     /// \brief Destructor.
     virtual ~Canvas() override;
 
-    /// \brief Call this to fully initialize the canvas.
-    virtual void Initialize();
-
-    /// \brief Draws the canvas.
-    virtual void Render();
-
     /// \brief Gets the canvas.
     virtual Canvas* GetCanvas() override;
 
+    /// \brief Call this to fully initialize the canvas.
+    void Initialize();
+
+    /// \brief Draws the canvas.
+    using Base::Render;
+    void Render();
+
     /// \brief Adds a delayed delete.
-    virtual void AddDelayedDelete(Base* control);
+    void AddDelayedDelete(Base* control);
 
     /// \brief Processes any delayed deletes.
-    virtual void ProcessDelayedDeletes();
+    void ProcessDelayedDeletes();
 
     /// \brief Call to move the mouse.
-    virtual bool InputMouseMoved(int x, int y, int delta_x, int delta_y);
+    bool InputMouseMoved(int x, int y, int delta_x, int delta_y);
 
     /// \brief Call to update a mouse button.
-    virtual bool InputMouseButton(int button, bool is_down);
+    bool InputMouseButton(int button, bool is_down);
 
     /// \brief Call to update the mouse wheel.
-    virtual bool InputMouseWheel(int wheel);
+    bool InputMouseWheel(int wheel);
 
     /// \brief Call to update a key.
-    virtual bool InputKey(int key, bool is_down);
+    bool InputKey(int key, bool is_down);
 
     /// \brief Call to update an accelerator.
-    virtual bool InputAccelerator(char character);
+    bool InputAccelerator(char character);
 
     /// \brief Call to update a character.
-    virtual bool InputCharacter(char character);
+    bool InputCharacter(char character);
 
     /// \brief Sets the background color.
-    virtual void SetBackgroundColor(const Gwen::Color& color);
+    void SetBackgroundColor(const Gwen::Color& color);
 
     /// \brief The first tab.
     Base* _first_tab;
@@ -94,13 +95,13 @@ public:
 
 protected:
     /// \brief Predeletes a control from the canvas.
-    virtual void PreDeleteCanvas(Base* control);
+    void _PreDeleteCanvas(Base* control);
 
     /// \brief Called when the bounds change.
     virtual void _OnBoundsChanged(const Gwen::Rectangle& old_bounds) override;
 
     /// \brief A helper function to process input.
-    virtual void _Think();
+    void _Think();
 
     /// \brief The controls to delete.
     std::vector<Base*> _controls_delete;

@@ -94,7 +94,7 @@ Base::~Base()
     Canvas* canvas = GetCanvas();
     if (canvas)
     {
-        canvas->PreDeleteCanvas(this);
+        canvas->_PreDeleteCanvas(this);
     }
 
     auto i = _children.begin();
