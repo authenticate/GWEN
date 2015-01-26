@@ -43,9 +43,9 @@ namespace Controls
 
 Canvas::Canvas(Gwen::Skin::Base* skin) :
     Base(nullptr),
-    _processing_delayed_deletes(false),
     _first_tab(nullptr),
-    _next_tab(nullptr)
+    _next_tab(nullptr),
+    _processing_delayed_deletes(false)
 {
     SetBackgroundColor(Color(0, 0, 0, 0));
     SetBounds(0, 0, 10000, 10000);
