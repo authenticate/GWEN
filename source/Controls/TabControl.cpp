@@ -66,22 +66,39 @@ GWEN_CONTROL_CONSTRUCTOR(TabControl, Base)
     SetTabable(false);
 }
 
-void TabControl::PostLayout(Skin::Base* skin)
+void TabControl::PostLayout(Skin::Base*)
 {
-    // Call the base class.
-    Base::PostLayout(skin);
-    HandleOverflow();
+    Gwen::Point tab_size = _tab_strip->ChildrenSize();
+    Gwen::Padding tab_padding = _tab_strip->GetPadding();
+
+    // Only enable the scrollers if the tabs are at the top.
+    // TODO: This is a limitation we should explore.
+    bool is_needed = tab_size._x + tab_padding._left > Width() && _tab_strip->GetDock() == Position::TOP;
+    _scroll[0]->SetHidden(!is_needed);
+    _scroll[1]->SetHidden(!is_needed);
+
+    if (!is_needed)
+    {
+        return;
+    }
+
+    _offset = Utility::Clamp(_offset, 0, tab_size._x + tab_padding._left - Width());
+
+    _tab_strip->SetMargin(Margin(-_offset, 0, 0, 0));
+
+    _scroll[0]->SetPosition(Width() - 32, 6);
+    _scroll[1]->SetPosition(_scroll[0]->Right(), 6);
 }
 
 TabButton* TabControl::AddPage(const std::string& text, Base* page)
 {
-    if (!page)
+    if (page)
     {
-        page = new Base(this);
+        page->SetParent(this);
     }
     else
     {
-        page->SetParent(this);
+        page = new Base(this);
     }
 
     TabButton* button = new TabButton(_tab_strip);
@@ -226,36 +243,15 @@ void TabControl::SetAllowReorder(bool allow_reorder)
     GetTabStrip()->SetAllowReorder(allow_reorder);
 }
 
-void TabControl::HandleOverflow()
-{
-    Gwen::Point tab_size = _tab_strip->ChildrenSize();
-
-    // Only enable the scrollers if the tabs are at the top.
-    // This is a limitation we should explore.
-    bool is_needed = tab_size._x > Width() && _tab_strip->GetDock() == Position::TOP;
-    _scroll[0]->SetHidden(!is_needed);
-    _scroll[1]->SetHidden(!is_needed);
-
-    if (!is_needed)
-    {
-        return;
-    }
-
-    _offset = Utility::Clamp(_offset, 0, tab_size._x - Width() + 32);
-
-    _tab_strip->SetMargin(Margin(_offset * -1, 0, 0, 0));
-
-    _scroll[0]->SetPosition(Width() - 30, 5);
-    _scroll[1]->SetPosition(_scroll[0]->Right(), 5);
-}
-
 void TabControl::ScrollPressLeft(Base*)
 {
+    // TODO: Investigate changing the offset to bring the next button completely on screen.
     _offset -= 120;
 }
 
 void TabControl::ScrollPressRight(Base*)
 {
+    // TODO: Investigate changing the offset to bring the next button completely on screen.
     _offset += 120;
 }
 

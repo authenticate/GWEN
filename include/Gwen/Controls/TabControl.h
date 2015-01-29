@@ -92,9 +92,6 @@ public:
     Gwen::Event::Caller _on_tab_added;
 
 private:
-    /// \brief Handles tabs which do not fit in the bounds of the control.
-    virtual void HandleOverflow();
-
     /// \brief Called when scrolling to the left.
     virtual void ScrollPressLeft(Base* control);
 
