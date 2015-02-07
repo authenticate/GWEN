@@ -95,7 +95,14 @@ Renderer::Font* Text::GetFont()
 
 void Text::SetTextColor(const Gwen::Color& color)
 {
+    // Update the text's color.
     _color = color;
+
+    // Update the lines' colors.
+    for (auto line : _lines)
+    {
+        line->SetTextColor(_color);
+    }
 }
 
 Gwen::Color Text::GetTextColor() const
@@ -105,7 +112,14 @@ Gwen::Color Text::GetTextColor() const
 
 void Text::SetTextColorOverride(const Gwen::Color& color)
 {
+    // Update the text's color override.
     _color_override = color;
+
+    // Update the lines' color overrides.
+    for (auto line : _lines)
+    {
+        line->SetTextColorOverride(_color_override);
+    }
 }
 
 Gwen::Color Text::GetTextColorOverride()
@@ -426,12 +440,16 @@ void Text::_SplitWords(const std::string& string, std::vector<std::string>& resu
 
         // If adding a character makes the word bigger than the textbox size...
         Gwen::Point point = GetSkin()->GetRender()->MeasureText(GetFont(), current_word);
-        if (point._x > width)
+        if (point._x > width && width > 0)
         {
             // Split the words.
-            current_word.pop_back();
-            result.push_back(current_word);
-            current_word.clear();
+            if (!current_word.empty())
+            {
+                current_word.pop_back();
+                result.push_back(current_word);
+                current_word.clear();
+            }
+
             --i;
             continue;
         }
@@ -529,7 +547,8 @@ void Text::RefreshSizeWrap()
         if (is_line_finished)
         {
             Text* text = new Text(this);
-            text->SetFont(GetFont());
+            text->SetFont(_font);
+            text->SetPadding(_padding);
             text->SetTextColor(_color);
             text->SetTextColorOverride(_color_override);
 
@@ -553,9 +572,8 @@ void Text::RefreshSizeWrap()
         }
     }
 
-    // Size the control to the children height and to the parent width.
-    Point child_size = ChildrenSize();
-    SetSize(width, child_size._y);
+    Point children_size = ChildrenSize();
+    SetSize(children_size);
 
     InvalidateParent();
     Invalidate();
