@@ -57,14 +57,14 @@ GWEN_CONTROL_CONSTRUCTOR(ComboBox, Button)
     SetSize(100, 20);
     SetTabable(true);
     SetText("");
-    SetTextPadding(Padding(4, 1, 0, 0));
+    SetTextPadding(Padding(4, 0, 0, 0));
 }
 
 MenuItem* ComboBox::AddItem(const std::string& label, const std::string& name)
 {
     MenuItem* item = _menu->AddItem(label, "");
     item->SetName(name);
-    item->SetTextPadding(Padding(2, 1, 0, 0));
+    item->SetTextPadding(Padding(2, 0, 0, 0));
     item->_on_selected.Add(this, &ComboBox::OnItemSelected);
 
     if (_selected_item == nullptr)

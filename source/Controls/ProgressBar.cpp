@@ -50,7 +50,7 @@ GWEN_CONTROL_CONSTRUCTOR(ProgressBar, Label)
     SetBounds(Rectangle(0, 0, 128, 32));
     SetHorizontal();
     SetMouseInputEnabled(true);
-    SetTextPadding(Padding(3, 5, 3, 3));
+    SetTextPadding(Padding(3, 0, 3, 0));
 
     Gwen::Skin::Base* skin = GetSkin();
     assert(skin != nullptr);

@@ -34,7 +34,8 @@ namespace Gwen
 namespace Renderer
 {
 
-Font::Font() : _face_name("Arial"),
+Font::Font() :
+    _face_name("Arial"),
     _size(10.0f),
     _bold(false),
     _data(nullptr)

@@ -37,6 +37,21 @@ namespace Gwen
 namespace ControlsInternal
 {
 
+/// \brief A helper function to delimit strings.
+static std::vector<std::string> Delimit(const std::string& string, char delimitter)
+{
+    std::vector<std::string> result;
+
+    std::stringstream ss(string);
+    std::string current;
+    while (std::getline(ss, current, delimitter))
+    {
+        result.push_back(current);
+    }
+
+    return result;
+}
+
 GWEN_CONTROL_CONSTRUCTOR(Text, Controls::Base)
 {
     _font = nullptr;
@@ -411,53 +426,70 @@ void Text::_OnScaleChanged()
 
 void Text::_SplitWords(const std::string& string, std::vector<std::string>& result)
 {
-    int width = GetParent()->Width() - GetParent()->GetPadding()._left - GetParent()->GetPadding()._right;
+    // First, delimit the string into lines.
+    std::vector<std::string> lines = Delimit(string, '\n');
 
-    std::string current_word;
-    for (unsigned i = 0; i < string.length(); ++i)
+    // Next, delimit the lines into words.
+    std::vector<std::string> words;
+    for (auto line : lines)
     {
-        if (string[i] == '\n')
-        {
-            if (!current_word.empty())
-            {
-                result.push_back(current_word);
-            }
-
-            result.push_back("\n");
-            current_word.clear();
-            continue;
-        }
-
-        if (string[i] == ' ')
-        {
-            current_word += string[i];
-            result.push_back(current_word);
-            current_word.clear();
-            continue;
-        }
-
-        current_word += string[i];
-
-        // If adding a character makes the word bigger than the textbox size...
-        Gwen::Point point = GetSkin()->GetRender()->MeasureText(GetFont(), current_word);
-        if (point._x > width && width > 0)
-        {
-            // Split the words.
-            if (!current_word.empty())
-            {
-                current_word.pop_back();
-                result.push_back(current_word);
-                current_word.clear();
-            }
-
-            --i;
-            continue;
-        }
+        std::vector<std::string> words_per_line = Delimit(line, ' ');
+        words.insert(words.end(), words_per_line.begin(), words_per_line.end());
+        words.push_back("\n");
     }
 
-    if (!current_word.empty())
+    // Finally, place the words.
+    int width = GetParent()->Width() - GetParent()->GetPadding()._left - GetParent()->GetPadding()._right;
+    assert(width > 0);
+    if (width > 0)
     {
-        result.push_back(current_word);
+        std::string line = "";
+        for (auto word : words)
+        {
+            // The new line character is a special case.
+            if (word == "\n")
+            {
+                // Store the line.
+                if (!line.empty())
+                {
+                    result.push_back(line);
+                }
+
+                // Reset the line.
+                line = "";
+            }
+            else
+            {
+                // If the word makes the line greater than the width...
+                Gwen::Point point = GetSkin()->GetRender()->MeasureText(GetFont(), line + word);
+                if (point._x > width)
+                {
+                    // Store the line.
+                    if (!line.empty())
+                    {
+                        result.push_back(line);
+                    }
+
+                    // Store the word.
+                    line = word;
+                }
+                else
+                {
+                    // Append the word to the line.
+                    if (!line.empty())
+                    {
+                        line += " ";
+                    }
+                    line += word;
+                }
+            }
+        }
+
+        // Store the line.
+        if (!line.empty())
+        {
+            result.push_back(line);
+        }
     }
 }
 

@@ -46,7 +46,6 @@ GWEN_CONTROL_CONSTRUCTOR(Label, Base)
     SetAlignment(Position::LEFT | Position::TOP);
     SetMouseInputEnabled(false);
     SetSize(200, 20);
-    SetTextPadding(Gwen::Padding(0, 1, 0, 0));
 }
 
 Label::~Label()

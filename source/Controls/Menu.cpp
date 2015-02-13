@@ -202,7 +202,7 @@ void Menu::RenderUnder(Skin::Base* skin)
 
 void Menu::_OnAddItem(MenuItem* item)
 {
-    item->SetTextPadding(Padding(GetIconMarginDisabled() ? 0 : 24, 2, 16, 0));
+    item->SetTextPadding(Padding(GetIconMarginDisabled() ? 0 : 24, 0, 16, 0));
     item->SetDock(Position::TOP);
     item->SizeToContents();
     item->SetAlignment(Position::CENTER_V | Position::LEFT);

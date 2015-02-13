@@ -49,7 +49,7 @@ GWEN_CONTROL_CONSTRUCTOR(Button, Label)
     SetMouseInputEnabled(true);
     SetSize(100, 20);
     SetTabable(false);
-    SetTextPadding(Padding(3, 1, 3, 0));
+    SetTextPadding(Padding(3, 0, 3, 0));
     SetToggle(false);
 }
 
