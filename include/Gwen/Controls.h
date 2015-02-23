@@ -29,7 +29,6 @@
 #pragma once
 
 #include "Gwen/Controls/Button.h"
-#include "Gwen/Controls/ChatBox.h"
 #include "Gwen/Controls/CheckBox.h"
 #include "Gwen/Controls/CheckBoxWithLabel.h"
 #include "Gwen/Controls/ComboBox.h"

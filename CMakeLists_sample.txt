@@ -53,8 +53,6 @@ SET(INCLUDE_CONTROL_FILES
     ${GWEN_ROOT}/include/Gwen/Controls/Base.h
     ${GWEN_ROOT}/include/Gwen/Controls/Button.h
     ${GWEN_ROOT}/include/Gwen/Controls/Canvas.h
-    ${GWEN_ROOT}/include/Gwen/Controls/ChatBox.h
-    ${GWEN_ROOT}/include/Gwen/Controls/ChatBoxRow.h
     ${GWEN_ROOT}/include/Gwen/Controls/CheckBox.h
     ${GWEN_ROOT}/include/Gwen/Controls/CheckBoxWithLabel.h
     ${GWEN_ROOT}/include/Gwen/Controls/ComboBox.h
@@ -148,8 +146,6 @@ SET(SOURCE_CONTROL_FILES
     ${GWEN_ROOT}/source/Controls/Base.cpp
     ${GWEN_ROOT}/source/Controls/Button.cpp
     ${GWEN_ROOT}/source/Controls/Canvas.cpp
-    ${GWEN_ROOT}/source/Controls/ChatBox.cpp
-    ${GWEN_ROOT}/source/Controls/ChatBoxRow.cpp
     ${GWEN_ROOT}/source/Controls/CheckBox.cpp
     ${GWEN_ROOT}/source/Controls/CheckBoxWithLabel.cpp
     ${GWEN_ROOT}/source/Controls/ComboBox.cpp

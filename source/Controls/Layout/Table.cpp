@@ -42,7 +42,7 @@ namespace Layout
 
 GWEN_CONTROL_CONSTRUCTOR(Table, Base)
 {
-    _default_row_height = 22;
+    _default_row_height = 21;
     _size_to_contents = false;
     _column_count = 1;
 
@@ -89,7 +89,7 @@ void Table::SetColumnWidth(int column, int width)
 TableRow* Table::AddRow(int dock, bool to_back)
 {
     TableRow* row = new TableRow(this);
-    AddRow(row, to_back);
+    AddRow(row, dock, to_back);
     return row;
 }
 

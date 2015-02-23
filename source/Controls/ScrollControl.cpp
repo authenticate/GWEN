@@ -43,11 +43,10 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollControl, Base)
     _scroll_bar = new VerticalScrollBar(this);
     _scroll_bar->SetDock(Position::RIGHT);
     _scroll_bar->_on_bar_moved.Add(this, &ScrollControl::_OnScrollBarMoved);
-    _scroll_bar->SetNudgeAmount(30);
+    _scroll_bar->SetNudgeAmount(21);
 
     _inner_panel = new Base(this);
     _inner_panel->SetPosition(0, 0);
-    _inner_panel->SetMargin(Margin(5, 5, 5, 5));
     _inner_panel->SendToBack();
     _inner_panel->SetMouseInputEnabled(true);
 
@@ -163,7 +162,9 @@ void ScrollControl::_UpdateScrollBar()
 
     // Update the scroll bar's content and viewable size.
     _scroll_bar->SetContentSize(children_height);
-    _scroll_bar->SetViewableContentSize(height);
+
+    const Gwen::Padding& inner_padding = _inner_panel->GetPadding();
+    _scroll_bar->SetViewableContentSize(height - inner_padding._top - inner_padding._bottom);
 
     // Set the position of the inner panel.
     int position_y = 0;

@@ -47,13 +47,12 @@ GWEN_CONTROL_CONSTRUCTOR(ListBox, ScrollControl)
 {
     _multi_select = false;
 
-    _inner_panel->SetPadding(Padding(2, 2, 2, 2));
+    _inner_panel->SetPadding(Padding(2, 0, 2, 0));
 
     _table = new Controls::Layout::Table(this);
     _table->SetColumnCount(1);
 
     SetHidden(false);
-    SetMargin(Margin(1, 1, 1, 1));
     SetMouseInputEnabled(true);
 }
 
@@ -275,7 +274,9 @@ void ListBox::_UpdateScrollBar()
 
     // Update the scroll bar's content and viewable size.
     _scroll_bar->SetContentSize(children_height);
-    _scroll_bar->SetViewableContentSize(height);
+
+    const Gwen::Padding& inner_padding = _inner_panel->GetPadding();
+    _scroll_bar->SetViewableContentSize(height - inner_padding._top - inner_padding._bottom);
 
     // Set the position of the inner panel.
     int position_y = 0;
