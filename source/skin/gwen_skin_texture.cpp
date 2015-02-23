@@ -41,7 +41,8 @@ namespace Gwen
 namespace Skin
 {
 
-TexturedBase::TexturedBase(Gwen::Renderer::Base* renderer) : Gwen::Skin::Base(renderer)
+TexturedBase::TexturedBase(Gwen::Renderer::Base* renderer) :
+    Gwen::Skin::Base(renderer)
 {
 }
 
@@ -59,16 +60,22 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
 
     Colors.Button.Normal                    = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
     Colors.Button.Hover                     = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
-    Colors.Button.Down                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Button.Down                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
     Colors.Button.Disabled                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+
+    Colors.ChatBoxRow.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
 
     Colors.Label.Text                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 5, 508, Color(255, 255, 0));
 
-    Colors.Menu.Normal                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 5, 508, Color(255, 255, 0));
-    Colors.Menu.Hover                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
+    Colors.ListBoxRow.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
+    Colors.ListBoxRow.Hover                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
+    Colors.ListBoxRow.Down                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
 
-    Colors.ProgressBar.Bar                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 4, 508, Color(255, 255, 0));
-    Colors.ProgressBar.Text                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Menu.Normal                      = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
+    Colors.Menu.Hover                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
+
+    Colors.ProgressBar.Bar                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 500, Color(255, 255, 0));
+    Colors.ProgressBar.Text                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
 
     Colors.Tab.Active.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
     Colors.Tab.Active.Hover                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
@@ -79,7 +86,9 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
     Colors.Tab.Inactive.Down                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
     Colors.Tab.Inactive.Disabled            = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
 
-    Colors.TooltipTextColor                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 500, Color(255, 255, 0));
+    Colors.TextBox.Selection                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
+
+    Colors.Tooltip.Normal                   = GetRender()->GetPixelColor(&_texture, 4 + 8 * 19, 500, Color(255, 255, 0));
 
     Textures.StatusBar.Initialize(&_texture, 128, 288, 127, 31, Margin(8, 8, 8, 8));
 

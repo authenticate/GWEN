@@ -41,7 +41,7 @@ GWEN_CONTROL_CONSTRUCTOR(ChatBoxRow, Layout::TableRow)
     SetColumnCount(1);
     SetMouseInputEnabled(false);
     SetSelected(false);
-    SetTextColor(GetSkin()->Colors.Button.Normal);
+    SetTextColor(GetSkin()->Colors.ChatBoxRow.Normal);
 }
 
 void ChatBoxRow::Render(Skin::Base* skin)

@@ -102,15 +102,15 @@ void ListBoxRow::_UpdateTextColor()
 
     if (GetSelected())
     {
-        SetTextColor(GetSkin()->Colors.Button.Down);
+        SetTextColor(GetSkin()->Colors.ListBoxRow.Down);
     }
     else if (_hovered_control == this)
     {
-        SetTextColor(GetSkin()->Colors.Button.Hover);
+        SetTextColor(GetSkin()->Colors.ListBoxRow.Hover);
     }
     else
     {
-        SetTextColor(GetSkin()->Colors.Button.Normal);
+        SetTextColor(GetSkin()->Colors.ListBoxRow.Normal);
     }
 }
 

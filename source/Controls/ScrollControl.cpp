@@ -40,13 +40,11 @@ namespace Controls
 
 GWEN_CONTROL_CONSTRUCTOR(ScrollControl, Base)
 {
-    _scroll_bar = nullptr;
     _scroll_bar = new VerticalScrollBar(this);
     _scroll_bar->SetDock(Position::RIGHT);
     _scroll_bar->_on_bar_moved.Add(this, &ScrollControl::_OnScrollBarMoved);
     _scroll_bar->SetNudgeAmount(30);
 
-    _inner_panel = nullptr;
     _inner_panel = new Base(this);
     _inner_panel->SetPosition(0, 0);
     _inner_panel->SetMargin(Margin(5, 5, 5, 5));

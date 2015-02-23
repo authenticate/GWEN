@@ -196,11 +196,25 @@ public:
             Gwen::Color Disabled;
         } Button;
 
+        /// \brief The chat box row colors.
+        struct ChatBoxRow_t
+        {
+            Gwen::Color Normal;
+        } ChatBoxRow;
+
         /// \brief The label colors.
         struct Label_t
         {
             Gwen::Color Text;
         } Label;
+
+        /// \brief The list box row colors.
+        struct ListBoxRow_t
+        {
+            Gwen::Color Normal;
+            Gwen::Color Hover;
+            Gwen::Color Down;
+        } ListBoxRow;
 
         /// \brief The menu colors.
         struct Menu_t
@@ -239,8 +253,17 @@ public:
 
         } Tab;
 
-        /// \brief The tooltip text color.
-        Gwen::Color TooltipTextColor;
+        /// \brief The text box colors.
+        struct TextBox_t
+        {
+            Gwen::Color Selection;
+        } TextBox;
+
+        /// \brief The tooltip text colors.
+        struct Tooltip_t
+        {
+            Gwen::Color Normal;
+        } Tooltip;
 
     } Colors;
 

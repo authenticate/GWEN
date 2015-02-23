@@ -86,8 +86,8 @@ void TabControl::PostLayout(Skin::Base*)
 
     _tab_strip->SetMargin(Margin(-_offset, 0, 0, 0));
 
-    _scroll[0]->SetPosition(Width() - 32, 6);
-    _scroll[1]->SetPosition(_scroll[0]->Right(), 6);
+    _scroll[0]->SetPosition(Width() - 32, 4);
+    _scroll[1]->SetPosition(_scroll[0]->Right(), 4);
 }
 
 TabButton* TabControl::AddPage(const std::string& text, Base* page)

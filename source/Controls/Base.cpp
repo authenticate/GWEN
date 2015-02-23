@@ -1235,7 +1235,7 @@ void Base::SetTooltip(const std::string& text)
     {
         tooltip = new Label(this);
         tooltip->SetText(text);
-        tooltip->SetTextColorOverride(GetSkin()->Colors.TooltipTextColor);
+        tooltip->SetTextColorOverride(GetSkin()->Colors.Tooltip.Normal);
         tooltip->SetPadding(Padding(6, 4, 6, 4));
         tooltip->SizeToContents();
     }

@@ -55,7 +55,6 @@ GWEN_CONTROL_CONSTRUCTOR(ListBox, ScrollControl)
     SetHidden(false);
     SetMargin(Margin(1, 1, 1, 1));
     SetMouseInputEnabled(true);
-    SetPadding(Padding(0, 1, 0, 1));
 }
 
 void ListBox::Layout(Skin::Base* skin)

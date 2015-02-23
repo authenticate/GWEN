@@ -688,7 +688,7 @@ void TextBox::Render(Gwen::Skin::Base* skin)
         if (_cursor_begin != _cursor_end)
         {
             // Draw selection.
-            skin->GetRender()->SetDrawColor(Gwen::Color(255, 195, 0, 255));
+            skin->GetRender()->SetDrawColor(GetSkin()->Colors.TextBox.Selection);
             skin->GetRender()->FillRectangle(_selection_bounds);
         }
 

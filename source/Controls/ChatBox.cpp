@@ -51,7 +51,6 @@ GWEN_CONTROL_CONSTRUCTOR(ChatBox, ScrollControl)
     _table->SetColumnCount(1);
 
     SetMargin(Margin(1, 1, 1, 1));
-    SetPadding(Padding(0, 1, 0, 1));
 }
 
 void ChatBox::Layout(Skin::Base* skin)
