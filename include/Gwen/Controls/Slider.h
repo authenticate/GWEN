@@ -104,7 +104,7 @@ protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) = 0;
 
-    /// \brief Draws the UI.
+    /// \brief Draws the UI element.
     virtual void RenderFocus(Gwen::Skin::Base* skin) override;
 
     /// \brief Called when the bounds change.

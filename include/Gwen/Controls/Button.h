@@ -75,6 +75,9 @@ public:
     /// \brief Called when the left mouse button is double clicked.
     virtual void OnMouseDoubleClickLeft(int x, int y) override;
 
+    /// \brief Called when the right mouse button is double clicked.
+    virtual void OnMouseDoubleClickRight(int x, int y) override;
+
     /// \brief Lays out the control.
     virtual void PostLayout(Skin::Base* skin) override;
 
@@ -93,6 +96,9 @@ public:
     /// \brief An event for when the button is double clicked with the left mouse button.
     Gwen::Event::Caller _on_mouse_double_click_left;
 
+    /// \brief An event for when the button is double clicked with the right mouse button.
+    Gwen::Event::Caller _on_mouse_double_click_right;
+
     /// \brief An event for when the button is toggled.
     Gwen::Event::Caller _on_toggle;
 
@@ -103,7 +109,7 @@ public:
     Gwen::Event::Caller _on_toggle_off;
 
 protected:
-    /// \brief Draws the UI.
+    /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
 
     /// \brief An optional image.

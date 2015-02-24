@@ -115,7 +115,7 @@ protected:
     /// \brief Splits the words of a string.
     virtual void _SplitWords(const std::string& string, std::vector<std::string>& result);
 
-    /// \brief Draws the UI.
+    /// \brief Draws the UI element.
     void Render(Skin::Base* skin) override;
 
 private:

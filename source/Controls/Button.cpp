@@ -270,6 +270,17 @@ void Button::OnMouseDoubleClickLeft(int x, int y)
     _on_mouse_double_click_left.Call(this);
 }
 
+void Button::OnMouseDoubleClickRight(int x, int y)
+{
+    if (IsDisabled())
+    {
+        return;
+    }
+
+    OnMouseClickRight(x, y, true);
+    _on_mouse_double_click_right.Call(this);
+}
+
 void Button::PostLayout(Skin::Base* skin)
 {
     Label::PostLayout(skin);
