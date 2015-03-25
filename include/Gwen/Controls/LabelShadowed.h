@@ -36,15 +36,15 @@ namespace Gwen
 namespace Controls
 {
 
-/// \brief This class represents a control which contains a text element.
-class Label : public Base
+/// \brief This class represents a control which contains a shadowed text element.
+class LabelShadowed : public Base
 {
 public:
     /// \brief Constructor.
-    GWEN_CONTROL(Label, Base);
+    GWEN_CONTROL(LabelShadowed, Base);
 
     /// \brief Destructor.
-    virtual ~Label() override;
+    virtual ~LabelShadowed() override;
 
     /// \brief Sets the text.
     virtual void SetText(const std::string& text);
@@ -67,11 +67,17 @@ public:
     /// \brief Gets the color of the text.
     virtual Gwen::Color GetTextColor() const;
 
-    /// \brief Sets the color override of the text.
-    virtual void SetTextColorOverride(const Gwen::Color& color);
+    /// \brief Sets the color of the text shadow.
+    virtual void SetShadowColor(const Gwen::Color& color);
 
-    /// \brief Gets the color override of the text.
-    virtual Gwen::Color GetTextColorOverride() const;
+    /// \brief Gets the color of the text shadow.
+    virtual Gwen::Color GetShadowColor() const;
+
+    /// \brief Sets the offset of the text shadow.
+    virtual void SetShadowOffset(const Gwen::Point& offset);
+
+    /// \brief Gets the offset of the text shadow.
+    virtual Gwen::Point GetShadowOffset() const;
 
     /// \brief Sets the alignment of the text.
     virtual void SetAlignment(int alignment);
@@ -121,6 +127,12 @@ protected:
 
     /// \brief The text.
     ControlsInternal::Text* _text;
+
+    /// \brief The shadow offset.
+    Gwen::Point _shadow_offset;
+
+    /// \brief The shadow text.
+    ControlsInternal::Text* _text_shadow;
 
     /// \brief The alignment.
     Gwen::Position::Position _alignment;

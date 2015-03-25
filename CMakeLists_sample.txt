@@ -64,6 +64,7 @@ SET(INCLUDE_CONTROL_FILES
     ${GWEN_ROOT}/include/Gwen/Controls/ImagePanel.h
     ${GWEN_ROOT}/include/Gwen/Controls/Label.h
     ${GWEN_ROOT}/include/Gwen/Controls/LabelClickable.h
+    ${GWEN_ROOT}/include/Gwen/Controls/LabelShadowed.h
     ${GWEN_ROOT}/include/Gwen/Controls/ListBox.h
     ${GWEN_ROOT}/include/Gwen/Controls/ListBoxRow.h
     ${GWEN_ROOT}/include/Gwen/Controls/Menu.h
@@ -157,6 +158,7 @@ SET(SOURCE_CONTROL_FILES
     ${GWEN_ROOT}/source/Controls/ImagePanel.cpp
     ${GWEN_ROOT}/source/Controls/Label.cpp
     ${GWEN_ROOT}/source/Controls/LabelClickable.cpp
+    ${GWEN_ROOT}/source/Controls/LabelShadowed.cpp
     ${GWEN_ROOT}/source/Controls/ListBox.cpp
     ${GWEN_ROOT}/source/Controls/ListBoxRow.cpp
     ${GWEN_ROOT}/source/Controls/Menu.cpp

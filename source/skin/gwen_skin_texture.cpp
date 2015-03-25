@@ -67,6 +67,9 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
 
     Colors.Label.Text                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 5, 508, Color(255, 255, 0));
 
+    Colors.LabelShadowed.Text               = GetRender()->GetPixelColor(&_texture, 4 + 8 * 5, 508, Color(255, 255, 0));
+    Colors.LabelShadowed.Shadow             = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+
     Colors.ListBoxRow.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
     Colors.ListBoxRow.Hover                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));
     Colors.ListBoxRow.Down                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 3, 508, Color(255, 255, 0));

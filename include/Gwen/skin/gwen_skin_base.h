@@ -208,6 +208,13 @@ public:
             Gwen::Color Text;
         } Label;
 
+        /// \brief The shadowed label colors.
+        struct LabelShadowed_t
+        {
+            Gwen::Color Text;
+            Gwen::Color Shadow;
+        } LabelShadowed;
+
         /// \brief The list box row colors.
         struct ListBoxRow_t
         {

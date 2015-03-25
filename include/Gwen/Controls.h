@@ -36,6 +36,7 @@
 #include "Gwen/Controls/ImagePanel.h"
 #include "Gwen/Controls/Label.h"
 #include "Gwen/Controls/LabelClickable.h"
+#include "Gwen/Controls/LabelShadowed.h"
 #include "Gwen/Controls/ListBox.h"
 #include "Gwen/Controls/Menu.h"
 #include "Gwen/Controls/MenuStrip.h"
