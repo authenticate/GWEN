@@ -111,6 +111,8 @@ void LabelShadowed::SetFont(std::string name, int size, bool is_bold)
 
     _text->RefreshSize();
     _text_shadow->RefreshSize();
+
+    Invalidate();
 }
 
 void LabelShadowed::SetFont(Renderer::Font* font)
@@ -223,19 +225,15 @@ int LabelShadowed::GetClosestCharacter(const Gwen::Point& point) const
 
 void LabelShadowed::SizeToContents()
 {
-    _text->SetPosition(_padding._left,
-                       _padding._top);
+    _text->SetPosition(_padding._left, _padding._top);
     _text->RefreshSize();
 
     _text_shadow->SetPosition(_padding._left + _shadow_offset._x,
                               _padding._top + _shadow_offset._y);
     _text_shadow->RefreshSize();
 
-    int width = std::max(_text->Width() + _padding._left + _padding._right,
-                         _text_shadow->Width() + _padding._left + _padding._right + _shadow_offset._x);
-    int height = std::max(_text->Height() + _padding._top + _padding._bottom,
-                          _text_shadow->Height() + _padding._top + _padding._bottom + _shadow_offset._y);
-    SetSize(width, height);
+    SetSize(_text->Width() + _padding._left + _padding._right,
+            _text->Height() + _padding._top + _padding._bottom);
 }
 
 void LabelShadowed::PreDelete(Gwen::Skin::Base* skin)

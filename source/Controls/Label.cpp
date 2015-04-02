@@ -94,6 +94,8 @@ void Label::SetFont(std::string name, int size, bool is_bold)
     SetFont(_font);
 
     _text->RefreshSize();
+
+    Invalidate();
 }
 
 void Label::SetFont(Renderer::Font* font)
@@ -188,7 +190,9 @@ void Label::SizeToContents()
 {
     _text->SetPosition(_padding._left, _padding._top);
     _text->RefreshSize();
-    SetSize(_text->Width() + _padding._left + _padding._right, _text->Height() + _padding._top + _padding._bottom);
+
+    SetSize(_text->Width() + _padding._left + _padding._right,
+            _text->Height() + _padding._top + _padding._bottom);
 }
 
 void Label::PreDelete(Gwen::Skin::Base* skin)
