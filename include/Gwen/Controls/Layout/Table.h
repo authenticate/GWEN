@@ -87,15 +87,9 @@ public:
     /// \brief Sizes the control to its contents.
     void SizeToContents();
 
-    /// \brief Sizes the control to its contents.
-    void DoSizeToContents();
-
 private:
     /// \brief The default row height in pixels.
     unsigned _default_row_height;
-
-    /// \brief Should the control size to its contents?
-    bool _size_to_contents;
 
     /// \brief The number of columns.
     int _column_count;

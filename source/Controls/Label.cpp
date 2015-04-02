@@ -162,8 +162,8 @@ bool Label::GetWrap() const
 void Label::SetTextPadding(const Padding& padding)
 {
     _text->SetPadding(padding);
+
     Invalidate();
-    InvalidateParent();
 }
 
 Padding Label::GetTextPadding() const

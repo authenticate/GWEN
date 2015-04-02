@@ -184,7 +184,6 @@ void ScrollControl::_OnScrollBarMoved(Controls::Base*)
 void ScrollControl::_OnChildBoundsChanged(const Gwen::Rectangle&, Controls::Base*)
 {
     _UpdateScrollBar();
-    Invalidate();
 }
 
 bool ScrollControl::OnMouseWheeled(int delta)

@@ -151,7 +151,7 @@ void VerticalScrollBar::OnBarMoved(Controls::Base* control)
     }
     else
     {
-        InvalidateParent();
+        Invalidate();
     }
 }
 
@@ -210,13 +210,13 @@ void VerticalScrollBar::Layout(Skin::Base* skin)
 
     if (Hidden())
     {
-        SetScrolledAmount(0);
+        SetScrolledAmount(0, false);
     }
 
     // Based on our last scroll amount, produce a position for the bar.
     if (!_bar->GetDepressed())
     {
-        SetScrolledAmount(GetScrolledAmount());
+        SetScrolledAmount(GetScrolledAmount(), false);
     }
 }
 

@@ -84,6 +84,9 @@ Layout::TableRow* ListBox::AddRow(const std::string& label, const std::string& n
     // Store the row.
     _table->AddRow(row, Position::TOP);
 
+    Invalidate();
+    InvalidateChildren();
+
     return row;
 }
 
@@ -122,12 +125,19 @@ void ListBox::RemoveItem(Layout::TableRow* row)
     }
 
     _table->Remove(row);
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 void ListBox::Clear()
 {
     UnselectAll();
+
     _table->Clear();
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 void ListBox::SetAllowMultiSelect(bool multi_select)
@@ -234,11 +244,17 @@ std::string ListBox::GetSelectedRowName() const
 void ListBox::SetColumnCount(int count)
 {
     _table->SetColumnCount(count);
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 void ListBox::SetColumnWidth(int count, int size)
 {
     _table->SetColumnWidth(count, size);
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 void ListBox::_UpdateScrollBar()

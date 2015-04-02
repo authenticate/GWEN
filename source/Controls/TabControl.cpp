@@ -247,12 +247,16 @@ void TabControl::ScrollPressLeft(Base*)
 {
     // TODO: Investigate changing the offset to bring the next button completely on screen.
     _offset -= 120;
+
+    Invalidate();
 }
 
 void TabControl::ScrollPressRight(Base*)
 {
     // TODO: Investigate changing the offset to bring the next button completely on screen.
     _offset += 120;
+
+    Invalidate();
 }
 
 }; // namespace Controls

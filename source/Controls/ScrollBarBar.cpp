@@ -83,14 +83,15 @@ void ScrollBarBar::OnMouseMoved(int x, int y, int delta_x, int delta_y)
         return;
     }
 
-    InvalidateParent();
+    Invalidate();
 }
 
 void ScrollBarBar::OnMouseClickLeft(int x, int y, bool is_down)
 {
     // Call the base class.
     ControlsInternal::Dragger::OnMouseClickLeft(x, y, is_down);
-    InvalidateParent();
+
+    Invalidate();
 }
 
 void ScrollBarBar::Layout(Skin::Base*)

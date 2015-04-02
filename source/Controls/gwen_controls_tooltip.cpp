@@ -85,7 +85,7 @@ void Layout(Gwen::Skin::Base* skin)
     }
 
     // Layout the tooltip.
-    _tooltip->RecurseLayout(true, skin);
+    _tooltip->RecurseLayout(skin);
 }
 
 void Render(Gwen::Skin::Base* skin)

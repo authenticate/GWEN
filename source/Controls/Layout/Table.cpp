@@ -43,7 +43,6 @@ namespace Layout
 GWEN_CONTROL_CONSTRUCTOR(Table, Base)
 {
     _default_row_height = 21;
-    _size_to_contents = false;
     _column_count = 1;
 
     for (int i = 0; i < MAX_COLUMNS; ++i)
@@ -65,14 +64,16 @@ void Table::SetColumnCount(int count)
     for (auto i = _children.begin(); i != _children.end(); ++i)
     {
         TableRow* row = dynamic_cast<TableRow*>(*i);
-        if (!row)
+        if (row != nullptr)
         {
-            continue;
+            row->SetColumnCount(count);
         }
-        row->SetColumnCount(count);
     }
 
     _column_count = count;
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 void Table::SetColumnWidth(int column, int width)
@@ -83,7 +84,9 @@ void Table::SetColumnWidth(int column, int width)
     }
 
     _column_width[column] = width;
+
     Invalidate();
+    InvalidateChildren();
 }
 
 TableRow* Table::AddRow(int dock, bool to_back)
@@ -99,7 +102,9 @@ void Table::AddRow(TableRow* row, int dock, bool to_back)
     row->SetColumnCount(_column_count);
     row->SetHeight(_default_row_height);
     row->SetDock(dock);
+
     Invalidate();
+    InvalidateChildren();
 }
 
 void Table::Remove(TableRow* row)
@@ -109,6 +114,9 @@ void Table::Remove(TableRow* row)
     {
         row->DelayedDelete();
     }
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 void Table::Clear()
@@ -117,6 +125,9 @@ void Table::Clear()
     {
         child->DelayedDelete();
     }
+
+    Invalidate();
+    InvalidateChildren();
 }
 
 TableRow* Table::GetRow(unsigned index)
@@ -149,11 +160,6 @@ void Table::Layout(Skin::Base* skin)
     // Call the base class.
     Base::Layout(skin);
 
-    if (_size_to_contents)
-    {
-        DoSizeToContents();
-    }
-
     int size_remainder = Width();
     int auto_size_columns = 0;
 
@@ -178,7 +184,6 @@ void Table::Layout(Skin::Base* skin)
         TableRow* row = dynamic_cast<TableRow*>(*i);
         if (row != nullptr)
         {
-            row->SizeToContents();
             row->SetEven(even);
             even = !even;
 
@@ -195,26 +200,14 @@ void Table::Layout(Skin::Base* skin)
             }
         }
     }
-
-    InvalidateParent();
 }
 
 void Table::PostLayout(Skin::Base*)
 {
-    if (_size_to_contents)
-    {
-        SizeToChildren();
-        _size_to_contents = false;
-    }
+    SizeToChildren();
 }
 
 void Table::SizeToContents()
-{
-    _size_to_contents = true;
-    Invalidate();
-}
-
-void Table::DoSizeToContents()
 {
     for (int i = 0; i < MAX_COLUMNS; ++i)
     {
@@ -224,23 +217,21 @@ void Table::DoSizeToContents()
     for (auto i = _children.begin(); i != _children.end(); ++i)
     {
         TableRow* row = dynamic_cast<TableRow*>(*i);
-        if (!row)
+        if (row != nullptr)
         {
-            continue;
-        }
-
-        row->SizeToContents();
-
-        for (int j = 0; j < MAX_COLUMNS; ++j)
-        {
-            if (row->_columns[j])
+            row->SizeToContents();
+            for (int j = 0; j < MAX_COLUMNS; ++j)
             {
-                _column_width[j] = std::max(_column_width[j], row->_columns[j]->Width());
+                if (row->_columns[j])
+                {
+                    _column_width[j] = std::max(_column_width[j], row->_columns[j]->Width());
+                }
             }
         }
     }
 
-    InvalidateParent();
+    Invalidate();
+    InvalidateChildren();
 }
 
 }; // namespace Layout

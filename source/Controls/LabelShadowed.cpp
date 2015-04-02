@@ -200,7 +200,6 @@ void LabelShadowed::SetTextPadding(const Padding& padding)
     _text_shadow->SetPadding(padding);
 
     Invalidate();
-    InvalidateParent();
 }
 
 Padding LabelShadowed::GetTextPadding() const

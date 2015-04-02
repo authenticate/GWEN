@@ -66,7 +66,7 @@ void MenuItem::Layout(Skin::Base* skin)
 
     if (_submenu_arrow)
     {
-        _submenu_arrow->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 128, 7);
+        _submenu_arrow->SetPosition(static_cast<Gwen::Position::Position>(Position::LEFT | Position::CENTER_V), 128, 0);
     }
 }
 

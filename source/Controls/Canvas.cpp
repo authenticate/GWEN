@@ -295,7 +295,7 @@ void Canvas::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
     // Call the base class.
     Base::_OnBoundsChanged(old_bounds);
 
-    InvalidateChildren(true);
+    InvalidateChildren();
 }
 
 void Canvas::_Think()
@@ -319,7 +319,7 @@ void Canvas::_Think()
     _first_tab = nullptr;
 
     // Update the layouts.
-    RecurseLayout(false, _skin);
+    RecurseLayout(_skin);
     Tooltip::Layout(_skin);
 
     // If there's no next tab, cycle to the start.

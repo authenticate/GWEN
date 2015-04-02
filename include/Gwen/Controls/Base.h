@@ -463,17 +463,14 @@ public:
     /// \brief Flags the control for redraw.
     virtual void Invalidate();
 
-    /// \brief Flags the parent control for redraw.
-    virtual void InvalidateParent();
-
     /// \briefs Flags the children for redraw.
-    virtual void InvalidateChildren(bool recursive = false);
+    virtual void InvalidateChildren();
 
     /// \brief Lays out the control.
     virtual void Layout(Gwen::Skin::Base* skin);
 
     /// \brief Lays out the control.
-    virtual void RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin);
+    virtual void RecurseLayout(Gwen::Skin::Base* skin);
 
     /// \brief Lays out the control.
     virtual void PostLayout(Gwen::Skin::Base* skin);

@@ -406,7 +406,7 @@ void Text::RefreshSize()
     }
 
     SetSize(point._x, point._y);
-    InvalidateParent();
+
     Invalidate();
 }
 
@@ -607,7 +607,6 @@ void Text::RefreshSizeWrap()
     Point children_size = ChildrenSize();
     SetSize(children_size);
 
-    InvalidateParent();
     Invalidate();
 }
 

@@ -182,29 +182,27 @@ bool TableRow::GetEven()
 
 void TableRow::SizeToContents()
 {
-    int iHeight = 0;
+    int height = 0;
 
     for (int i = 0; i < _column_count; ++i)
     {
-        if (!_columns[i])
+        if (_columns[i] != nullptr)
         {
-            continue;
-        }
+            // Note: More than one child here because the label has a child built into it.
+            if (_columns[i]->GetChildrenCount() > 1)
+            {
+                _columns[i]->SizeToChildren();
+            }
+            else
+            {
+                _columns[i]->SizeToContents();
+            }
 
-        // Note: More than one child here because the label has a child built into it.
-        if (_columns[i]->GetChildrenCount() > 1)
-        {
-            _columns[i]->SizeToChildren();
+            height = std::max(height, _columns[i]->Height());
         }
-        else
-        {
-            _columns[i]->SizeToContents();
-        }
-
-        iHeight = std::max(iHeight, _columns[i]->Height());
     }
 
-    SetHeight(iHeight);
+    SetHeight(height);
 }
 
 }; // namespace Layout

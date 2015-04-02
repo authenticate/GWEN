@@ -67,7 +67,7 @@ void TabStrip::SetTabPosition(int position)
         SetPadding(Padding(5, 0, 0, 0));
     }
 
-    InvalidateChildren(true);
+    InvalidateChildren();
 }
 
 void TabStrip::SetAllowReorder(bool allow_reorder)
