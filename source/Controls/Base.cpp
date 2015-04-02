@@ -722,8 +722,6 @@ Gwen::Rectangle Base::GetRenderBounds() const
 
 void Base::DoRender(Gwen::Skin::Base* skin)
 {
-    // Think();
-
     assert(skin != nullptr);
     if (skin != nullptr)
     {
