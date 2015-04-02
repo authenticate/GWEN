@@ -469,9 +469,6 @@ public:
     /// \briefs Flags the children for redraw.
     virtual void InvalidateChildren(bool recursive = false);
 
-    /// \brief Does this control need layed out?
-    virtual bool NeedsLayout() const;
-
     /// \brief Lays out the control.
     virtual void Layout(Gwen::Skin::Base* skin);
 

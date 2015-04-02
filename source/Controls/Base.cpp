@@ -1384,11 +1384,6 @@ void Base::InvalidateChildren(bool recursive)
     }
 }
 
-bool Base::NeedsLayout() const
-{
-    return _needs_layout;
-}
-
 void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
 {
     if (_skin)
@@ -1401,7 +1396,7 @@ void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
         return;
     }
 
-    if (NeedsLayout())
+    if (_needs_layout)
     {
         _needs_layout = false;
         Layout(skin);
@@ -1493,8 +1488,10 @@ void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
         }
 
         const Margin& margin = child->GetMargin();
-        bounds_changed |= child->SetBounds(bounds._x + margin._left, bounds._y + margin._top,
-                                           bounds._width - margin._left - margin._right, bounds._height - margin._top - margin._bottom);
+        bounds_changed |= child->SetBounds(bounds._x + margin._left,
+                                           bounds._y + margin._top,
+                                           bounds._width - margin._left - margin._right,
+                                           bounds._height - margin._top - margin._bottom);
         child->RecurseLayout(layout_hidden_controls, skin);
     }
 
@@ -1520,7 +1517,7 @@ void Base::RecurseLayout(bool layout_hidden_controls, Gwen::Skin::Base* skin)
         GetCanvas()->_next_tab = nullptr;
     }
 
-    // If the bounds of a control changed...
+    // If the bounds of the control changed...
     if (bounds_changed)
     {
         // Update the layout again.
