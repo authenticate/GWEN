@@ -1588,13 +1588,12 @@ void Base::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
         GetParent()->_OnChildBoundsChanged(old_bounds, this);
     }
 
-    if (_bounds._width != old_bounds._width || _bounds._height != old_bounds._height)
+    if (_bounds != old_bounds)
     {
+        UpdateRenderBounds();
         Invalidate();
+        Redraw();
     }
-
-    Redraw();
-    UpdateRenderBounds();
 }
 
 void Base::_OnChildBoundsChanged(const Gwen::Rectangle&, Base*)

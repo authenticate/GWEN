@@ -42,7 +42,6 @@
 namespace Gwen
 {
 
-// Forward declarations.
 namespace Skin
 {
 
@@ -53,7 +52,7 @@ class Base;
 namespace Controls
 {
 
-// Forward declarations.
+class Base;
 class Canvas;
 
 /// \brief A global pointer to the hovered control.
@@ -221,10 +220,10 @@ public:
     /// \brief Sets the bounds.
     virtual bool SetBounds(const Gwen::Rectangle& bounds);
 
-    /// \brief Sets the padding.
+    /// \brief Sets the padding; the space within an element.
     virtual bool SetPadding(const Padding& padding);
 
-    /// \brief Sets the margin. (TODO: What's the difference between margin and padding?)
+    /// \brief Sets the margin, the space between elements.
     virtual bool SetMargin(const Margin& margin);
 
     /// \brief Moves the control.
@@ -233,16 +232,16 @@ public:
     /// \brief Moves the control.
     virtual void MoveBy(int x, int y);
 
-    /// \brief Gets the bounds. (What's the difference between bounds? Why are there three bounds?)
+    /// \brief Gets the bounds.
     virtual Gwen::Rectangle GetBounds() const;
 
     /// \brief Gets The controls at the position.
     virtual std::vector<Base*> GetControlsAt(int x, int y);
 
-    /// \brief Gets the inner bounds. (What's the difference between bounds? Why are there three bounds?)
+    /// \brief Gets the inner bounds, the bounds after a layout.
     virtual Gwen::Rectangle GetInnerBounds() const;
 
-    /// \brief Gets the render bounds. (What's the difference between bounds? Why are there three bounds?)
+    /// \brief Gets the render bounds, the bounds translated to point (0, 0).
     virtual Gwen::Rectangle GetRenderBounds() const;
 
     /// \brief Draws the UI element.

@@ -49,7 +49,7 @@ enum Position
 
 }; // namespace Position
 
-/// \brief This class represents margins and padding.
+/// \brief This class represents a margin, the space between elements.
 struct Margin
 {
     /// \brief Constructor.
@@ -77,7 +77,7 @@ struct Margin
     int _right;
 };
 
-/// \brief This class represents margins and padding.
+/// \brief This class represents padding, the space within an element.
 typedef Margin Padding;
 
 /// \brief This class represents a rectangle.
