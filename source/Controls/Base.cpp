@@ -1412,9 +1412,9 @@ void Base::RecurseLayout(Gwen::Skin::Base* skin)
                     {
                         const Margin& margin = child->GetMargin();
                         bounds_changed |= child->SetBounds(bounds._x + margin._left,
-                                                            bounds._y + margin._top,
-                                                            child->Width(),
-                                                            bounds._height - margin._top - margin._bottom);
+                                                           bounds._y + margin._top,
+                                                           child->Width(),
+                                                           bounds._height - margin._top - margin._bottom);
                         int width = margin._left + margin._right + child->Width();
                         bounds._x += width;
                         bounds._width -= width;
@@ -1423,9 +1423,9 @@ void Base::RecurseLayout(Gwen::Skin::Base* skin)
                     {
                         const Margin& margin = child->GetMargin();
                         bounds_changed |= child->SetBounds(bounds._x + bounds._width - child->Width() - margin._right,
-                                                            bounds._y + margin._top,
-                                                            child->Width(),
-                                                            bounds._height - margin._top - margin._bottom);
+                                                           bounds._y + margin._top,
+                                                           child->Width(),
+                                                           bounds._height - margin._top - margin._bottom);
                         int width = margin._left + margin._right + child->Width();
                         bounds._width -= width;
                     }
@@ -1434,9 +1434,9 @@ void Base::RecurseLayout(Gwen::Skin::Base* skin)
                     {
                         const Margin& margin = child->GetMargin();
                         bounds_changed |= child->SetBounds(bounds._x + margin._left,
-                                                            bounds._y + margin._top,
-                                                            bounds._width - margin._left - margin._right,
-                                                            child->Height());
+                                                           bounds._y + margin._top,
+                                                           bounds._width - margin._left - margin._right,
+                                                           child->Height());
                         int height = margin._top + margin._bottom + child->Height();
                         bounds._y += height;
                         bounds._height -= height;
@@ -1445,9 +1445,9 @@ void Base::RecurseLayout(Gwen::Skin::Base* skin)
                     {
                         const Margin& margin = child->GetMargin();
                         bounds_changed |= child->SetBounds(bounds._x + margin._left,
-                                                            bounds._y + bounds._height - child->Height() - margin._bottom,
-                                                            bounds._width - margin._left - margin._right,
-                                                            child->Height());
+                                                           bounds._y + bounds._height - child->Height() - margin._bottom,
+                                                           bounds._width - margin._left - margin._right,
+                                                           child->Height());
                         int height = child->Height() + margin._bottom + margin._top;
                         bounds._height -= height;
                     }
