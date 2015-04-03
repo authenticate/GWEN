@@ -46,7 +46,10 @@ static std::vector<std::string> Delimit(const std::string& string, char delimitt
     std::string current;
     while (std::getline(ss, current, delimitter))
     {
-        result.push_back(current);
+        if (!current.empty())
+        {
+            result.push_back(current);
+        }
     }
 
     return result;
