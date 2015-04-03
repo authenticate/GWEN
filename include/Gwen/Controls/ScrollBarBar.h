@@ -43,6 +43,8 @@ public:
     /// \brief Constructor.
     GWEN_CONTROL(ScrollBarBar, Dragger);
 
+    virtual void SetHidden(bool is_hidden) override;
+
     /// \brief Sets the bar to horizontal.
     virtual void SetHorizontal();
 

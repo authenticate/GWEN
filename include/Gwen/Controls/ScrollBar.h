@@ -64,6 +64,9 @@ public:
     virtual void SetAlignment(const Gwen::Position::Position& alignment);
 
     /// \brief Sets the size of the bar.
+    virtual void SetBarHidden(bool is_hidden);
+
+    /// \brief Sets the size of the bar.
     virtual void SetBarSize(unsigned size) = 0;
 
     /// \brief Gets the size of the bar.

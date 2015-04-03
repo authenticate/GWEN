@@ -254,7 +254,7 @@ public:
     virtual bool GetShouldClip() const;
 
     /// \brief Sets if the UI element is visible.
-    virtual void SetHidden(bool hidden);
+    virtual void SetHidden(bool is_hidden);
 
     /// \brief Gets if the UI element is hidden.
     virtual bool Hidden() const;

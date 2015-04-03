@@ -204,9 +204,7 @@ void VerticalScrollBar::Layout(Skin::Base* skin)
     {
         bar_height = GetButtonSize();
     }
-
     _bar->SetHeight(bar_height);
-    _bar->SetHidden(height <= bar_height);
 
     if (Hidden())
     {

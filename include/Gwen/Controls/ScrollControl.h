@@ -68,7 +68,7 @@ protected:
     /// \brief Are the contents docked?
     virtual bool _GetContentsDocked();
 
-    /// \brief Sets the ability to scroll.
+    /// \brief Sets if the scroll scroll can scroll.
     virtual void _SetScroll(bool can_scroll);
 
     /// \brief Sets if the scroll bar is hidden.

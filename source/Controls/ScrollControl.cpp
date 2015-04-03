@@ -111,6 +111,7 @@ bool ScrollControl::_GetContentsDocked()
 
 void ScrollControl::_SetScroll(bool can_scroll)
 {
+    _scroll_bar->SetBarHidden(!can_scroll);
     _scroll_bar->SetDisabled(!can_scroll);
 }
 
@@ -157,8 +158,9 @@ void ScrollControl::_UpdateScrollBar()
     // Update the size of the inner panel.
     _inner_panel->SetSize(width - scroll_bar_width, std::max(height, children_height));
 
-    // Determine whether to display the scroll bars.
-    _SetScroll(height <= children_height);
+    // Determine whether to display the scroll bar's bar.
+    bool can_scroll = height <= children_height;
+    _SetScroll(can_scroll);
 
     // Update the scroll bar's content and viewable size.
     _scroll_bar->SetContentSize(children_height);

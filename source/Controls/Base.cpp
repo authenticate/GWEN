@@ -786,14 +786,14 @@ bool Base::GetShouldClip() const
     return true;
 }
 
-void Base::SetHidden(bool hidden)
+void Base::SetHidden(bool is_hidden)
 {
-    if (_hidden == hidden)
+    if (_hidden == is_hidden)
     {
         return;
     }
 
-    _hidden = hidden;
+    _hidden = is_hidden;
 
     // If this control is hidden...
     if (_hidden)
@@ -1578,13 +1578,14 @@ void Base::_OnChildRemoved(Base*)
 
 void Base::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
 {
-    if (GetParent())
-    {
-        GetParent()->_OnChildBoundsChanged(old_bounds, this);
-    }
-
     if (_bounds != old_bounds)
     {
+        Base* parent = GetParent();
+        if (parent != nullptr)
+        {
+            parent->_OnChildBoundsChanged(old_bounds, this);
+        }
+
         UpdateRenderBounds();
         Redraw();
     }

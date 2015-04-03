@@ -82,6 +82,15 @@ void ScrollBar::SetAlignment(const Gwen::Position::Position& alignment)
     _alignment = alignment;
 }
 
+void ScrollBar::SetBarHidden(bool is_hidden)
+{
+    assert(_bar != nullptr);
+    if (_bar != nullptr)
+    {
+        _bar->SetHidden(is_hidden);
+    }
+}
+
 unsigned ScrollBar::GetButtonSize() const
 {
     return 0;
@@ -200,20 +209,11 @@ unsigned ScrollBar::_ClampToNudgeAmount(unsigned value) const
     // Make sure the nudge amount is position and the value is not already at the minimum or maximum.
     if (_nudge_amount > 0 && value != minimum && value != maximum)
     {
-        if (_alignment & Position::BOTTOM)
+        if (result % _nudge_amount != 0)
         {
-            if (result % _nudge_amount != 0)
-            {
-                result = ((result / _nudge_amount) + 1) * _nudge_amount;
-            }
-            result = Utility::Clamp(result, minimum, maximum);
+            result = ((result / _nudge_amount) + 1) * _nudge_amount;
         }
-        else
-        {
-            // Default to Position::TOP.
-            result = (result / _nudge_amount) * _nudge_amount;
-            result = Utility::Clamp(result, minimum, maximum);
-        }
+        result = Utility::Clamp(result, minimum, maximum);
     }
 
     return result;
