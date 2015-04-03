@@ -42,11 +42,6 @@ GWEN_CONTROL_CONSTRUCTOR(ScrollBarBar, Dragger)
     SetTarget(this);
 }
 
-void ScrollBarBar::SetHidden(bool is_hidden)
-{
-    Dragger::SetHidden(is_hidden);
-}
-
 void ScrollBarBar::SetHorizontal()
 {
     _horizontal = true;

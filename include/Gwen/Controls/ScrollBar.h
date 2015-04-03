@@ -63,7 +63,7 @@ public:
     ///        Only Position::TOP and Position::BOTTOM are supported.
     virtual void SetAlignment(const Gwen::Position::Position& alignment);
 
-    /// \brief Sets the size of the bar.
+    /// \brief Sets if the bar is hidden.
     virtual void SetBarHidden(bool is_hidden);
 
     /// \brief Sets the size of the bar.
