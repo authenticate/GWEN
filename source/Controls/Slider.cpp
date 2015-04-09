@@ -41,6 +41,7 @@ namespace ControlsInternal
 GWEN_CONTROL_CONSTRUCTOR(Slider, Base)
 {
     _bar = new ControlsInternal::SliderBar(this);
+    _bar->SetWidth(15);
     _bar->_on_dragged.Add(this, &Slider::OnMoved);
 
     _minimum = 0.0f;
@@ -99,10 +100,10 @@ float Slider::GetMaximum() const
 void Slider::SetValue(float value, bool)
 {
     value = Utility::Clamp(value, _minimum, _maximum);
-
-    // Normalize the value.
     value = (value - _minimum) / (_maximum - _minimum);
+
     _SetValueInternal(value);
+
     Redraw();
 }
 
