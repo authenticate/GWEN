@@ -80,6 +80,9 @@ void TexturedBase::Initialize(const std::string& texture_name, const std::string
     Colors.ProgressBar.Bar                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 500, Color(255, 255, 0));
     Colors.ProgressBar.Text                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
 
+    Colors.Slider.Bar                       = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+    Colors.Slider.Notch                     = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
+
     Colors.Tab.Active.Normal                = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
     Colors.Tab.Active.Hover                 = GetRender()->GetPixelColor(&_texture, 4 + 8 * 2, 508, Color(255, 255, 0));
     Colors.Tab.Active.Down                  = GetRender()->GetPixelColor(&_texture, 4 + 8 * 0, 508, Color(255, 255, 0));
@@ -601,54 +604,22 @@ void TexturedBase::DrawListBoxLine(Controls::Base* control, bool is_selected, bo
     return Textures.Input.ListBox.OddLine.Draw(GetRender(), control->GetRenderBounds());
 }
 
-void TexturedBase::DrawSlider(Controls::Base* control, bool is_horizontal, int number_of_notches, int size)
+void TexturedBase::DrawSlider(Controls::Base* control, unsigned number_of_notches, unsigned size)
 {
-    if (is_horizontal)
-    {
-        Gwen::Rectangle bounds = control->GetRenderBounds();
-        bounds._x += size / 2;
-        bounds._width -= size;
-        bounds._y += bounds._height / 2 - 1;
-        bounds._height = 1;
-
-        GetRender()->SetDrawColor(Gwen::Color(0, 0, 0, 100));
-        DrawSliderNotchesH(bounds, number_of_notches, size / 2);
-        return GetRender()->FillRectangle(bounds);
-    }
-
     Gwen::Rectangle bounds = control->GetRenderBounds();
-    bounds._y += size / 2;
-    bounds._height -= size;
-    bounds._x += bounds._width / 2 - 1;
-    bounds._width = 1;
+    bounds._x += size / 2;
+    bounds._width -= size;
+    bounds._y += bounds._height / 2 - 1;
+    bounds._height = 1;
 
-    GetRender()->SetDrawColor(Gwen::Color(0, 0, 0, 100));
-    DrawSliderNotchesV(bounds, number_of_notches, static_cast<int>(size * 0.4f));
-    return GetRender()->FillRectangle(bounds);
+    DrawSliderNotches(bounds, number_of_notches, size / 2);
+
+    GetRender()->SetDrawColor(Colors.Slider.Bar);
+    GetRender()->FillRectangle(bounds);
 }
 
-void TexturedBase::DrawSliderButton(Controls::Base* control, bool is_depressed, bool is_horizontal)
+void TexturedBase::DrawSliderButton(Controls::Base* control, bool is_depressed)
 {
-    if (!is_horizontal)
-    {
-        if (control->IsDisabled())
-        {
-            return Textures.Input.Slider.Vertical.Disabled.DrawCenter(GetRender(), control->GetRenderBounds());
-        }
-
-        if (is_depressed)
-        {
-            return Textures.Input.Slider.Vertical.Down.DrawCenter(GetRender(), control->GetRenderBounds());
-        }
-
-        if (control->IsHovered())
-        {
-            return Textures.Input.Slider.Vertical.Hover.DrawCenter(GetRender(), control->GetRenderBounds());
-        }
-
-        return Textures.Input.Slider.Vertical.Normal.DrawCenter(GetRender(), control->GetRenderBounds());
-    }
-
     if (control->IsDisabled())
     {
         return Textures.Input.Slider.Horizontal.Disabled.DrawCenter(GetRender(), control->GetRenderBounds());
@@ -667,31 +638,17 @@ void TexturedBase::DrawSliderButton(Controls::Base* control, bool is_depressed, 
     Textures.Input.Slider.Horizontal.Normal.DrawCenter(GetRender(), control->GetRenderBounds());
 }
 
-void TexturedBase::DrawSliderNotchesH(const Gwen::Rectangle& rectangle, int number_of_notches, int length)
+void TexturedBase::DrawSliderNotches(const Gwen::Rectangle& rectangle, unsigned number_of_notches, unsigned length)
 {
-    if (number_of_notches == 0)
+    if (number_of_notches > 0 && length > 0)
     {
-        return;
-    }
+        GetRender()->SetDrawColor(Colors.Slider.Bar);
 
-    float spacing = static_cast<float>(rectangle._width) / static_cast<float>(number_of_notches);
-    for (int i = 0; i < number_of_notches + 1; ++i)
-    {
-        GetRender()->FillRectangle(Gwen::Rectangle(static_cast<int>(rectangle._x + spacing * i), rectangle._y + length - 2, 1, 5));
-    }
-}
-
-void TexturedBase::DrawSliderNotchesV(const Gwen::Rectangle& rectangle, int number_of_notches, int length)
-{
-    if (number_of_notches == 0)
-    {
-        return;
-    }
-
-    float spacing = static_cast<float>(rectangle._height) / static_cast<float>(number_of_notches);
-    for (int i = 0; i < number_of_notches + 1; ++i)
-    {
-        GetRender()->FillRectangle(Gwen::Rectangle(rectangle._x + length - 1, static_cast<int>(rectangle._y + spacing * i), 5, 1));
+        float spacing = static_cast<float>(rectangle._width) / static_cast<float>(number_of_notches);
+        for (unsigned i = 0; i < number_of_notches + 1; ++i)
+        {
+            GetRender()->FillRectangle(Gwen::Rectangle(static_cast<int>(rectangle._x + spacing * i), rectangle._y + length - 2, 1, 5));
+        }
     }
 }
 

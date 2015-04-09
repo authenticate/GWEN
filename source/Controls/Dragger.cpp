@@ -85,13 +85,12 @@ void Dragger::OnMouseClickLeft(int x, int y, bool is_down)
 {
     if (is_down)
     {
-        _depressed = true;
-
         if (_target)
         {
             _hold_position = _target->CanvasPositionToLocal(Gwen::Point(x, y));
         }
 
+        _depressed = true;
         Gwen::Controls::_mouse_focus = this;
         _on_drag_start.Call(this);
     }

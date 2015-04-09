@@ -162,16 +162,13 @@ public:
 
 
     /// \brief Draws a slider.
-    virtual void DrawSlider(Controls::Base* control, bool is_horizontal, int number_of_notches, int size) = 0;
+    virtual void DrawSlider(Controls::Base* control, unsigned number_of_notches, unsigned size) = 0;
 
     /// \brief Draws a slider button.
-    virtual void DrawSliderButton(Gwen::Controls::Base* control, bool is_depressed, bool is_horizontal) = 0;
+    virtual void DrawSliderButton(Gwen::Controls::Base* control, bool is_depressed) = 0;
 
-    /// \brief Draws a horizontal slider notches.
-    virtual void DrawSliderNotchesH(const Gwen::Rectangle& rectangle, int number_of_notches, int length) = 0;
-
-    /// \brief Draws a vertical slider notches.
-    virtual void DrawSliderNotchesV(const Gwen::Rectangle& rectangle, int number_of_notches, int length) = 0;
+    /// \brief Draws a slider notches.
+    virtual void DrawSliderNotches(const Gwen::Rectangle& rectangle, unsigned number_of_notches, unsigned length) = 0;
 
 
     /// \brief Draw combo box.
@@ -236,6 +233,13 @@ public:
             Gwen::Color Bar;
             Gwen::Color Text;
         } ProgressBar;
+
+        /// \brief The slider colors.
+        struct Slider_t
+        {
+            Gwen::Color Bar;
+            Gwen::Color Notch;
+        } Slider;
 
         /// \brief The tab colors.
         struct Tab_t

@@ -135,16 +135,13 @@ public:
 
 
     /// \brief Draws a slider.
-    virtual void DrawSlider(Controls::Base* control, bool is_horizontal, int number_of_notches, int size) override;
+    virtual void DrawSlider(Controls::Base* control, unsigned number_of_notches, unsigned size) override;
 
     /// \brief Draws a slider button.
-    virtual void DrawSliderButton(Gwen::Controls::Base* control, bool is_depressed, bool is_horizontal) override;
+    virtual void DrawSliderButton(Gwen::Controls::Base* control, bool is_depressed) override;
 
-    /// \brief Draws a horizontal slider notches.
-    virtual void DrawSliderNotchesH(const Gwen::Rectangle& rectangle, int number_of_notches, int length) override;
-
-    /// \brief Draws a vertical slider notches.
-    virtual void DrawSliderNotchesV(const Gwen::Rectangle& rectangle, int number_of_notches, int length) override;
+    /// \brief Draws a slider notches.
+    virtual void DrawSliderNotches(const Gwen::Rectangle& rectangle, unsigned number_of_notches, unsigned length) override;
 
 
     /// \brief Draw combo box.

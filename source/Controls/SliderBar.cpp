@@ -38,24 +38,13 @@ namespace ControlsInternal
 
 GWEN_CONTROL_CONSTRUCTOR(SliderBar, Dragger)
 {
-    SetHorizontal(true);
     SetRestrictToParent(true);
     SetTarget(this);
 }
 
-void SliderBar::SetHorizontal(bool is_horizontal)
-{
-    _horizontal = is_horizontal;
-}
-
-bool SliderBar::GetHorizontal() const
-{
-    return _horizontal;
-}
-
 void SliderBar::Render(Skin::Base* skin)
 {
-    skin->DrawSliderButton(this, GetDepressed(), GetHorizontal());
+    skin->DrawSliderButton(this, GetDepressed());
 }
 
 }; // namespace ControlsInternal

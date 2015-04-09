@@ -57,7 +57,7 @@ void HorizontalSlider::UpdateBarFromValue()
 
 void HorizontalSlider::Render(Skin::Base* skin)
 {
-    skin->DrawSlider(this, true, _clamp_to_notches ? _number_of_notches : 0, _bar->Width());
+    skin->DrawSlider(this, _number_of_notches, _bar->Width());
 }
 
 void HorizontalSlider::OnMouseClickLeft(int x, int y, bool is_down)
@@ -70,6 +70,14 @@ void HorizontalSlider::OnMouseClickLeft(int x, int y, bool is_down)
     _bar->OnMouseClickLeft(x, y, is_down);
 
     OnMoved(_bar);
+}
+
+void HorizontalSlider::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
+{
+    // Call the base class.
+    Slider::_OnBoundsChanged(old_bounds);
+
+    UpdateBarFromValue();
 }
 
 }; // namespace Controls

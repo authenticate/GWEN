@@ -239,10 +239,27 @@ bool HandleAccelerator(Controls::Base* canvas, char character)
     return false;
 }
 
-void OnMouseMoved(Controls::Base* canvas, int x, int y, int, int)
+void OnMouseMoved(Controls::Base* canvas, int x, int y, int delta_x, int delta_y)
 {
     _mouse_position._x = x;
     _mouse_position._y = y;
+
+    Gwen::Controls::Base* target = Gwen::Controls::_mouse_focus;
+    if (target && target->GetCanvas() != canvas)
+    {
+        target = nullptr;
+    }
+
+    if (target && !target->Visible())
+    {
+        target = nullptr;
+    }
+
+    if (target)
+    {
+        target->OnMouseMoved(x, y, delta_x, delta_y);
+    }
+
     _UpdateHoveredControl(canvas);
 }
 
@@ -270,7 +287,6 @@ bool OnMouseClicked(Controls::Base* canvas, int button, bool is_down)
         target = nullptr;
     }
 
-    // Sanity.
     if (!target)
     {
         return false;

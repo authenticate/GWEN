@@ -41,7 +41,6 @@ namespace ControlsInternal
 GWEN_CONTROL_CONSTRUCTOR(Slider, Base)
 {
     _bar = new ControlsInternal::SliderBar(this);
-    _bar->SetHorizontal(true);
     _bar->_on_dragged.Add(this, &Slider::OnMoved);
 
     _minimum = 0.0f;
@@ -198,8 +197,6 @@ void Slider::_OnBoundsChanged(const Gwen::Rectangle& old_bounds)
 {
     // Call the base class.
     Base::_OnBoundsChanged(old_bounds);
-
-    UpdateBarFromValue();
 }
 
 }; // namespace ControlsInternal

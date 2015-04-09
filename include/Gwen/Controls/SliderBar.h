@@ -42,18 +42,9 @@ class SliderBar : public Dragger
     /// \brief Constructor.
     GWEN_CONTROL(SliderBar, Dragger);
 
-    /// \brief Sets the slider to horizontal.
-    virtual void SetHorizontal(bool is_horizontal);
-
-    /// \brief Is the slider horizontal?
-    virtual bool GetHorizontal() const;
-
 protected:
     /// \brief Draws the UI element.
     virtual void Render(Skin::Base* skin) override;
-
-    /// \brief Is the slider bar horizonal?
-    bool _horizontal;
 };
 
 }; // namespace ControlsInternal

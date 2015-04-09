@@ -94,7 +94,6 @@ SET(INCLUDE_CONTROL_FILES
     ${GWEN_ROOT}/include/Gwen/Controls/TextBoxPassword.h
     ${GWEN_ROOT}/include/Gwen/Controls/TextBoxThink.h
     ${GWEN_ROOT}/include/Gwen/Controls/VerticalScrollBar.h
-    ${GWEN_ROOT}/include/Gwen/Controls/VerticalSlider.h
 )
 
 SET(INCLUDE_CONTROL_LAYOUT_FILES
@@ -188,7 +187,6 @@ SET(SOURCE_CONTROL_FILES
     ${GWEN_ROOT}/source/Controls/TextBoxPassword.cpp
     ${GWEN_ROOT}/source/Controls/TextBoxThink.cpp
     ${GWEN_ROOT}/source/Controls/VerticalScrollBar.cpp
-    ${GWEN_ROOT}/source/Controls/VerticalSlider.cpp
 )
 
 SET(SOURCE_CONTROL_LAYOUT_FILES

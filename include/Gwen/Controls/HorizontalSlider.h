@@ -57,6 +57,9 @@ protected:
 
     /// \brief Called when the left mouse button is pressed.
     virtual void OnMouseClickLeft(int x, int y, bool is_down) override;
+
+    /// \brief Called when the bounds change.
+    virtual void _OnBoundsChanged(const Gwen::Rectangle& old_bounds) override;
 };
 
 }; // namespace Controls

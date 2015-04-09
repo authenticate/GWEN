@@ -48,4 +48,3 @@
 #include "Gwen/Controls/TextBox.h"
 #include "Gwen/Controls/TextBoxNumeric.h"
 #include "Gwen/Controls/TextBoxPassword.h"
-#include "Gwen/Controls/VerticalSlider.h"
