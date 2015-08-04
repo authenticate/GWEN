@@ -38,13 +38,13 @@ namespace ControlsInternal
 {
 
 /// \brief A helper function to delimit strings.
-static std::vector<std::string> Delimit(const std::string& string, char delimitter)
+static std::vector<std::string> Delimit(const std::string& string, char delimiter)
 {
     std::vector<std::string> result;
 
     std::stringstream ss(string);
     std::string current;
-    while (std::getline(ss, current, delimitter))
+    while (std::getline(ss, current, delimiter))
     {
         if (!current.empty())
         {
