@@ -15,9 +15,7 @@ This fork contains a subset of the original repository's widgets.  If I did not 
 Building
 ========
 
-For my personal projects, I build everything I use from source with CMake.  So, I don't have any solution files to upload which would be of any value.  However, I included a sample CMakeLists file to act as a starting point.  You will need to modify it to operate in your CMake ecosystem.
-
-As an alternative, you could just drag and drop all the files into an IDE.  There's nothing complicated about building the library.  Just make sure to update the include and linker directories accordingly.  Use the sample CMakeLists file as a guide.
+For my personal projects, I build projects with CMake.  So, I don't have any solution files to upload which would be of any value.  However, I included a sample CMakeLists file to act as a starting point.  You will need to modify it to operate in your CMake ecosystem.
 
 Integrating
 ===========
@@ -63,7 +61,7 @@ YourGameLoop()
     gwen_canvas->RenderCanvas();
 }
 
-// Make sure to clean up all those pointers created with new!
+// Make sure to clean up the pointers.
 
 ...
 
