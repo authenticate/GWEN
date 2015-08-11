@@ -15,7 +15,7 @@ This fork contains a subset of the original repository's widgets.  If I did not 
 Building
 ========
 
-For my personal projects, I build projects with CMake.  So, I don't have any solution files to upload which would be of any value.  However, I included a sample CMakeLists file to act as a starting point.  You will need to modify it to operate in your CMake ecosystem.
+For my personal projects, I use CMake.  So, I do not have any solution files to upload which would be of any value.  However, I included a sample CMakeLists file to act as a starting point.  You will need to modify it to operate in your CMake ecosystem.  In addition, you could use the sample CMakeLists file as a guide to integrate the files into your build environment.  Sorry. :(
 
 Integrating
 ===========
