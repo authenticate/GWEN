@@ -427,75 +427,6 @@ void Text::_OnScaleChanged()
     Invalidate();
 }
 
-void Text::_SplitWords(const std::string& string, std::vector<std::string>& result)
-{
-    // First, delimit the string into lines.
-    std::vector<std::string> lines = Delimit(string, '\n');
-
-    // Next, delimit the lines into words.
-    std::vector<std::string> words;
-    for (auto line : lines)
-    {
-        std::vector<std::string> words_per_line = Delimit(line, ' ');
-        words.insert(words.end(), words_per_line.begin(), words_per_line.end());
-        words.push_back("\n");
-    }
-
-    // Finally, place the words.
-    int width = GetParent()->Width() - GetParent()->GetPadding()._left - GetParent()->GetPadding()._right;
-    assert(width > 0);
-    if (width > 0)
-    {
-        std::string line = "";
-        for (auto word : words)
-        {
-            // The new line character is a special case.
-            if (word == "\n")
-            {
-                // Store the line.
-                if (!line.empty())
-                {
-                    result.push_back(line);
-                }
-
-                // Reset the line.
-                line = "";
-            }
-            else
-            {
-                // If the word makes the line greater than the width...
-                Gwen::Point point = GetSkin()->GetRender()->MeasureText(GetFont(), line + word);
-                if (point._x > width)
-                {
-                    // Store the line.
-                    if (!line.empty())
-                    {
-                        result.push_back(line);
-                    }
-
-                    // Store the word.
-                    line = word;
-                }
-                else
-                {
-                    // Append the word to the line.
-                    if (!line.empty())
-                    {
-                        line += " ";
-                    }
-                    line += word;
-                }
-            }
-        }
-
-        // Store the line.
-        if (!line.empty())
-        {
-            result.push_back(line);
-        }
-    }
-}
-
 void Text::Render(Skin::Base* skin)
 {
     if (_wrap)
@@ -530,12 +461,13 @@ void Text::RefreshSizeWrap()
     }
     _lines.clear();
 
-    std::vector<std::string> words;
-    _SplitWords(GetText(), words);
+    std::vector<std::string> lines;
+    _SplitLines(GetText(), lines);
 
-    // Adding a word to the end simplifies the code below
-    // which is anything but simple.
-    words.push_back("");
+    // TODO: This is a hack.
+    //       The automatic sizing code does not seem to work correctly
+    //       without this extra line.
+    lines.push_back("");
 
     // Sanity.
     if (!GetFont())
@@ -546,71 +478,107 @@ void Text::RefreshSizeWrap()
     Point font_size = GetSkin()->GetRender()->MeasureText(GetFont(), " ");
     int width = GetParent()->Width() - GetParent()->GetPadding()._left - GetParent()->GetPadding()._right;
 
-    int x = 0;
     int y = 0;
-    std::string line;
-    for (auto i = words.begin(); i != words.end(); ++i)
+    for (auto i = lines.begin(); i != lines.end(); ++i)
     {
-        bool is_line_finished = false;
-        bool is_wrapped = false;
+        // Create the text for the line.
+        Text* text = new Text(this);
 
-        // If this word is a newline, make a new line.
-        if ((*i)[0] == '\n')
-        {
-            is_line_finished = true;
-        }
+        // Configure the text.
+        text->SetFont(_font);
+        text->SetPadding(_padding);
+        text->SetTextColor(_color);
+        text->SetTextColorOverride(_color_override);
 
-        line += (*i);
+        // Store the line.
+        text->SetText(*i);
 
-        // Does adding this word drive us over the width?
-        Gwen::Point point = GetSkin()->GetRender()->MeasureText(GetFont(), line);
-        if (point._x > Width())
-        {
-            if (point._x > width)
-            {
-                is_line_finished = true;
-                is_wrapped = true;
-            }
-        }
+        // Update the size and position.
+        text->RefreshSize();
+        text->SetPosition(0, y);
 
-        // If this is the last word then finish the line
-        if (--words.end() == i)
-        {
-            is_line_finished = true;
-        }
+        _lines.push_back(text);
 
-        if (is_line_finished)
-        {
-            Text* text = new Text(this);
-            text->SetFont(_font);
-            text->SetPadding(_padding);
-            text->SetTextColor(_color);
-            text->SetTextColorOverride(_color_override);
-
-            if (is_wrapped)
-            {
-                text->SetText(line.substr(0, line.length() - (*i).length()));
-                line = *i;
-            }
-            else
-            {
-                text->SetText(line.substr(0, line.length()));
-                line.clear();
-            }
-
-            text->RefreshSize();
-            text->SetPosition(x, y);
-            _lines.push_back(text);
-
-            y += font_size._y;
-            x = 0;
-        }
+        y += font_size._y;
     }
 
     Point children_size = ChildrenSize();
     SetSize(children_size);
 
     Invalidate();
+}
+
+void Text::_SplitLines(const std::string& text, std::vector<std::string>& result)
+{
+    // Sanity.
+    if (!text.empty())
+    {
+        // First, delimit the string into lines.
+        std::vector<std::string> lines = Delimit(text, '\n');
+
+        // Next, delimit the lines into words.
+        std::vector<std::string> words;
+        for (auto line : lines)
+        {
+            std::vector<std::string> words_per_line = Delimit(line, ' ');
+            words.insert(words.end(), words_per_line.begin(), words_per_line.end());
+            words.push_back("\n");
+        }
+
+        // Finally, place the words.
+        int width = GetParent()->Width() - GetParent()->GetPadding()._left - GetParent()->GetPadding()._right;
+        assert(width > 0);
+        if (width > 0)
+        {
+            std::string line = "";
+            for (auto word : words)
+            {
+                // The new line character is a special case.
+                if (word == "\n")
+                {
+                    // Store the line.
+                    if (!line.empty())
+                    {
+                        result.push_back(line);
+                    }
+
+                    // Reset the line.
+                    line = "";
+                }
+                else
+                {
+                    // If the word makes the line greater than the width...
+                    Gwen::Point point = GetSkin()->GetRender()->MeasureText(GetFont(), line + " " + word);
+                    if (point._x > width)
+                    {
+                        // Store the line.
+                        if (!line.empty())
+                        {
+                            result.push_back(line);
+                        }
+
+                        // Store the word.
+                        line = word;
+                    }
+                    else
+                    {
+                        // Append the word to the line.
+                        if (!line.empty())
+                        {
+                            line += " ";
+                        }
+                        line += word;
+                    }
+                }
+            }
+
+            // Store the line.
+            if (!line.empty())
+            {
+                result.push_back(line);
+            }
+        }
+    }
 }
 
 }; // namespace ControlsInternal

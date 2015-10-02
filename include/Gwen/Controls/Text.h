@@ -112,15 +112,15 @@ protected:
     /// \brief Called when the scale of the control changes.
     virtual void _OnScaleChanged() override;
 
-    /// \brief Splits the words of a string.
-    virtual void _SplitWords(const std::string& string, std::vector<std::string>& result);
-
     /// \brief Draws the UI element.
     void Render(Skin::Base* skin) override;
 
 private:
     /// \brief Refreshes the word wrap.
     virtual void RefreshSizeWrap();
+
+    /// \brief Splits the text into lines.
+    void _SplitLines(const std::string& text, std::vector<std::string>& result);
 
     /// \brief The text.
     std::string _text;
