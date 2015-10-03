@@ -476,7 +476,6 @@ void Text::RefreshSizeWrap()
     }
 
     Point font_size = GetSkin()->GetRender()->MeasureText(GetFont(), " ");
-    int width = GetParent()->Width() - GetParent()->GetPadding()._left - GetParent()->GetPadding()._right;
 
     int y = 0;
     for (auto i = lines.begin(); i != lines.end(); ++i)
