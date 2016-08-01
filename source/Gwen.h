@@ -56,6 +56,7 @@
 #include <chrono>
 #include <map>
 #include <math.h>
+#include <ostream>
 #include <set>
 #include <sstream>
 #include <stdarg.h>

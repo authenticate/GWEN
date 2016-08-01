@@ -30,6 +30,9 @@
 
 #include "Gwen/Structures.h"
 
+#include <ostream>
+#include <sstream>
+
 namespace Gwen
 {
 namespace Utility
