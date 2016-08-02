@@ -28,7 +28,7 @@ public:
     virtual bool GetHoverOpenMenu() const override;
 
     /// \brief Closes the menu strip.
-    virtual void Close();
+    virtual void Close() override;
 
 protected:
     /// \brief Draws the UI element.

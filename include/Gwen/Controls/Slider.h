@@ -102,7 +102,7 @@ protected:
     virtual void UpdateBarFromValue() = 0;
 
     /// \brief Draws the UI element.
-    virtual void Render(Skin::Base* skin) = 0;
+    virtual void Render(Skin::Base* skin) override = 0;
 
     /// \brief Draws the UI element.
     virtual void RenderFocus(Gwen::Skin::Base* skin) override;

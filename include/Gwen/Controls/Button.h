@@ -64,7 +64,7 @@ public:
     virtual void OnPressRight();
 
     /// \brief Sizes the button to its contents.
-    virtual void SizeToContents();
+    virtual void SizeToContents() override;
 
     /// \brief Called when the left mouse button is pressed.
     virtual void OnMouseClickLeft(int x, int y, bool is_down) override;

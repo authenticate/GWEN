@@ -93,7 +93,7 @@ public:
     virtual void Close();
 
     /// \brief Toggles the menu.
-    virtual void Toggle();
+    virtual void Toggle() override;
 
     /// \brief Is the menu open?
     virtual bool GetOpen() const;

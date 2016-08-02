@@ -50,13 +50,13 @@ public:
     virtual bool GetChecked() const;
 
     /// \brief Inverts the checked state.
-    virtual void Toggle();
+    virtual void Toggle() override;
 
     /// \brief Called when the control is checked.
     virtual void OnChecked();
 
     /// \brief Called when the check box is pressed with the left mouse button.
-    virtual void OnPressLeft();
+    virtual void OnPressLeft() override;
 
     /// \brief An event for when the control is checked.
     Gwen::Event::Caller _on_checked;
